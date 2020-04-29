@@ -77,11 +77,32 @@ public:
   { }
 };
 
-struct d3d11_texture_2d
+struct d3d11_resource
+{
+  const com_ptr<ID3D11Resource> resource;
+
+  d3d11_resource(const com_ptr<ID3D11Resource> resource) :
+    resource(resource)
+  { }
+
+  void update(const com_ptr<ID3D11DeviceContext>& context, const array_view<uint8_t>& data) const
+  {
+    com_ptr<ID3D11Device> device;
+    resource->GetDevice(device.put());
+
+    D3D11_MAPPED_SUBRESOURCE mappedSubresource;
+    check_hresult(context->Map(resource.get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedSubresource));
+    memcpy(mappedSubresource.pData, data.data(), min(data.size(), mappedSubresource.DepthPitch));
+    context->Unmap(resource.get(), 0);
+  }
+};
+
+struct d3d11_texture_2d : d3d11_resource
 {
   const com_ptr<ID3D11Texture2D> texture;
 
   d3d11_texture_2d(const com_ptr<ID3D11Texture2D> texture) :
+    d3d11_resource(texture),
     texture(texture)
   { }
 };
@@ -203,6 +224,152 @@ public:
     return *render_target.get();
   }
 };
+
+struct d3d11_buffer : public d3d11_resource
+{
+  const com_ptr<ID3D11Buffer> buffer;
+
+  d3d11_buffer(const com_ptr<ID3D11Buffer>& buffer) :
+    d3d11_resource(buffer),
+    buffer(buffer)
+  { }  
+};
+
+struct d3d11_vertex_position
+{
+  array<float, 3> position;
+
+  static inline const array<D3D11_INPUT_ELEMENT_DESC, 1> input_desc = {
+    {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 1}
+  };
+};
+
+struct d3d11_vertex_position_texture : public d3d11_vertex_position
+{
+  array<float, 2> texture;
+
+  static inline const array<D3D11_INPUT_ELEMENT_DESC, 2> input_desc = {
+    d3d11_vertex_position::input_desc[0],
+    {"TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 1}
+  };
+};
+
+template<typename TVertex>
+struct d3d11_vertex_buffer : public d3d11_buffer
+{
+private:
+  d3d11_vertex_buffer(const com_ptr<ID3D11Buffer>& buffer, uint32_t capacity) :
+    d3d11_buffer(buffer),
+    capacity(capacity)
+  { }
+  
+public:
+  typedef TVertex vertex_t;
+  const uint32_t capacity;
+
+  static d3d11_vertex_buffer make_immutable(const com_ptr<ID3D11Device>& device, const array_view<vertex_t>& vertices)
+  {
+    CD3D11_BUFFER_DESC desc(
+      sizeof(vertex_t) * vertices.size(),
+      D3D11_BIND_VERTEX_BUFFER, 
+      D3D11_USAGE_IMMUTABLE
+    );
+
+    D3D11_SUBRESOURCE_DATA data = {};
+    data.pSysMem = vertices;
+
+    com_ptr<ID3D11Buffer> buffer;
+    check_hresult(device->CreateBuffer(&desc, &data, buffer.put()));
+
+    return d3d11_vertex_buffer(buffer, vertices.size());
+  }
+
+  static d3d11_vertex_buffer make_dynamic(const com_ptr<ID3D11Device>& device, uint32_t capacity)
+  {
+    CD3D11_BUFFER_DESC desc(
+      sizeof(vertex_t) * capacity,
+      D3D11_BIND_VERTEX_BUFFER,
+      D3D11_USAGE_DYNAMIC,
+      D3D11_CPU_ACCESS_WRITE
+    );
+
+    com_ptr<ID3D11Buffer> buffer;
+    check_hresult(device->CreateBuffer(&desc, nullptr, buffer.put()));
+
+    return d3d11_vertex_buffer(buffer, capacity);
+  }
+
+  void update(const com_ptr<ID3D11DeviceContext>& context, const array_view<vertex_t>& vertices) const
+  {
+    d3d11_buffer::update(context, { vertices.data(), min(vertices.size() * sizeof(vertex_t), capacity) });
+  }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context, uint32_t slot = 0) const
+  {
+    uint32_t stride = sizeof(vertex_t);
+    uint32_t offset = 0;
+    ID3D11Buffer* const buffer = buffer.get();
+    context->IASetVertexBuffers(slot, 1u, &buffer, &stride, &offset);
+  }
+};
+
+enum class d3d11_shader_stage
+{
+  vs,
+  ps
+};
+
+template<typename TConstant>
+struct d3d11_constant_buffer : public d3d11_buffer
+{
+private:
+  d3d11_constant_buffer(const com_ptr<ID3D11Buffer>& buffer, uint32_t capacity) :
+    d3d11_buffer(buffer),
+    capacity(capacity)
+  { }
+
+public:
+  typedef TConstant constant_t;
+  const uint32_t capacity;
+
+  static d3d11_constant_buffer make_dynamic(const com_ptr<ID3D11Device>& device)
+  {
+    auto capacity = sizeof(constant_t);
+    CD3D11_BUFFER_DESC desc(
+      (capacity % 16 == 0 ? capacity : capacity + 16 - capacity % 16),
+      D3D11_BIND_CONSTANT_BUFFER,
+      D3D11_USAGE_DYNAMIC,
+      D3D11_CPU_ACCESS_WRITE
+    );
+
+    com_ptr<ID3D11Buffer> buffer;
+    check_hresult(device->CreateBuffer(&desc, nullptr, buffer.put()));
+
+    return d3d11_constant_buffer(buffer, capacity);
+  }
+
+  void update(const constant_t& value) const
+  {
+    d3d11_buffer::update({ &value, capacity });
+  }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context, d3d11_shader_stage stage, uint32_t slot = 0) const
+  {
+    array<ID3D11Buffer*, 1> buffers = { buffer.get() };
+    switch (stage)
+    {
+    case d3d11_shader_stage::vs:
+      context->VSSetConstantBuffers(slot, 1, buffers);
+      break;
+    case d3d11_shader_stage::ps:
+      context->PSSetConstantBuffers(slot, 1, buffers);
+      break;
+    default:
+      throw out_of_range("Invalid shader stage for constant buffer!");
+    }
+  }
+};
+
 
 LRESULT CALLBACK debug_message_handler(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
