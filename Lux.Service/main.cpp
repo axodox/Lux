@@ -81,7 +81,7 @@ struct d3d11_resource
 {
   const com_ptr<ID3D11Resource> resource;
 
-  d3d11_resource(const com_ptr<ID3D11Resource> resource) :
+  d3d11_resource(const com_ptr<ID3D11Resource>& resource) :
     resource(resource)
   { }
 
@@ -97,14 +97,54 @@ struct d3d11_resource
   }
 };
 
+enum class d3d11_shader_stage
+{
+  cs,
+  vs,
+  ps
+};
+
 struct d3d11_texture_2d : d3d11_resource
 {
-  const com_ptr<ID3D11Texture2D> texture;
+private:
+  static com_ptr<ID3D11ShaderResourceView> make_view(const com_ptr<ID3D11Texture2D>& texture)
+  {
+    com_ptr<ID3D11Device> device;
+    texture->GetDevice(device.put());
 
-  d3d11_texture_2d(const com_ptr<ID3D11Texture2D> texture) :
+    com_ptr<ID3D11ShaderResourceView> view;
+    device->CreateShaderResourceView(texture.get(), nullptr, view.put());
+    return view;
+  }
+
+public:
+  const com_ptr<ID3D11Texture2D> texture;
+  const com_ptr<ID3D11ShaderResourceView> view;
+
+  d3d11_texture_2d(const com_ptr<ID3D11Texture2D>& texture) :
     d3d11_resource(texture),
-    texture(texture)
+    texture(texture),
+    view(make_view(texture))
   { }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context, d3d11_shader_stage stage, uint32_t slot = 0u) const
+  {
+    const array<ID3D11ShaderResourceView*, 1> views = { view.get() };
+    switch (stage)
+    {
+    case d3d11_shader_stage::cs:
+      context->CSSetShaderResources(slot, 1, views.data());
+      break;
+    case d3d11_shader_stage::vs:
+      context->VSSetShaderResources(slot, 1, views.data());
+      break;
+    case d3d11_shader_stage::ps:
+      context->PSSetShaderResources(slot, 1, views.data());
+      break;
+    default:
+      throw out_of_range("Invalid shader stage for texture!");
+    }
+  }
 };
 
 struct d3d11_render_target_2d : public d3d11_texture_2d
@@ -232,7 +272,7 @@ struct d3d11_buffer : public d3d11_resource
   d3d11_buffer(const com_ptr<ID3D11Buffer>& buffer) :
     d3d11_resource(buffer),
     buffer(buffer)
-  { }  
+  { }
 };
 
 struct d3d11_vertex_position
@@ -262,26 +302,35 @@ private:
     d3d11_buffer(buffer),
     capacity(capacity)
   { }
-  
+
+  uint32_t _size = 0;
+
 public:
   typedef TVertex vertex_t;
   const uint32_t capacity;
+
+  uint32_t size() const
+  {
+    return _size;
+  }
 
   static d3d11_vertex_buffer make_immutable(const com_ptr<ID3D11Device>& device, const array_view<vertex_t>& vertices)
   {
     CD3D11_BUFFER_DESC desc(
       sizeof(vertex_t) * vertices.size(),
-      D3D11_BIND_VERTEX_BUFFER, 
+      D3D11_BIND_VERTEX_BUFFER,
       D3D11_USAGE_IMMUTABLE
     );
 
     D3D11_SUBRESOURCE_DATA data = {};
-    data.pSysMem = vertices;
+    data.pSysMem = vertices.data();
 
     com_ptr<ID3D11Buffer> buffer;
     check_hresult(device->CreateBuffer(&desc, &data, buffer.put()));
 
-    return d3d11_vertex_buffer(buffer, vertices.size());
+    d3d11_vertex_buffer result(buffer, vertices.size());
+    result._size = vertices.size();
+    return result;
   }
 
   static d3d11_vertex_buffer make_dynamic(const com_ptr<ID3D11Device>& device, uint32_t capacity)
@@ -301,7 +350,8 @@ public:
 
   void update(const com_ptr<ID3D11DeviceContext>& context, const array_view<vertex_t>& vertices) const
   {
-    d3d11_buffer::update(context, { vertices.data(), min(vertices.size() * sizeof(vertex_t), capacity) });
+    _size = min(vertices.size() * sizeof(vertex_t), capacity);
+    d3d11_buffer::update(context, { vertices.data(), _size });
   }
 
   void set(const com_ptr<ID3D11DeviceContext>& context, uint32_t slot = 0) const
@@ -311,12 +361,6 @@ public:
     ID3D11Buffer* const buffer = buffer.get();
     context->IASetVertexBuffers(slot, 1u, &buffer, &stride, &offset);
   }
-};
-
-enum class d3d11_shader_stage
-{
-  vs,
-  ps
 };
 
 template<typename TConstant>
@@ -358,6 +402,9 @@ public:
     array<ID3D11Buffer*, 1> buffers = { buffer.get() };
     switch (stage)
     {
+    case d3d11_shader_stage::cs:
+      context->CSSetConstantBuffers(slot, 1, buffers);
+      break;
     case d3d11_shader_stage::vs:
       context->VSSetConstantBuffers(slot, 1, buffers);
       break;
@@ -370,6 +417,324 @@ public:
   }
 };
 
+template<typename TVertex>
+struct d3d11_simple_mesh
+{
+  const d3d11_vertex_buffer<TVertex> vertex_buffer;
+  const D3D11_PRIMITIVE_TOPOLOGY topology;
+
+  d3d11_simple_mesh(const d3d11_vertex_buffer<TVertex>& vertex_buffer, D3D11_PRIMITIVE_TOPOLOGY topology) :
+    vertex_buffer(vertex_buffer),
+    topology(topology)
+  { }
+
+  void draw(const com_ptr<ID3D11DeviceContext>& context) const
+  {
+    vertex_buffer.set(context);
+    context->IASetPrimitiveTopology(topology);
+    context->Draw(vertex_buffer.size(), 0u);
+  }
+};
+
+namespace primitives
+{
+  d3d11_simple_mesh<d3d11_vertex_position_texture> make_quad(const com_ptr<ID3D11Device>& device, float size)
+  {
+    size = size / 2;
+    array<d3d11_vertex_position_texture, 4> vertices = {
+      d3d11_vertex_position_texture{{ -size, size, 0.f }, { 0.f, 0.f }},
+      d3d11_vertex_position_texture{{ -size, -size, 0.f }, { 0.f, 1.f }},
+      d3d11_vertex_position_texture{{ size, size, 0.f }, { 1.f, 0.f }},
+      d3d11_vertex_position_texture{{ size, -size, 0.f }, { 1.f, 1.f }}
+    };
+
+    return d3d11_simple_mesh<d3d11_vertex_position_texture>(
+      d3d11_vertex_buffer<d3d11_vertex_position_texture>::make_immutable(device, vertices),
+      D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+  }
+}
+
+std::vector<uint8_t> load_file(const std::filesystem::path& path)
+{
+  FILE* file = nullptr;
+  _wfopen_s(&file, path.c_str(), L"rb");
+  fseek(file, 0, SEEK_END);
+  auto length = ftell(file);
+
+  std::vector<uint8_t> buffer(length);
+
+  fseek(file, 0, SEEK_SET);
+  fread_s(buffer.data(), length, length, 1, file);
+  fclose(file);
+
+  return buffer;
+}
+
+struct d3d11_vertex_shader
+{
+private:
+  pair<const D3D11_INPUT_ELEMENT_DESC*, ID3D11InputLayout*> _currentLayout = {};
+  map<const D3D11_INPUT_ELEMENT_DESC*, com_ptr<ID3D11InputLayout>> _inputLayouts;
+  const vector<uint8_t> _source;
+
+  static com_ptr<ID3D11VertexShader> load_shader(const com_ptr<ID3D11Device>& device, const vector<uint8_t>& source)
+  {
+    com_ptr<ID3D11VertexShader> result;
+    check_hresult(device->CreateVertexShader(source.data(), source.size(), nullptr, result.put()));
+    return result;
+  }
+
+public:
+  const com_ptr<ID3D11VertexShader> shader;
+
+  d3d11_vertex_shader(const com_ptr<ID3D11Device>& device, const filesystem::path& path) :
+    _source(load_file(path)),
+    shader(load_shader(device, _source))
+  { }
+
+  void set_input_layout(const array_view<D3D11_INPUT_ELEMENT_DESC> inputDesc)
+  {
+    if (_currentLayout.first == inputDesc.data()) return;
+
+    _currentLayout.first = inputDesc.data();
+
+    auto& layout = _inputLayouts[inputDesc.data()];
+    if (!layout)
+    {
+      com_ptr<ID3D11Device> device;
+      shader->GetDevice(device.put());
+
+      check_hresult(device->CreateInputLayout(
+        inputDesc.data(),
+        inputDesc.size(),
+        _source.data(), _source.size(), layout.put()));
+    }
+    _currentLayout.second = layout.get();
+  }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context) const
+  {
+    context->VSSetShader(shader.get(), 0, 0);
+    context->IASetInputLayout(_currentLayout.second);
+  }
+};
+
+struct d3d11_pixel_shader
+{
+private:
+  static com_ptr<ID3D11PixelShader> load_shader(const com_ptr<ID3D11Device>& device, const vector<uint8_t>& source)
+  {
+    com_ptr<ID3D11PixelShader> result;
+    check_hresult(device->CreatePixelShader(source.data(), source.size(), nullptr, result.put()));
+    return result;
+  }
+
+public:
+  const com_ptr<ID3D11PixelShader> shader;
+
+  d3d11_pixel_shader(const com_ptr<ID3D11Device>& device, const filesystem::path& path) :
+    shader(load_shader(device, load_file(path)))
+  { }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context) const
+  {
+    context->PSSetShader(shader.get(), 0, 0);
+  }
+};
+
+struct d3d11_compute_shader
+{
+private:
+  static com_ptr<ID3D11ComputeShader> load_shader(const com_ptr<ID3D11Device>& device, const vector<uint8_t>& source)
+  {
+    com_ptr<ID3D11ComputeShader> result;
+    check_hresult(device->CreateComputeShader(source.data(), source.size(), nullptr, result.put()));
+    return result;
+  }
+
+public:
+  const com_ptr<ID3D11ComputeShader> shader;
+
+  d3d11_compute_shader(const com_ptr<ID3D11Device>& device, const filesystem::path& path) :
+    shader(load_shader(device, load_file(path)))
+  { }
+
+  void run(const com_ptr<ID3D11DeviceContext>& context, uint32_t x, uint32_t y, uint32_t z) const
+  {
+    context->CSSetShader(shader.get(), 0, 0);
+    context->Dispatch(x, y, z);
+  }
+};
+
+enum class d3d11_rasterizer_type
+{
+  cull_none,
+  cull_clockwise,
+  cull_counter_clockwise,
+  wireframe
+};
+
+struct d3d11_rasterizer_state
+{
+private:
+  static com_ptr<ID3D11RasterizerState> make_state(const com_ptr<ID3D11Device>& device, d3d11_rasterizer_type type)
+  {
+    CD3D11_RASTERIZER_DESC rasterizerDesc = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT());
+    switch (type)
+    {
+    case d3d11_rasterizer_type::cull_none:
+      rasterizerDesc.CullMode = D3D11_CULL_NONE;
+      break;
+    case d3d11_rasterizer_type::cull_clockwise:
+      rasterizerDesc.CullMode = D3D11_CULL_FRONT;
+      break;
+    case d3d11_rasterizer_type::cull_counter_clockwise:
+      rasterizerDesc.CullMode = D3D11_CULL_BACK;
+      break;
+    case d3d11_rasterizer_type::wireframe:
+      rasterizerDesc.CullMode = D3D11_CULL_NONE;
+      rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+      break;
+    }
+
+    com_ptr<ID3D11RasterizerState> result;
+    check_hresult(device->CreateRasterizerState(&rasterizerDesc, result.put()));
+    return result;
+  }
+
+public:
+  const com_ptr<ID3D11RasterizerState> state;
+
+  d3d11_rasterizer_state(const com_ptr<ID3D11Device>& device, d3d11_rasterizer_type type) :
+    state(make_state(device, type))
+  { }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context) const
+  {
+    context->RSSetState(state.get());
+  }
+};
+
+enum class d3d11_blend_type
+{
+  opaque,
+  additive,
+  subtractive,
+  alpha_blend
+};
+
+struct d3d11_blend_state
+{
+private:
+  static com_ptr<ID3D11BlendState> make_state(const com_ptr<ID3D11Device>& device, d3d11_blend_type type)
+  {
+    D3D11_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc = {};
+    renderTargetBlendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    switch (type)
+    {
+    case d3d11_blend_type::opaque:
+      renderTargetBlendDesc.BlendEnable = false;
+      renderTargetBlendDesc.SrcBlend = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.DestBlend = D3D11_BLEND_ZERO;
+      renderTargetBlendDesc.BlendOp = D3D11_BLEND_OP_ADD;
+      renderTargetBlendDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.DestBlendAlpha = D3D11_BLEND_ZERO;
+      renderTargetBlendDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+      break;
+    case d3d11_blend_type::additive:
+    case d3d11_blend_type::subtractive:
+      renderTargetBlendDesc.BlendEnable = true;
+      renderTargetBlendDesc.SrcBlend = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.DestBlend = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.BlendOp = renderTargetBlendDesc.BlendOpAlpha = (type == d3d11_blend_type::additive ? D3D11_BLEND_OP_ADD : D3D11_BLEND_OP_REV_SUBTRACT);
+      renderTargetBlendDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.DestBlendAlpha = D3D11_BLEND_ONE;
+      renderTargetBlendDesc.BlendOpAlpha = renderTargetBlendDesc.BlendOp;
+      break;
+    case d3d11_blend_type::alpha_blend:
+      renderTargetBlendDesc.BlendEnable = true;
+      renderTargetBlendDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+      renderTargetBlendDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+      renderTargetBlendDesc.BlendOp = D3D11_BLEND_OP_ADD;
+      renderTargetBlendDesc.SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+      renderTargetBlendDesc.DestBlendAlpha = D3D11_BLEND_DEST_ALPHA;
+      renderTargetBlendDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+      break;
+    }
+
+    D3D11_BLEND_DESC blendDesc = {};
+    blendDesc.RenderTarget[0] = renderTargetBlendDesc;
+
+    com_ptr<ID3D11BlendState> result;
+    winrt::check_hresult(device->CreateBlendState(&blendDesc, result.put()));
+    return result;
+  }
+
+public:
+  const com_ptr<ID3D11BlendState> state;
+
+  d3d11_blend_state(const com_ptr<ID3D11Device>& device, d3d11_blend_type type) :
+    state(make_state(device, type))
+  { }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context) const
+  {
+    context->OMSetBlendState(state.get(), nullptr, 0xffffffff);
+  }
+};
+
+struct d3d11_sampler_state
+{
+private:
+  static com_ptr<ID3D11SamplerState> make_state(const com_ptr<ID3D11Device>& device, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressMode)
+  {
+    float borderColor[4] = { 0.f, 0.f, 0.f, 0.f };
+    CD3D11_SAMPLER_DESC sd(
+      filter,
+      addressMode,
+      addressMode,
+      addressMode,
+      0.f,
+      0,
+      D3D11_COMPARISON_NEVER,
+      borderColor,
+      0.f,
+      D3D11_FLOAT32_MAX
+    );
+
+    com_ptr<ID3D11SamplerState> state;
+    check_hresult(device->CreateSamplerState(&sd, state.put()));
+    return state;
+  }
+
+public:
+  const com_ptr<ID3D11SamplerState> state;
+
+  d3d11_sampler_state(const com_ptr<ID3D11Device>& device, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressMode) :
+    state(make_state(device, filter, addressMode))
+  { }
+
+  void set(const com_ptr<ID3D11DeviceContext>& context, d3d11_shader_stage stage, int slot = 0) const
+  {
+    const array<ID3D11SamplerState*, 1> samplerStates = { state.get() };
+
+    switch (stage)
+    {
+    case d3d11_shader_stage::cs:
+      context->CSSetSamplers(slot, 1, samplerStates.data());
+      break;
+    case d3d11_shader_stage::vs:
+      context->VSSetSamplers(slot, 1, samplerStates.data());
+      break;
+    case d3d11_shader_stage::ps:
+      context->PSSetSamplers(slot, 1, samplerStates.data());
+      break;
+    default:
+      throw out_of_range("Invalid shader stage for texture!");
+    }
+  }
+};
 
 LRESULT CALLBACK debug_message_handler(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -452,13 +817,15 @@ int main()
     auto& target = d3d11Renderer.render_target();
     target.set(d3d11Renderer.context);
     target.clear(d3d11Renderer.context, { 1.f, 0.f, 0.f, 1.f });
-    
+
+
+
 
 
     d3d11Renderer.swap_chain->Present(1, 0);
 
     check_hresult(dxgiOutputDuplication->ReleaseFrame());
 
-    
+
   }
 }
