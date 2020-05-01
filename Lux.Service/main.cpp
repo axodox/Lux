@@ -815,20 +815,23 @@ public:
     HRESULT result;
     do
     {
-      if (!_outputDuplication)
+      if (_outputDuplication == nullptr)
       {
-        check_hresult(output->DuplicateOutput(device.get(), _outputDuplication.put()));
+        output->DuplicateOutput(device.get(), _outputDuplication.put());
       }
 
-      DXGI_OUTDUPL_FRAME_INFO frameInfo;
-      auto result = _outputDuplication->AcquireNextFrame(timeout, &frameInfo, resource.put());
-      if (result == DXGI_ERROR_ACCESS_LOST)
+      if (_outputDuplication != nullptr)
       {
-        _outputDuplication = nullptr;
+        DXGI_OUTDUPL_FRAME_INFO frameInfo;
+        auto result = _outputDuplication->AcquireNextFrame(timeout, &frameInfo, resource.put());
+        if (result != ERROR_SUCCESS)
+        {
+          _outputDuplication = nullptr;
+        }
       }
       else
       {
-        check_hresult(result);
+        Sleep(100);
       }
     } while (!resource);
 
@@ -843,7 +846,7 @@ public:
 
   void unlock_frame()
   {
-    check_hresult(_outputDuplication->ReleaseFrame());
+    _outputDuplication->ReleaseFrame();
   }
 };
 
