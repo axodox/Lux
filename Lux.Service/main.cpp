@@ -279,8 +279,8 @@ struct d3d11_vertex_position
 {
   array<float, 3> position;
 
-  static inline const array<D3D11_INPUT_ELEMENT_DESC, 1> input_desc = {
-    {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 1}
+  static inline array<D3D11_INPUT_ELEMENT_DESC, 1> input_desc = {
+    {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
   };
 };
 
@@ -288,9 +288,9 @@ struct d3d11_vertex_position_texture : public d3d11_vertex_position
 {
   array<float, 2> texture;
 
-  static inline const array<D3D11_INPUT_ELEMENT_DESC, 2> input_desc = {
+  static inline array<D3D11_INPUT_ELEMENT_DESC, 2> input_desc = {
     d3d11_vertex_position::input_desc[0],
-    {"TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 1}
+    {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
   };
 };
 
@@ -308,6 +308,11 @@ private:
 public:
   typedef TVertex vertex_t;
   const uint32_t capacity;
+
+  const array_view<D3D11_INPUT_ELEMENT_DESC> input_desc() const
+  {
+    return vertex_t::input_desc;
+  }
 
   uint32_t size() const
   {
@@ -358,8 +363,8 @@ public:
   {
     uint32_t stride = sizeof(vertex_t);
     uint32_t offset = 0;
-    ID3D11Buffer* const buffer = buffer.get();
-    context->IASetVertexBuffers(slot, 1u, &buffer, &stride, &offset);
+    array<ID3D11Buffer*, 1> buffers = { buffer.get() };
+    context->IASetVertexBuffers(slot, 1u, buffers.data(), &stride, &offset);
   }
 };
 
@@ -438,9 +443,9 @@ struct d3d11_simple_mesh
 
 namespace primitives
 {
-  d3d11_simple_mesh<d3d11_vertex_position_texture> make_quad(const com_ptr<ID3D11Device>& device, float size)
+  d3d11_simple_mesh<d3d11_vertex_position_texture> make_quad(const com_ptr<ID3D11Device>& device, float size = 2.f)
   {
-    size = size / 2;
+    size = size / 2.f;
     array<d3d11_vertex_position_texture, 4> vertices = {
       d3d11_vertex_position_texture{{ -size, size, 0.f }, { 0.f, 0.f }},
       d3d11_vertex_position_texture{{ -size, -size, 0.f }, { 0.f, 1.f }},
@@ -492,7 +497,7 @@ public:
     shader(load_shader(device, _source))
   { }
 
-  void set_input_layout(const array_view<D3D11_INPUT_ELEMENT_DESC> inputDesc)
+  void set_input_layout(const array_view<D3D11_INPUT_ELEMENT_DESC>& inputDesc)
   {
     if (_currentLayout.first == inputDesc.data()) return;
 
@@ -789,43 +794,115 @@ handle create_debug_window()
     return hWnd;
 }
 
+struct d3d11_desktop_duplication
+{
+private:  
+  com_ptr<IDXGIOutputDuplication> _outputDuplication;
+  unique_ptr<d3d11_texture_2d> _texture;
 
+public:
+  const com_ptr<ID3D11Device> device;
+  const com_ptr<IDXGIOutput2> output;
+
+  d3d11_desktop_duplication(const com_ptr<ID3D11Device>& device, const com_ptr<IDXGIOutput2>& output) :
+    device(device),
+    output(output)
+  { }
+
+  d3d11_texture_2d& lock_frame(uint16_t timeout = 1000u)
+  {
+    com_ptr<IDXGIResource> resource;
+    HRESULT result;
+    do
+    {
+      if (!_outputDuplication)
+      {
+        check_hresult(output->DuplicateOutput(device.get(), _outputDuplication.put()));
+      }
+
+      DXGI_OUTDUPL_FRAME_INFO frameInfo;
+      auto result = _outputDuplication->AcquireNextFrame(timeout, &frameInfo, resource.put());
+      if (result == DXGI_ERROR_ACCESS_LOST)
+      {
+        _outputDuplication = nullptr;
+      }
+      else
+      {
+        check_hresult(result);
+      }
+    } while (!resource);
+
+    auto texture = resource.as<ID3D11Texture2D>();
+    if (!_texture || _texture->texture != texture)
+    {
+      _texture = make_unique<d3d11_texture_2d>(texture);
+    }
+
+    return *_texture;
+  }
+
+  void unlock_frame()
+  {
+    check_hresult(_outputDuplication->ReleaseFrame());
+  }
+};
+
+filesystem::path get_root()
+{
+  wchar_t executablePath[MAX_PATH];
+  GetModuleFileNameW(NULL, executablePath, MAX_PATH);
+
+  return filesystem::path(executablePath).remove_filename();
+}
 
 int main()
 {
   init_apartment();
 
-  auto dxgiOutput = get_default_output();
+  auto root = get_root();
 
-  com_ptr<IDXGIAdapter> dxgiAdapter;
-  check_hresult(dxgiOutput->GetParent(__uuidof(IDXGIAdapter), dxgiAdapter.put_void()));
+  auto output = get_default_output();
+
+  com_ptr<IDXGIAdapter> adapter;
+  check_hresult(output->GetParent(__uuidof(IDXGIAdapter), adapter.put_void()));
 
   auto window = create_debug_window();
 
-  d3d11_renderer_with_swap_chain d3d11Renderer(dxgiAdapter, window);
+  d3d11_renderer_with_swap_chain renderer(adapter, window);
 
-  com_ptr<IDXGIOutputDuplication> dxgiOutputDuplication;
-  check_hresult(dxgiOutput->DuplicateOutput(d3d11Renderer.device.get(), dxgiOutputDuplication.put()));
+  auto duplication = d3d11_desktop_duplication(renderer.device, output);
 
+  auto vertexShader = d3d11_vertex_shader(renderer.device, root / L"SimpleVertexShader.cso");
+  auto pixelShader = d3d11_pixel_shader(renderer.device, root / L"SimplePixelShader.cso");
+  
+  auto quad = primitives::make_quad(renderer.device);
+  vertexShader.set_input_layout(quad.vertex_buffer.input_desc());
+
+  auto sampler = d3d11_sampler_state(renderer.device, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP);
+  auto blendState = d3d11_blend_state(renderer.device, d3d11_blend_type::opaque);
+
+  auto rasterizerState = d3d11_rasterizer_state(renderer.device, d3d11_rasterizer_type::cull_none);
 
   while (true)
   {
-    DXGI_OUTDUPL_FRAME_INFO dxgiFrameInfo;
-    com_ptr<IDXGIResource> dxgiResource;
-    check_hresult(dxgiOutputDuplication->AcquireNextFrame(1000u, &dxgiFrameInfo, dxgiResource.put()));
+    auto& texture = duplication.lock_frame();
 
-    auto& target = d3d11Renderer.render_target();
-    target.set(d3d11Renderer.context);
-    target.clear(d3d11Renderer.context, { 1.f, 0.f, 0.f, 1.f });
+    auto& target = renderer.render_target();
+    target.set(renderer.context);
+    target.clear(renderer.context, { 1.f, 0.f, 0.f, 1.f });
 
-
-
-
-
-    d3d11Renderer.swap_chain->Present(1, 0);
-
-    check_hresult(dxgiOutputDuplication->ReleaseFrame());
+    vertexShader.set(renderer.context);
+    pixelShader.set(renderer.context);
+    texture.set(renderer.context, d3d11_shader_stage::ps);
+    sampler.set(renderer.context, d3d11_shader_stage::ps);
+    blendState.set(renderer.context);
+    rasterizerState.set(renderer.context);
+    quad.draw(renderer.context);
 
 
+
+    renderer.swap_chain->Present(1, 0);
+
+    duplication.unlock_frame();
   }
 }
