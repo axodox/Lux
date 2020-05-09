@@ -3,13 +3,24 @@
 #include "MainPage.g.cpp"
 
 using namespace winrt;
+using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 
 namespace winrt::Lux_Configurator::implementation
 {
     MainPage::MainPage()
     {
-        InitializeComponent();
+      InitializeComponent();
+
+      Load();
+    }
+
+    fire_and_forget MainPage::Load()
+    {
+      auto ref = get_strong();
+      co_await resume_background();
+
+      co_await Windows::ApplicationModel::FullTrustProcessLauncher::LaunchFullTrustProcessForCurrentAppAsync();
     }
 
     int32_t MainPage::MyProperty()

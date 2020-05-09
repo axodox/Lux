@@ -5,6 +5,7 @@
 
 using namespace winrt;
 using namespace Windows::ApplicationModel;
+using namespace Windows::ApplicationModel::AppService;
 using namespace Windows::ApplicationModel::Activation;
 using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
@@ -116,4 +117,42 @@ void App::OnSuspending([[maybe_unused]] IInspectable const& sender, [[maybe_unus
 void App::OnNavigationFailed(IInspectable const&, NavigationFailedEventArgs const& e)
 {
     throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
+}
+
+
+/// <summary>
+/// Initializes the app service on the host process 
+/// </summary>
+void App::OnBackgroundActivated(Windows::ApplicationModel::Activation::BackgroundActivatedEventArgs const& args)
+{
+  AppT<App>::OnBackgroundActivated(args);
+
+  AppServiceTriggerDetails details{nullptr};
+  if (args.TaskInstance().TriggerDetails().try_as<AppServiceTriggerDetails>(details))
+  {
+    _appServiceDeferral = args.TaskInstance().GetDeferral();
+    args.TaskInstance().Canceled({ this, &App::OnTaskCanceled }); // Associate a cancellation handler with the background task.
+
+    Connection = details.AppServiceConnection();
+
+    Lux::Common::Lights::DisplayLightConfiguration conf;
+    conf.DisplaySize({ 10, 10 });
+    conf.Segments({});
+
+    std::vector<uint8_t> test{1,2,3,4};
+    Windows::Foundation::Collections::ValueSet values;
+    //values.Insert(L"test", );
+    Connection.SendMessageAsync({});
+  }
+}
+
+/// <summary>
+/// Associate the cancellation handler with the background task 
+/// </summary>
+void App::OnTaskCanceled(Windows::ApplicationModel::Background::IBackgroundTaskInstance const& sender, Windows::ApplicationModel::Background::BackgroundTaskCancellationReason const& reason)
+{
+  if (_appServiceDeferral)
+  {
+    _appServiceDeferral.Complete();
+  }
 }

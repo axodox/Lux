@@ -1,0 +1,31 @@
+namespace Lux.Common.Lights
+{
+  enum DisplayPositionReference
+  {
+    BottomRight,
+    TopRight,
+    TopLeft,
+    BottomLeft
+  };
+
+  struct DisplayPosition
+  {
+    DisplayPositionReference Reference;
+    Windows.Foundation.Numerics.Vector2 Vector;
+  };
+
+  struct DisplayLightStripSegment
+  {
+    DisplayPosition EndPosition;
+    UInt32 LightCount;
+  };
+
+  [default_interface]
+  runtimeclass DisplayLightConfiguration
+  {
+    Windows.Foundation.Numerics.Vector2 DisplaySize;
+    DisplayLightStripSegment[] Segments;
+
+    DisplayLightConfiguration();
+  };
+}

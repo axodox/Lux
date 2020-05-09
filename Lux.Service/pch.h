@@ -14,3 +14,5 @@
 #pragma comment(lib, "d3d11.lib")
 
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.ApplicationModel.h>
+#include <winrt/Windows.ApplicationModel.AppService.h>
