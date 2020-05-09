@@ -858,10 +858,42 @@ filesystem::path get_root()
   return filesystem::path(executablePath).remove_filename();
 }
 
+using namespace Windows::ApplicationModel;
+using namespace Windows::ApplicationModel::AppService;
+
 int main()
 {
   init_apartment();
 
+  AppServiceConnection connection;
+  connection.AppServiceName(L"CommunicationService");
+  connection.PackageFamilyName(Package::Current().Id().FamilyName());
+  auto receivedRevoker = connection.RequestReceived(auto_revoke, [](auto&, const AppServiceRequestReceivedEventArgs& eventArgs) {
+    printf("Message received.");
+  });
+
+  auto status = connection.OpenAsync().get();
+  switch (status)
+  {
+  case AppServiceConnectionStatus::Success:
+    printf("Connection established - waiting for requests");
+    break;
+  case AppServiceConnectionStatus::AppNotInstalled:
+    printf("The app AppServicesProvider is not installed.");
+    break;
+  case AppServiceConnectionStatus::AppUnavailable:
+    printf("The app AppServicesProvider is not available.");
+    break;
+  case AppServiceConnectionStatus::AppServiceUnavailable:
+    wprintf(L"The app AppServicesProvider is installed but it does not provide the app service %s.", connection.AppServiceName().c_str());
+    break;
+  case AppServiceConnectionStatus::Unknown:
+    printf("An unkown error occurred while we were trying to open an AppServiceConnection.");
+    break;
+  }
+
+  Sleep(INFINITE);
+  return 0;
   auto root = get_root();
 
   auto output = get_default_output();
