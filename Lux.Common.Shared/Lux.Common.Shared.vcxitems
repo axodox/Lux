@@ -17,6 +17,10 @@
     <Midl Include="$(MSBuildThisFileDirectory)winrt.idl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplayOutputInfo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplayOutputInfo.cpp" />
   </ItemGroup>
 </Project>

@@ -865,7 +865,7 @@ int main()
 {
   init_apartment();
 
-  AppServiceConnection connection;
+  /*AppServiceConnection connection;
   connection.AppServiceName(L"CommunicationService");
   connection.PackageFamilyName(Package::Current().Id().FamilyName());
   auto receivedRevoker = connection.RequestReceived(auto_revoke, [](auto&, const AppServiceRequestReceivedEventArgs& eventArgs) {
@@ -893,13 +893,25 @@ int main()
   }
 
   Sleep(INFINITE);
-  return 0;
+  return 0;*/
   auto root = get_root();
 
   auto output = get_default_output();
 
+  DXGI_OUTPUT_DESC1 desc;
+  output.as<IDXGIOutput6>()->GetDesc1(&desc);
+
   com_ptr<IDXGIAdapter> adapter;
   check_hresult(output->GetParent(__uuidof(IDXGIAdapter), adapter.put_void()));
+
+  MONITORINFOEX x;
+  x.cbSize = sizeof(MONITORINFOEX);
+  
+  GetMonitorInfo(desc.Monitor, &x);
+
+  DISPLAY_DEVICE dev = {};
+  dev.cb = sizeof(dev);
+  EnumDisplayDevices(desc.DeviceName, 0, &dev, 0);
 
   auto window = create_debug_window();
 
