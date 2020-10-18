@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="MemoryStream.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Events.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryStream.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Stream.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{7631b95b-5d86-45d9-8e0a-33b34fde78e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
