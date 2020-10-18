@@ -48,6 +48,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     printf("%d", change->type());
     });
 
+  w.number.value(5);
+
   auto& x = ls.push_back();
   auto& y = x.push_back();
   auto z = y;

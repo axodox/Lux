@@ -110,6 +110,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="Stream.h" />
+    <ClInclude Include="TypeRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
