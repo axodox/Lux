@@ -23,14 +23,16 @@ namespace Lux::Streams
     }
   };
 
-  class serializable
+  struct serializable
   {
-    virtual void serialize(stream& stream) = 0;
+    virtual void serialize(stream& stream) const = 0;
     virtual void deserialize(stream& stream) = 0;
+
+    virtual ~serializable() = default;
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::is_convertible<T, serializable>::value>>
+  struct serializer<typename T, typename std::enable_if_t<std::is_convertible<T*, Streams::serializable*>::value>>
   {
     static void serialize(stream& stream, const T& value)
     {
