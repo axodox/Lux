@@ -27,7 +27,30 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     });
   x.value(5);*/
 
-  observable_list<int> ls([](std::unique_ptr<change>&&) {});
+  observable_vector<observable_vector<int>> ls([](std::unique_ptr<change>&& change) {
+    printf("%d", change->type());    
+    });
+
+  enum class my_prop_t : uint16_t
+  {
+    number
+  };
+  class my_object : public observable_object<my_prop_t>
+  {
+  public:
+    observable_property<int> number;
+
+    my_object(const observable::callback_t& callback) :
+      observable_object<my_prop_t>(callback),
+      number(make_property<int>(my_prop_t::number))
+    { }
+  } w([](std::unique_ptr<change>&& change) {
+    printf("%d", change->type());
+    });
+
+  auto& x = ls.push_back();
+  auto& y = x.push_back();
+  auto z = y;
 
   memory_stream s;
   s.write(5);

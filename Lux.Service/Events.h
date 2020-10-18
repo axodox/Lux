@@ -126,7 +126,7 @@ namespace Lux::Events
     event_owner& operator=(event_owner&&) = delete;
 
     template<typename... TArgs, typename TEvent = event_publisher<TArgs...>>
-    void raise(TEvent& event, TArgs... args)
+    void raise(TEvent& event, TArgs... args) const
     {
       event.raise(*this, std::forward<TArgs>(args)...);
     }

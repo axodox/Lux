@@ -1,5 +1,6 @@
 #pragma once
 #include "Events.h"
+#include "Serializer.h"
 #include "MemoryStream.h"
 
 namespace Lux::Data
@@ -19,6 +20,8 @@ namespace Lux::Data
   struct change
   {
     virtual change_type type() const = 0;
+
+    virtual ~change() = default;
   };
 
   struct value_update_change : public change
@@ -73,29 +76,13 @@ namespace Lux::Data
     }
   };
 
-  struct child_property_change_info
-  {
-
-  };
-
-  struct binary_view
-  {
-    uint8_t* data = nullptr;
-    size_t lenght = 0u;
-  };
-
-  class binary_buffer : std::vector<uint8_t>
-  {
-
-  };
-
   class observable
   {
   public:
     typedef std::function<void(std::unique_ptr<change>&&)> callback_t;
 
   private:
-    callback_t _callback;
+    const callback_t _callback;
 
   protected:
     void report_change(std::unique_ptr<change>&& change)
@@ -118,7 +105,7 @@ namespace Lux::Data
     typedef TValue value_t;
 
   private:
-    Events::event_owner _events;
+    const Events::event_owner _events;
     value_t _value;
 
     void on_changed()
@@ -137,7 +124,18 @@ namespace Lux::Data
       observable(callback),
       _value(value),
       changed(_events)
-    { }
+    { 
+      if constexpr (std::is_convertible<value_t*, observable*>::value)
+      {
+        _value = std::make_unique<value_t>([callback](std::unique_ptr<change>&& change) {
+          (*that)->_callback(*that, std::move(change));
+        });
+      }
+      else
+      {
+        _value = std::make_unique<item_t>();
+      }
+    }
 
     value_t& value() const
     {
@@ -166,18 +164,20 @@ namespace Lux::Data
   };
 
   template<typename TItem>
-  class observable_list : public observable
+  class observable_vector : public observable, public Streams::serializable
   {
   public:
     typedef TItem item_t;
+    Events::event_publisher<observable_vector<item_t>*, uint32_t> added, changed, removed;
 
   private:
-    class item_container
+    class item_container : public Streams::serializable
     {
       std::unique_ptr<item_t> _value;
       std::function<void(item_container*, std::unique_ptr<change>&&)> _callback;
+      std::unique_ptr<item_container*> _this; //Needed to maintain the location of the container in the vector when it is resized
 
-      void on_chaged()
+      void on_changed()
       {
         auto change = std::make_unique<value_update_change>();
         change->data.write(*_value);
@@ -185,13 +185,14 @@ namespace Lux::Data
       }
 
     public:
-      item_container(const std::function<void(item_container*, std::unique_ptr<change>&&)>& callback) : 
-        _callback(callback)
+      item_container(const std::function<void(item_container*, std::unique_ptr<change>&&)>& callback) :
+        _callback(callback),
+        _this(std::make_unique<item_container*>(this))
       {
         if constexpr (std::is_convertible<item_t*, observable*>::value)
         {
-          _value = std::make_unique<item_t>([&](std::unique_ptr<change>&& change) {
-            _callback(this, std::move(change));
+          _value = std::make_unique<item_t>([that = _this.get()](std::unique_ptr<change>&& change) {
+            (*that)->_callback(*that, std::move(change));
             });
         }
         else
@@ -200,23 +201,81 @@ namespace Lux::Data
         }
       }
 
+      item_container(const item_container& other) = delete;
+      item_container& operator=(const item_container& other) = delete;
+
+      item_container(item_container&& other) noexcept
+      {
+        *this = std::move(other);
+      }
+
+      item_container& operator=(item_container&& other) noexcept
+      {
+        _value = std::move(other._value);
+        _callback = std::move(other._callback);
+        _this = std::move(other._this);
+        *_this = this;
+        return *this;
+      }
+
       const item_t& value() const
       {
         return *_value;
       }
 
-      template<typename std::enable_if_t<std::is_copy_assignable<item_t>> = nullptr>
+      template<typename = std::enable_if_t<std::is_convertible<item_t*, observable*>::value>>
+      item_t& value()
+      {
+        return *_value;
+      }
+
+      template<typename = std::enable_if_t<std::is_copy_assignable<item_t>>>
       void value(const item_t& value)
       {
         *_value = value;
         on_changed();
       }
 
-      template<typename std::enable_if_t<std::is_move_assignable<item_t>> = nullptr>
+      template<typename = std::enable_if_t<std::is_move_assignable<item_t>>>
       void value(item_t&& value)
       {
         *_value = std::move(value);
         on_changed();
+      }
+
+      virtual void serialize(Streams::stream& stream) const override
+      {
+        stream.write(*_value);
+      }
+
+      virtual void deserialize(Streams::stream& stream) override
+      {
+        stream.read(*_value);
+      }
+
+      void apply_change(change* change)
+      {
+        switch (change->type())
+        {
+        case change_type::value_update:
+        {
+          auto valueUpdate = static_cast<value_update_change*>(change);
+          valueUpdate->data.read(*_value);
+        }
+        break;
+        default:
+        {
+          if constexpr (std::is_convertible<item_t*, observable*>::value)
+          {
+            _value->apply_change(change);
+          }
+          else
+          {
+            throw std::exception("This object does not support the specified change type!");
+          }
+        }
+        break;
+        }
       }
     };
 
@@ -229,19 +288,6 @@ namespace Lux::Data
       change->index = index;
       report_change(std::move(change));
 
-      _events(added, this, index);
-    }
-
-    void on_changed(uint32_t index)
-    {
-      auto change = std::make_unique<vector_item_update_change>();
-      change->index = index;
-
-      auto value = std::make_unique<value_update_change>();
-      value->data.write(*(_items.begin() + index));
-      change->value = std::move(value);
-      report_change(std::move(change));
-
       _events.raise(added, this, index);
     }
 
@@ -251,7 +297,7 @@ namespace Lux::Data
       change->index = index;
       report_change(std::move(change));
 
-      _events(added, this, index);
+      _events.raise(removed, this, index);
     }
 
     void verify_index(uint32_t index)
@@ -259,72 +305,49 @@ namespace Lux::Data
       if (index < 0 || index >= _items.size()) throw std::out_of_range("The specified item index is out of range.");
     }
 
-    item_t new_item(typename std::list<item_t>::iterator*& targetIt)
+    item_container new_item()
     {
-      if constexpr (std::is_convertible<item_t, observable>::value)
-      {
-        auto itContainer = std::make_unique<std::list<item_t>::iterator>();
-        targetIt = itContainer.get();
-        return item_t([&, it = std::move(itContainer)](std::unique_ptr<change>&& change) {
-          auto itemChange = std::make_unique<vector_item_update_change>();
-          itemChange->index = *it - _items.begin();
-          itemChange->value = std::move(change);
-          _callback(std::make_unique<vector_item_update_change>(itemChange));
-          });
-      }
-      else
-      {
-        return item_t{};
-      }
+      return item_container{ [&](item_container* source, std::unique_ptr<change>&& change) {
+        auto index = (uint32_t)(source - _items.data());
+
+        auto itemChange = std::make_unique<vector_item_update_change>();
+        itemChange->index = index;
+        itemChange->value = std::move(change);
+        report_change(std::move(itemChange));
+
+        _events.raise(changed, this, index);
+        } };
     }
 
   public:
-    Events::event_publisher<observable_list<item_t>*, uint32_t> added, changed, removed;
-
-    observable_list(const callback_t& callback) :
+    observable_vector(const callback_t& callback) :
       observable(callback),
       added(_events),
       changed(_events),
       removed(_events)
     { }
 
-    auto begin() const
+    auto& push_back()
     {
-      return _items.begin();
+      _items.push_back(new_item());
+      on_added(uint32_t(_items.size() - 1));
+      return _items.back().value();
     }
 
-    auto end() const
+    auto& insert(uint32_t index)
     {
-      return _items.end();
-    }
+      if (index < 0 || index > _items.size()) throw std::out_of_range("The specified item index is out of range.");
 
-    item_t& push_back()
-    {
-      typename std::list<item_t>::iterator* targetIt;
-      _items.push_back(new_item(targetIt));
-      *targetIt = _items.end() - 1;
-      on_added(_items.size() - 1);
-      return _items.back();
-    }
-
-    item_t& insert(uint32_t index)
-    {
-      if(index < 0 || index > _items.size()) throw std::out_of_range("The specified item index is out of range.");
-
-      typename std::list<item_t>::iterator* targetIt;
-      auto it = _items.insert(_items.begin() + index, new_item(targetIt));
-      *targetIt = it;
+      auto it = _items.insert(_items.begin() + index, new_item());
       on_added(index);
-      return it;
+      return it->value();
     }
 
-    item_t& push_front()
+    auto& push_front()
     {
-      typename std::list<item_t>::iterator* targetIt;
-      _items.push_front(new_item(targetIt));
-      *targetIt = _items.begin();
+      _items.push_front(new_item());
       on_added(0);
-      return _items.front();
+      return _items.front().value();
     }
 
     void pop_back()
@@ -346,24 +369,29 @@ namespace Lux::Data
       on_removed(index);
     }
 
-    item_t& item(uint32_t index) const
+    auto item(uint32_t index)
     {
       verify_index(index);
-      return *(_items.begin() + index);
+      return _items.at(index).value();
     }
 
+    template<typename = std::enable_if_t<std::is_copy_assignable<item_t>>>
     void item(uint32_t index, const item_t& value)
     {
       verify_index(index);
-      *(_items.begin() + index) = value;
-      on_changed(index);
+      _items.at(index).value(value);
     }
 
+    template<typename = std::enable_if_t<std::is_move_assignable<item_t>>>
     void item(uint32_t index, item_t&& value)
     {
       verify_index(index);
-      *(_items.begin() + index) = std::move(value);
-      on_changed(index);
+      _items.at(index).value(std::move(value));
+    }
+
+    size_t size() const
+    {
+      return _items.size();
     }
 
     virtual void apply_change(change* change) override
@@ -373,7 +401,7 @@ namespace Lux::Data
       case change_type::value_update:
       {
         auto valueUpdate = static_cast<value_update_change*>(change);
-        valueUpdate->data.read(_items);
+        deserialize(valueUpdate->data);
       }
       break;
       case change_type::vector_item_insertion:
@@ -385,18 +413,7 @@ namespace Lux::Data
       case change_type::vector_item_update:
       {
         auto itemUpdate = static_cast<vector_item_update_change*>(change);
-        if (itemUpdate->value->type() == change_type::value_update)
-        {
-          item(itemUpdate->index, static_cast<value_update_change*>(itemUpdate->value.get())->data.read<item_t>());
-        }
-        else if constexpr (std::is_convertible<item_t, observable>::value)
-        {
-          item(itemUpdate->index).apply_change(itemUpdate->value);
-        }
-        else
-        {
-          throw std::exception("This object does not support the specified change type!");
-        }
+        _items.at(itemUpdate->index).apply_change(itemUpdate->value.get());
       }
       break;
       case change_type::vector_item_removal:
@@ -409,31 +426,92 @@ namespace Lux::Data
         throw std::exception("This object does not support the specified change type!");
       }
     }
+
+    virtual void serialize(Streams::stream& stream) const override
+    {
+      stream.write((uint32_t)_items.size());
+      for (auto& item : _items)
+      {
+        stream.write(item);
+      }
+    }
+
+    virtual void deserialize(Streams::stream& stream) override
+    {
+      auto length = stream.read<uint32_t>();
+      _items.reserve(length);
+      for (auto i = 0u; i < length; i++)
+      {
+        auto item = new_item();
+        stream.read(item);
+        _items.push_back(std::move(item));
+      }
+    }
   };
-
-
-
-  class observable_object;
 
   class observable_property_base
   {
-    virtual uint16_t key() = 0;
+  public:
+    virtual uint16_t key() const = 0;
   };
 
   template<typename TValue>
-  class observable_property : public observable_value<TValue>
+  class observable_property : public observable_value<TValue>, public observable_property_base
   {
-  public:
-    const uint16_t key;
+  private:
+    const uint16_t _key;
 
-    observable_property(observable_object* owner, uint16_t key, const TValue& value = {}) :
-      observable_value(value),
-      key(key)
-    { }
+  public:
+    observable_property(const observable::callback_t& callback, std::function<void(observable_property_base*)>&& initialize, uint16_t key, const TValue& value) :
+      observable_value<TValue>(callback, value),
+      _key(key)
+    {
+      initialize(this);
+    }
+
+    virtual uint16_t key() const override
+    {
+      return _key;
+    }
   };
 
-  class observable_object
+  template <typename TPropertyKey, typename = std::enable_if_t<std::is_same<std::underlying_type_t<TPropertyKey>, uint16_t>::value>>
+  class observable_object : public observable
   {
+  public:
+    typedef TPropertyKey key_t;
 
+  private:
+    const Events::event_owner _events;
+    std::unordered_map<key_t, observable_property_base*> _properties;
+
+  public:    
+    Events::event_publisher<observable_object*, key_t> property_changed;
+
+    observable_object(const callback_t& callback) :
+      observable(callback),
+      property_changed(_events)
+    { }
+
+    template<typename T>
+    observable_property<T> make_property(key_t key, const T& value = {})
+    {
+      return observable_property<T>([this, key](std::unique_ptr<change>&& change) {
+        auto propertyChange = std::make_unique<object_property_update_change>();
+        propertyChange->key = (uint16_t)key;
+        propertyChange->value = std::move(change);
+        report_change(std::move(propertyChange));
+
+        _events.raise(property_changed, this, key);
+        },
+        [this, key](observable_property_base* property) { _properties.emplace(key, property); },
+        (uint16_t)key, 
+        value);
+    }
+
+    void apply_change(change* change)
+    {
+
+    }
   };
 }
