@@ -10,6 +10,12 @@
     <Filter Include="Serialization">
       <UniqueIdentifier>{3df66df8-87d8-4a2a-ad90-659a09556463}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{bd7b8c89-4d54-4a8a-8a07-23156cffa7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threading">
+      <UniqueIdentifier>{f5695850-5147-457f-abbc-525d1c7020c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h">
@@ -43,6 +49,37 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\TcpMessagingChannel.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ThreadName.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -59,6 +96,30 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp">
       <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingServer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ThreadName.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingClient.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ResetEvent.cpp">
+      <Filter>Threading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

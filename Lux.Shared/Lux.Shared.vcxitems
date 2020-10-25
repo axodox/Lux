@@ -14,23 +14,42 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ThreadName.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ResetEvent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ThreadName.cpp" />
   </ItemGroup>
 </Project>
