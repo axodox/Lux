@@ -1,5 +1,5 @@
 #pragma once
-#include "TcpMessagingChannel.h"
+#include "MessagingClient.h"
 
 namespace Lux::Networking
 {
@@ -9,27 +9,15 @@ namespace Lux::Networking
     uint16_t port;
   };
 
-  class tcp_messaging_client final
+  class tcp_messaging_client final : public messaging_client
   {
   public:
     tcp_messaging_client(ip_endpoint const& endpoint);
-    Events::event_publisher<tcp_messaging_client*, tcp_messaging_channel*> connected;
-    
-    message_task send(Serialization::memory_stream&& message);
 
-    bool is_connected() const;
-    Events::event_publisher<tcp_messaging_client*, bool> is_connected_changed;
-
-    ~tcp_messaging_client();
+  protected:
+    virtual std::unique_ptr<messaging_channel> get_client() override;
 
   private:
-    Events::event_owner _events;
     ip_endpoint _endpoint;
-    std::mutex _mutex;
-    std::unique_ptr<tcp_messaging_channel> _channel;
-    Threading::background_thread _connection_thread;
-    Threading::manual_reset_event _is_disposed;
-
-    void connect();
   };
 }

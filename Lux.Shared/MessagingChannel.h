@@ -51,6 +51,9 @@ namespace Lux::Networking
 
   class messaging_channel
   {  
+    friend class messaging_server;
+    friend class messaging_client;
+
   public:
     messaging_channel();
     
@@ -65,6 +68,8 @@ namespace Lux::Networking
   protected:
     void on_received(Serialization::memory_stream&& message);
     void on_disconnected();
+
+    virtual void open() = 0;
 
   private:
     Events::event_owner _events;
