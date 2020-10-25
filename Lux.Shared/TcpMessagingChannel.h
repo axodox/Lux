@@ -16,6 +16,9 @@ namespace Lux::Networking
 
     virtual ~tcp_messaging_channel();
 
+  protected:
+    virtual void open() override;
+
   private:
     static const uint64_t _magic = 0x0123456789ABCDEF;
     Events::event_owner _events;
@@ -26,8 +29,6 @@ namespace Lux::Networking
     std::unique_ptr<Threading::background_thread> _send_thread, _receive_thread;
 
     tcp_messaging_channel(const winrt::Windows::Networking::Sockets::StreamSocket& socket);
-
-    void open();
 
     void send();
     void receive();
