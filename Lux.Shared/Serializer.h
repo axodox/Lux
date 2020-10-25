@@ -1,7 +1,7 @@
 #pragma once
 #include "Stream.h"
 
-namespace Lux::Streams
+namespace Lux::Serialization
 {
   template<typename T>
   struct serializer<typename T, typename std::enable_if_t<std::is_same<T, std::wstring>::value>>
@@ -10,7 +10,7 @@ namespace Lux::Streams
     {
       stream.write((uint32_t)value.size());
       stream.write(
-        value.size() * sizeof(std::wstring::value_type), 
+        value.size() * sizeof(std::wstring::value_type),
         reinterpret_cast<const uint8_t*>(value.data()));
     }
 
@@ -18,7 +18,7 @@ namespace Lux::Streams
     {
       value.resize(stream.read<uint32_t>());
       stream.read(
-        value.size() * sizeof(std::wstring::value_type), 
+        value.size() * sizeof(std::wstring::value_type),
         reinterpret_cast<uint8_t*>(value.data()));
     }
   };
@@ -32,7 +32,7 @@ namespace Lux::Streams
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::is_convertible<T*, Streams::serializable*>::value>>
+  struct serializer<typename T, typename std::enable_if_t<std::is_convertible<T*, serializable*>::value>>
   {
     static void serialize(stream& stream, const T& value)
     {

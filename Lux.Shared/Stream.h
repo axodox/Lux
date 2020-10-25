@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-namespace Lux::Streams
+namespace Lux::Serialization
 {
   class stream
   {
@@ -46,13 +46,13 @@ namespace Lux::Streams
   {
     serializer<T>::serialize(*this, value);
   }
-  
+
   template<typename T>
   void stream::read(T& value)
   {
     serializer<T>::deserialize(*this, value);
   }
-  
+
   template<typename T>
   T stream::read()
   {

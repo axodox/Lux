@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lux.Service", "Lux.Service\Lux.Service.vcxproj", "{269307F1-54BE-4A4E-ABCF-1DFDE4352EA2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lux.Shared", "Lux.Shared\Lux.Shared.vcxitems", "{A0CD0794-BE27-4422-9DCE-1E46860C9E45}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Lux.Shared\Lux.Shared.vcxitems*{269307f1-54be-4a4e-abcf-1dfde4352ea2}*SharedItemsImports = 4
+		Lux.Shared\Lux.Shared.vcxitems*{a0cd0794-be27-4422-9dce-1e46860c9e45}*SharedItemsImports = 9
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM

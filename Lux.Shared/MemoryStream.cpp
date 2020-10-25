@@ -3,7 +3,7 @@
 
 using namespace std;
 
-namespace Lux::Streams
+namespace Lux::Serialization
 {
   uint8_t* memory_stream::current()
   {

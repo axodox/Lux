@@ -1,48 +1,10 @@
 #pragma once
-#include "Events.h"
+#include "Observable.h"
 #include "Serializer.h"
-#include "MemoryStream.h"
+#include "ObservableValue.h"
 
-namespace Lux::Data
+namespace Lux::Observable
 {
-  enum class change_type
-  {
-    unknown,
-    value_update,
-    object_property_update,
-    vector_item_insertion,
-    vector_item_update,
-    vector_item_removal
-  };
-
-  struct change
-  {
-    virtual change_type type() const = 0;
-
-    virtual ~change() = default;
-  };
-
-  struct value_update_change : public change
-  {
-    Streams::memory_stream data;
-
-    virtual change_type type() const
-    {
-      return change_type::value_update;
-    }
-  };
-
-  struct object_property_update_change : public change
-  {
-    uint16_t key;
-    std::unique_ptr<change> value;
-
-    virtual change_type type() const
-    {
-      return change_type::object_property_update;
-    }
-  };
-
   struct vector_item_change : public change
   {
     uint32_t index;
@@ -74,125 +36,15 @@ namespace Lux::Data
     }
   };
 
-  class observable
-  {
-  public:
-    typedef std::function<void(std::unique_ptr<change>&&)> callback_t;
-
-  private:
-    const callback_t _callback;
-
-  protected:
-    void report_change(std::unique_ptr<change>&& change)
-    {
-      _callback(std::move(change));
-    }
-
-  public:
-    observable(const callback_t& callback) :
-      _callback(callback)
-    { }
-
-    virtual void apply_change(change* change) = 0;
-  };
-
-  template<typename TValue>
-  class observable_value : public observable
-  {
-  public:
-    typedef TValue value_t;
-
-  private:
-    const Events::event_owner _events;
-    value_t _value;
-
-    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
-    void on_changed()
-    {
-      auto change = std::make_unique<value_update_change>();
-      change->data.write(_value);
-      report_change(std::move(change));
-
-      _events.raise(changed, this, _value);
-    }
-
-  public:
-    Events::event_publisher<observable_value<value_t>*, const value_t&> changed;
-
-    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
-    observable_value(const callback_t& callback, const value_t& value = {}) :
-      observable(callback),
-      _value(value),
-      changed(_events)
-    { }
-
-    template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
-    observable_value(const callback_t& callback) :
-      observable(callback),
-      _value(callback, value),
-      changed(_events)
-    { }
-
-    const value_t& value() const
-    {
-      return _value;
-    }
-
-    template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
-    value_t& value()
-    {
-      return _value;
-    }
-
-    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
-    void value(const value_t& value)
-    {
-      _value = value;
-      on_changed();
-    }
-
-    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
-    void value(value_t&& value)
-    {
-      _value = std::move(value);
-      on_changed();
-    }
-
-    virtual void apply_change(change* change) override
-    {
-      switch (change->type())
-      {
-      case change_type::value_update:
-      {
-        auto valueUpdate = static_cast<value_update_change*>(change);
-        valueUpdate->data.read(_value);
-      }
-      break;
-      default:
-      {
-        if constexpr (std::is_convertible<value_t*, observable*>::value)
-        {
-          _value.apply_change(change);
-        }
-        else
-        {
-          throw std::exception("This object does not support the specified change type!");
-        }
-      }
-      break;
-      }
-    }
-  };
-
   template<typename TItem>
-  class observable_vector : public observable, public Streams::serializable
+  class observable_vector : public observable, public Serialization::serializable
   {
   public:
     typedef TItem item_t;
     Events::event_publisher<observable_vector<item_t>*, uint32_t> added, changed, removed;
 
   private:
-    class item_container : public Streams::serializable
+    class item_container : public Serialization::serializable
     {
       std::unique_ptr<item_t> _value;
       std::function<void(item_container*, std::unique_ptr<change>&&)> _callback;
@@ -264,12 +116,12 @@ namespace Lux::Data
         on_changed();
       }
 
-      virtual void serialize(Streams::stream& stream) const override
+      virtual void serialize(Serialization::stream& stream) const override
       {
         stream.write(*_value);
       }
 
-      virtual void deserialize(Streams::stream& stream) override
+      virtual void deserialize(Serialization::stream& stream) override
       {
         stream.read(*_value);
       }
@@ -448,7 +300,7 @@ namespace Lux::Data
       }
     }
 
-    virtual void serialize(Streams::stream& stream) const override
+    virtual void serialize(Serialization::stream& stream) const override
     {
       stream.write((uint32_t)_items.size());
       for (auto& item : _items)
@@ -457,7 +309,7 @@ namespace Lux::Data
       }
     }
 
-    virtual void deserialize(Streams::stream& stream) override
+    virtual void deserialize(Serialization::stream& stream) override
     {
       auto length = stream.read<uint32_t>();
       _items.reserve(length);
@@ -466,106 +318,6 @@ namespace Lux::Data
         auto item = new_item();
         stream.read(item);
         _items.push_back(std::move(item));
-      }
-    }
-  };
-
-  class observable_property_base
-  {
-  public:
-    virtual uint16_t key() const = 0;
-
-    virtual void apply_change(change* change) = 0;
-  };
-
-  template<typename TValue>
-  class observable_property : public observable_value<TValue>, public observable_property_base
-  {
-  private:
-    const uint16_t _key;
-
-  public:
-    observable_property(const observable::callback_t& callback, std::function<void(observable_property_base*)>&& initialize, uint16_t key, const TValue& value) :
-      observable_value<TValue>(callback, value),
-      _key(key)
-    {
-      initialize(this);
-    }
-
-    virtual uint16_t key() const override
-    {
-      return _key;
-    }
-
-    virtual void apply_change(change* change) override
-    {
-      observable_value<TValue>::apply_change(change);
-    }
-  };
-
-  template <typename TPropertyKey, typename = std::enable_if_t<std::is_same<std::underlying_type_t<TPropertyKey>, uint16_t>::value>>
-  class observable_object : public observable, public Streams::serializable
-  {
-  public:
-    typedef TPropertyKey key_t;
-
-  private:
-    const Events::event_owner _events;
-    std::unordered_map<key_t, observable_property_base*> _properties;
-
-  public:
-    Events::event_publisher<observable_object*, key_t> property_changed;
-
-    observable_object(const callback_t& callback) :
-      observable(callback),
-      property_changed(_events)
-    { }
-
-    template<typename T>
-    observable_property<T> make_property(key_t key, const T& value = {})
-    {
-      return observable_property<T>([this, key](std::unique_ptr<change>&& change) {
-        auto propertyChange = std::make_unique<object_property_update_change>();
-        propertyChange->key = (uint16_t)key;
-        propertyChange->value = std::move(change);
-        report_change(std::move(propertyChange));
-
-        _events.raise(property_changed, this, key);
-        },
-        [this, key](observable_property_base* property) { _properties.emplace(key, property); },
-          (uint16_t)key,
-          value);
-    }
-
-    void apply_change(change* change)
-    {
-      if (change->type() != change_type::object_property_update)
-      {
-        throw std::exception("This object does not support the specified change type!");
-      }
-
-      auto propertyUpdate = static_cast<object_property_update_change*>(change);
-      _properties.at((key_t)propertyUpdate->key)->apply_change(propertyUpdate->value.get());
-    }
-
-    virtual void serialize(Streams::stream& stream) const override
-    {
-      stream.write((uint32_t)_properties.size());
-      for (auto& [key, value] : _properties)
-      {
-        stream.write(key);
-        stream.write(value);
-      }
-    }
-
-    virtual void deserialize(Streams::stream& stream) override
-    {
-      auto length = stream.read<uint32_t>();
-      _properties.reserve(length);
-      for (auto i = 0u; i < length; i++)
-      {
-        auto key = stream.read<key_t>();
-        stream.read(_properties.at(key));
       }
     }
   };

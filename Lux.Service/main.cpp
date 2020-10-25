@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "Events.h"
-#include "Data.h"
+#include "ObservableVector.h"
+#include "ObservableObject.h"
 #include "MemoryStream.h"
 #include "Serializer.h"
 //using namespace winrt;
@@ -18,8 +19,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
   //init_apartment();
   
   using namespace Lux::Events;
-  using namespace Lux::Data;
-  using namespace Lux::Streams;
+  using namespace Lux::Observable;
+  using namespace Lux::Serialization;
 
   /*observable_value<int> x;
   auto sub = x.changed([](auto, const int& i) {

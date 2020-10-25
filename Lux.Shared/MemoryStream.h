@@ -1,7 +1,7 @@
 #pragma once
 #include "Stream.h"
 
-namespace Lux::Streams
+namespace Lux::Serialization
 {
   class memory_stream : public std::vector<uint8_t>, public stream
   {
