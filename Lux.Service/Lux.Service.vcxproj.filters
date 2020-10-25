@@ -2,13 +2,26 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="local_pch.h" />
+    <None Include="packages.config">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="PropertySheet.props">
+      <Filter>Config</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PropertySheet.props" />
-    <None Include="packages.config" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{fb3fa3e1-4a63-43ff-a9e8-dd004e42a701}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

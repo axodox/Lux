@@ -18,7 +18,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h">
       <Filter>Observable</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
@@ -40,6 +39,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h">
       <Filter>Observable</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">

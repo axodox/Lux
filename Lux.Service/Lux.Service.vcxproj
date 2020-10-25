@@ -9,7 +9,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{269307f1-54be-4a4e-abcf-1dfde4352ea2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Lux_Service</RootNamespace>
+    <RootNamespace>Lux.Service</RootNamespace>
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.18362.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
@@ -105,7 +105,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="local_pch.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
