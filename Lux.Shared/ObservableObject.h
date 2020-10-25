@@ -9,10 +9,10 @@ namespace Lux::Observable
     uint16_t key;
     std::unique_ptr<change> value;
 
-    virtual change_type type() const
-    {
-      return change_type::object_property_update;
-    }
+    virtual change_type type() const;
+
+    virtual void serialize(Serialization::stream& stream) const override;
+    virtual void deserialize(Serialization::stream& stream) override;
   };
 
   class observable_property_base
