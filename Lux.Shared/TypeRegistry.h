@@ -127,6 +127,6 @@ namespace Lux::Serialization
   template<typename TBase, typename... TDerived>
   type_registry<TBase> make_type_registry()
   {
-    return type_registry<TBase>::template make<TDerived...>([](const TBase& value) -> type_id_t { return (type_id_t)value.Type(); });
+    return type_registry<TBase>::template make<TDerived...>([](const TBase& value) -> type_id_t { return (type_id_t)value.type(); });
   }
 }

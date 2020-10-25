@@ -9,10 +9,10 @@ namespace Lux::Observable
   {
     Serialization::memory_stream data;
 
-    virtual change_type type() const
-    {
-      return change_type::value_update;
-    }
+    virtual change_type type() const;
+
+    virtual void serialize(Serialization::stream& stream) const override;
+    virtual void deserialize(Serialization::stream& stream) override;
   };
 
   template<typename TValue>

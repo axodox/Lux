@@ -1,9 +1,11 @@
 #pragma once
 #include "shared_pch.h"
+#include "TypeRegistry.h"
+#include "Serializer.h"
 
 namespace Lux::Observable
 {
-  enum class change_type
+  enum class change_type : Serialization::type_id_t
   {
     unknown,
     value_update,
@@ -13,8 +15,10 @@ namespace Lux::Observable
     vector_item_removal
   };
 
-  struct change
+  struct change : public Serialization::serializable
   {
+    static Serialization::type_registry<change> actual_types;
+
     virtual change_type type() const = 0;
 
     virtual ~change() = default;
@@ -29,15 +33,10 @@ namespace Lux::Observable
     const callback_t _callback;
 
   protected:
-    void report_change(std::unique_ptr<change>&& change)
-    {
-      _callback(std::move(change));
-    }
+    void report_change(std::unique_ptr<change>&& change);
 
   public:
-    observable(const callback_t& callback) :
-      _callback(callback)
-    { }
+    observable(const callback_t& callback);
 
     virtual void apply_change(change* change) = 0;
   };

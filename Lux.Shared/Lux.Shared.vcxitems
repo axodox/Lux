@@ -23,9 +23,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp" />
   </ItemGroup>
 </Project>

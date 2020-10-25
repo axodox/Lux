@@ -1,5 +1,7 @@
 #pragma once
 #include "Stream.h"
+#include "Traits.h"
+#include "TypeRegistry.h"
 
 namespace Lux::Serialization
 {
@@ -42,6 +44,41 @@ namespace Lux::Serialization
     static void deserialize(stream& stream, T& value)
     {
       value.deserialize(stream);
+    }
+  };
+
+  template<typename T>
+  struct serializer<typename T, typename std::enable_if_t<std::conjunction<
+    Traits::is_instantiation_of<std::unique_ptr, T>, 
+    Traits::has_actual_types<typename T::element_type>>::value>>
+  {
+    static const type_id_t empty_type = (type_id_t)-1;
+
+    static void serialize(stream& stream, const T& value)
+    {
+      if (value)
+      {
+        stream.write((type_id_t)value->type());
+        stream.write(value);
+      }
+      else
+      {
+        stream.write(empty_type);
+      }
+    }
+
+    static void deserialize(stream& stream, T& value)
+    {
+      auto typeId = stream.read<type_id_t>();
+      if (typeId != empty_type)
+      {
+        value = T::element_type::actual_types.create_unique(typeId);
+        stream.read(*value);
+      }
+      else
+      {
+        value = {};
+      }
     }
   };
 }

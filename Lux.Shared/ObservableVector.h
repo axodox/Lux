@@ -8,32 +8,29 @@ namespace Lux::Observable
   struct vector_item_change : public change
   {
     uint32_t index;
+
+    virtual void serialize(Serialization::stream& stream) const override;
+    virtual void deserialize(Serialization::stream& stream) override;
   };
 
   struct vector_item_insertion_change : public vector_item_change
   {
-    virtual change_type type() const
-    {
-      return change_type::vector_item_insertion;
-    }
+    virtual change_type type() const;
   };
 
   struct vector_item_update_change : public vector_item_change
   {
     std::unique_ptr<change> value;
 
-    virtual change_type type() const
-    {
-      return change_type::vector_item_update;
-    }
+    virtual change_type type() const;
+
+    virtual void serialize(Serialization::stream& stream) const override;
+    virtual void deserialize(Serialization::stream& stream) override;
   };
 
   struct vector_item_removal_change : public vector_item_change
   {
-    virtual change_type type() const
-    {
-      return change_type::vector_item_removal;
-    }
+    virtual change_type type() const;
   };
 
   template<typename TItem>

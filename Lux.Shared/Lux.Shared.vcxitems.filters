@@ -40,10 +40,25 @@
       <Filter>Observable</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
       <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp">
+      <Filter>Observable</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
