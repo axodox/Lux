@@ -20,7 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />

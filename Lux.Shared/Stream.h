@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+#include "shared_pch.h"
 
 namespace Lux::Serialization
 {
