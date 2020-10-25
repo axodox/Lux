@@ -1,8 +1,7 @@
 #pragma once
-#pragma once
 #include "pch.h"
 
-namespace Lux::Data
+namespace Lux::Serialization
 {
   typedef uint16_t type_id_t;
 

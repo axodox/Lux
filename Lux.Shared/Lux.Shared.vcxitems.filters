@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Observable">
+      <UniqueIdentifier>{432a86ed-5856-4aaf-9e06-271444509eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure">
+      <UniqueIdentifier>{c1c72ff6-d5c4-439b-9575-b1a89b4a9df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{3df66df8-87d8-4a2a-ad90-659a09556463}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{a0cd0794-be27-4422-9dce-1e46860c9e45}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
+  </ItemGroup>
+</Project>
