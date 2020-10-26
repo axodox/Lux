@@ -2,6 +2,7 @@
 #include "shared_pch.h"
 #include "TypeRegistry.h"
 #include "Serializer.h"
+#include "Events.h"
 
 namespace Lux::Observable
 {
@@ -39,5 +40,22 @@ namespace Lux::Observable
     observable(const callback_t& callback);
 
     virtual void apply_change(change* change) = 0;
+  };
+
+  template<typename T, typename = std::enable_if_t<std::is_convertible<T*, observable*>::value>>
+  class observable_root : public T
+  {
+  private:
+    void on_change(std::unique_ptr<change>&& change)
+    {
+      _events.raise(change_reported, this, std::move(change));
+    }
+
+  public:
+    observable_root() :
+      T([&](std::unique_ptr<change>&& change) { on_change(std::move(change)); })
+    { }
+
+    Events::event_publisher<observable_root<T>*, change&&> change_reported;
   };
 }

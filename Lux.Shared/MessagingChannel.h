@@ -2,6 +2,7 @@
 #include "MemoryStream.h"
 #include "Events.h"
 #include "BlockingCollection.h"
+#include "Openable.h"
 
 namespace Lux::Networking
 {
@@ -49,7 +50,7 @@ namespace Lux::Networking
     message_task();
   };
 
-  class messaging_channel
+  class messaging_channel : public Infrastructure::openable
   {  
     friend class messaging_server;
     friend class messaging_client;
@@ -62,14 +63,10 @@ namespace Lux::Networking
 
     virtual message_task send(Serialization::memory_stream&& message) = 0;
     Events::event_publisher<messaging_channel*, Serialization::memory_stream&&> received;
-    
-    virtual ~messaging_channel() = default;
 
   protected:
     void on_received(Serialization::memory_stream&& message);
     void on_disconnected();
-
-    virtual void open() = 0;
 
   private:
     Events::event_owner _events;

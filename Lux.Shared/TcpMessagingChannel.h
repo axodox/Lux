@@ -17,7 +17,7 @@ namespace Lux::Networking
     virtual ~tcp_messaging_channel();
 
   protected:
-    virtual void open() override;
+    virtual void on_opening() override;
 
   private:
     static const uint64_t _magic = 0x0123456789ABCDEF;

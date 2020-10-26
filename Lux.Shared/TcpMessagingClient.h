@@ -14,9 +14,11 @@ namespace Lux::Networking
   public:
     tcp_messaging_client(ip_endpoint const& endpoint);
 
+    ip_endpoint endpoint() const;
+
   protected:
     virtual std::unique_ptr<messaging_channel> get_client() override;
-
+  
   private:
     ip_endpoint _endpoint;
   };
