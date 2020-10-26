@@ -1,9 +1,10 @@
 #pragma once
 #include "MessagingChannel.h"
+#include "Openable.h"
 
 namespace Lux::Networking
 {
-  class messaging_server
+  class messaging_server : public Infrastructure::openable
   {
   public:
     messaging_server();
@@ -13,8 +14,6 @@ namespace Lux::Networking
     uint32_t client_count() const;
 
     void broadcast(Serialization::memory_stream&& message);
-
-    virtual ~messaging_server() = default;
 
   protected:
     void on_client_connected(std::unique_ptr<messaging_channel>&& channel);

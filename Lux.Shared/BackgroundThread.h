@@ -9,8 +9,8 @@ namespace Lux::Threading
     background_thread(const background_thread&) = delete;
     const background_thread& operator =(const background_thread&) = delete;
 
-    background_thread(background_thread&&) = default;
-    background_thread& operator =(background_thread&&) = default;
+    background_thread(background_thread&&) = delete;
+    background_thread& operator =(background_thread&&) = delete;
 
     background_thread(const std::function<void()>& action, const std::wstring& name = L"background thread");
     ~background_thread();

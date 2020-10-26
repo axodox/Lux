@@ -8,7 +8,6 @@ using namespace std;
 namespace Lux::Networking
 {
   messaging_client::messaging_client() :
-    _connection_thread([&] { connect(); }),
     connected(_events),
     is_connected_changed(_events)
   { }
@@ -16,6 +15,11 @@ namespace Lux::Networking
   messaging_client::~messaging_client()
   {
     _is_disposed.set();
+  }
+
+  void messaging_client::on_opening()
+  {
+    _connection_thread = make_unique<background_thread>([&] { connect(); }, L"Messaging connection thread");
   }
 
   message_task messaging_client::send(Serialization::memory_stream&& message)

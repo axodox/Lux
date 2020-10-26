@@ -31,10 +31,8 @@ namespace Lux::Networking
     on_disconnected();
   }
 
-  void tcp_messaging_channel::open()
+  void tcp_messaging_channel::on_opening()
   {
-    if (_is_open) return;
-
     _send_thread = make_unique<background_thread>([&] { send(); }, L"TCP sender thread");
     _receive_thread = make_unique<background_thread>([&] { receive(); }, L"TCP receiver thread");
   }

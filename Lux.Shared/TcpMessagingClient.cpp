@@ -16,6 +16,11 @@ namespace Lux::Networking
     _endpoint(endpoint)
   { }
 
+  ip_endpoint tcp_messaging_client::endpoint() const
+  {
+    return _endpoint;
+  }
+
   std::unique_ptr<messaging_channel> tcp_messaging_client::get_client()
   {
     StreamSocket socket;
