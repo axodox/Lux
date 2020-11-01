@@ -18,6 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
@@ -44,6 +45,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />

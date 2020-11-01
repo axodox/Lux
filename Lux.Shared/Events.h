@@ -1,5 +1,6 @@
 #pragma once
 #include "shared_pch.h"
+#include "ResetEvent.h"
 
 namespace Lux::Events
 {

@@ -16,6 +16,7 @@ namespace Lux::Threading
     ~background_thread();
 
     bool is_running() const;
+    bool is_current() const;
 
     void wait() const;
     bool wait_for(std::chrono::duration<uint32_t, std::milli> time) const;

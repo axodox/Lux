@@ -46,6 +46,8 @@ namespace Lux::Observable
   class observable_root : public T
   {
   private:
+    Events::event_owner _events;
+    
     void on_change(std::unique_ptr<change>&& change)
     {
       _events.raise(change_reported, this, std::move(change));
@@ -53,9 +55,10 @@ namespace Lux::Observable
 
   public:
     observable_root() :
-      T([&](std::unique_ptr<change>&& change) { on_change(std::move(change)); })
+      T([&](std::unique_ptr<change>&& change) { on_change(std::move(change)); }),
+      change_reported(_events)
     { }
 
-    Events::event_publisher<observable_root<T>*, change&&> change_reported;
+    Events::event_publisher<observable_root<T>*, std::unique_ptr<change>&&> change_reported;
   };
 }
