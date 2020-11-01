@@ -1,5 +1,8 @@
 #pragma once
 
+//Warnings
+#pragma warning ( disable : 4505 ) //unreferenced local function has been removed - caused by many WinRT headers
+
 //Std
 #include <string>
 #include <functional>
@@ -20,6 +23,7 @@
 #include <hstring.h>
 #include <Windows.h>
 
+#undef GetObjectW
 #undef min
 #undef max
 
@@ -30,3 +34,4 @@
 #include <winrt/Windows.Networking.h>
 #include <winrt/Windows.Networking.Sockets.h>
 #include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.Data.Json.h>

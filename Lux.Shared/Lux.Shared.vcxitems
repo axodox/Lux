@@ -21,6 +21,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightLayout.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />
@@ -47,6 +49,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightLayout.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />
