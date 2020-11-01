@@ -31,7 +31,7 @@ namespace Lux::Observable
       Serialization::memory_stream stream;
       _dispatcher->invoke([&] { stream.write(_root); }).get();
 
-      channel->received(Events::no_revoke, [&](Networking::messaging_channel* channel, Serialization::memory_stream&& message) { on_message_received(channel, message); });
+      channel->received(Events::no_revoke, [&](Networking::messaging_channel* channel, Serialization::memory_stream&& message) { on_message_received(channel, std::move(message)); });
       channel->open();
       channel->send(std::move(stream));
     }
@@ -51,7 +51,7 @@ namespace Lux::Observable
       _messaging_server(std::move(messagingServer)),
       _dispatcher(std::move(dispatcher))
     {
-      _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(change); });
+      _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(std::move(change)); });
       _messaging_server->client_connected(Events::no_revoke, [&](Networking::messaging_server*, Networking::messaging_channel* channel) { on_client_connected(channel); });
       _messaging_server->open();
     }
@@ -109,7 +109,7 @@ namespace Lux::Observable
       Serialization::memory_stream stream;
       stream.write(change);
 
-      _messaging_server->broadcast(std::move(stream), _active_channel);
+      _messaging_client->send(std::move(stream));
     }
 
   public:

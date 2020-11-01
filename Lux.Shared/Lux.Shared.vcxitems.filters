@@ -19,6 +19,9 @@
     <Filter Include="Networking\Tcp">
       <UniqueIdentifier>{a5edec5b-d382-472f-a948-e1b54404a483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{811c027e-34c4-46c4-afa3-25f6390cb48f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h">
       <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h">
+      <Filter>Configuration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

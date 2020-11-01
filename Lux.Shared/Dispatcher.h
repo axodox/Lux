@@ -11,6 +11,8 @@ namespace Lux::Threading
     virtual std::future<void> invoke(std::function<void()>&& callback) = 0;
 
     virtual bool has_access() const = 0;
+
+    virtual ~dispatcher() = default;
   };
 
   class simple_dispatcher : public dispatcher
