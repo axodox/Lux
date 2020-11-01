@@ -38,6 +38,9 @@
     <None Include="PropertySheet.props">
       <Filter>Config</Filter>
     </None>
+    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\Lux.Service.exe">
+      <Filter>Binaries</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />
@@ -48,6 +51,9 @@
     </Filter>
     <Filter Include="Config">
       <UniqueIdentifier>{52f2d066-2ae0-41aa-a6f0-2b598d2f8136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Binaries">
+      <UniqueIdentifier>{e3e2fbd1-76cb-4d2b-ae20-2d93200597d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

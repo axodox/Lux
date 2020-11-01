@@ -8,6 +8,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lux.Shared", "Lux.Shared\Lux.Shared.vcxitems", "{A0CD0794-BE27-4422-9DCE-1E46860C9E45}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lux.Settings", "Lux.Settings\Lux.Settings.vcxproj", "{473BA195-8B75-43F1-B134-ABB30CC9BCE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{269307F1-54BE-4A4E-ABCF-1DFDE4352EA2} = {269307F1-54BE-4A4E-ABCF-1DFDE4352EA2}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
