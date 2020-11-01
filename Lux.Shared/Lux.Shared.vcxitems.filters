@@ -104,6 +104,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightLayout.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -156,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp">
       <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightLayout.cpp">
+      <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
