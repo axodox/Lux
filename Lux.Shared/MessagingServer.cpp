@@ -16,7 +16,7 @@ namespace Lux::Networking
     return uint32_t(_clients.size());
   }
 
-  void messaging_server::broadcast(Serialization::memory_stream && message)
+  void messaging_server::broadcast(Serialization::memory_stream && message, messaging_channel* exception)
   {
     shared_lock<shared_mutex> lock(_mutex);
 
@@ -28,6 +28,8 @@ namespace Lux::Networking
     {
       for (auto& [key, client] : _clients)
       {
+        if (exception == client.get()) continue;
+
         memory_stream copy{ message };
         client->send(move(copy));
       }

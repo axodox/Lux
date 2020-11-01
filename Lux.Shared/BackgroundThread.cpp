@@ -32,7 +32,7 @@ namespace Lux::Threading
 
   void background_thread::wait() const
   {
-    if (GetThreadId(GetCurrentThread()) == GetThreadId(_worker.get())) return;
+    if (is_current()) return;
     WaitForSingleObject(_worker.get(), INFINITE);
   }
 
@@ -44,6 +44,11 @@ namespace Lux::Threading
   bool background_thread::is_running() const
   {
     return WaitForSingleObject(_worker.get(), 0u) != WAIT_OBJECT_0;
+  }
+
+  bool background_thread::is_current() const
+  {
+    return GetThreadId(GetCurrentThread()) == GetThreadId(_worker.get());
   }
 
   background_thread::~background_thread()

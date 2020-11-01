@@ -95,6 +95,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Openable.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -142,6 +145,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp">
       <Filter>Networking</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

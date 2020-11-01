@@ -13,7 +13,7 @@ namespace Lux::Networking
 
     uint32_t client_count() const;
 
-    void broadcast(Serialization::memory_stream&& message);
+    void broadcast(Serialization::memory_stream&& message, messaging_channel* exception = nullptr);
 
   protected:
     void on_client_connected(std::unique_ptr<messaging_channel>&& channel);
