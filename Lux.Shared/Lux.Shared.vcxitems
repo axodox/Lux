@@ -17,6 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />

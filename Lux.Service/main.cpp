@@ -1,64 +1,33 @@
 ﻿#include "pch.h"
-#include "Events.h"
-#include "ObservableVector.h"
-#include "ObservableObject.h"
-#include "MemoryStream.h"
-#include "Serializer.h"
-//using namespace winrt;
-//using namespace Windows::Foundation;
+#include "Configuration.h"
+#include "TcpMessagingServer.h"
+#include "Dispatcher.h"
+#include "ObservableServer.h"
 
-//int main()
-//{
-//    init_apartment();
-//    Uri uri(L"http://aka.ms/cppwinrt");
-//    printf("Hello, %ls!\n", uri.AbsoluteUri().c_str());
-//}
+using namespace Lux;
+using namespace std;
+using namespace winrt;
 
-int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
+int WINAPI wWinMain(
+  _In_ HINSTANCE /*hInstance*/,
+  _In_opt_ HINSTANCE /*hPrevInstance*/,
+  _In_ LPWSTR /*lpCmdLine*/,
+  _In_ int /*nShowCmd*/)
 {
-  //init_apartment();
-  
-  using namespace Lux::Events;
-  using namespace Lux::Observable;
-  using namespace Lux::Serialization;
+  init_apartment();
 
-  /*observable_value<int> x;
-  auto sub = x.changed([](auto, const int& i) {
-    printf("%d", i);
-    });
-  x.value(5);*/
-
-  observable_vector<observable_vector<int>> ls([](std::unique_ptr<change>&& change) {
-    printf("%d", change->type());    
-    });
-
-  enum class my_prop_t : uint16_t
+  Observable::observable_server<Configuration::LightConfiguration> configuration
   {
-    number
+    make_unique<Networking::tcp_messaging_server>(9696ui16),
+    make_unique<Threading::simple_dispatcher>()
   };
-  class my_object : public observable_object<my_prop_t>
+
+  MSG message;
+  while (GetMessage(&message, NULL, 0, 0) > 0)
   {
-  public:
-    observable_property<int> number;
+    TranslateMessage(&message);
+    DispatchMessage(&message);
+  }
 
-    my_object(const observable::callback_t& callback) :
-      observable_object<my_prop_t>(callback),
-      number(make_property<int>(my_prop_t::number))
-    { }
-  } w([](std::unique_ptr<change>&& change) {
-    printf("%d", change->type());
-    });
-
-  w.number.value(5);
-
-  auto& x = ls.push_back();
-  auto& y = x.push_back();
-  auto z = y;
-
-  memory_stream s;
-  s.write(5);
-  s.write(L"asd");
-
-  MessageBox(0, L"Running.", 0, 0);
   return 0;
 }
