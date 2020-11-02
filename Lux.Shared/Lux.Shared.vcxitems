@@ -20,8 +20,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumNameMapping.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LightLayout.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
@@ -41,6 +43,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Text.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ThreadName.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />
@@ -49,6 +52,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LightLayout.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
@@ -63,6 +67,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Text.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ThreadName.cpp" />
   </ItemGroup>
 </Project>

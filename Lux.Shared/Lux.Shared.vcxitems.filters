@@ -110,6 +110,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LightLayout.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Text.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumNameMapping.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -165,6 +174,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LightLayout.cpp">
       <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Text.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp">
+      <Filter>Infrastructure</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

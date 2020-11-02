@@ -6,6 +6,20 @@
 namespace Lux::Serialization
 {
   template<typename T>
+  struct serializer<T, typename std::enable_if_t<std::is_trivially_copyable<T>::value>>
+  {
+    static void serialize(stream& stream, const T& value)
+    {
+      stream.write(sizeof(T), reinterpret_cast<const uint8_t*>(&value));
+    }
+
+    static void deserialize(stream& stream, T& value)
+    {
+      stream.read(sizeof(T), reinterpret_cast<uint8_t*>(&value));
+    }
+  };
+
+  template<typename T>
   struct serializer<typename T, typename std::enable_if_t<std::is_same<T, std::wstring>::value>>
   {
     static void serialize(stream& stream, const std::wstring& value)
@@ -22,6 +36,30 @@ namespace Lux::Serialization
       stream.read(
         value.size() * sizeof(std::wstring::value_type),
         reinterpret_cast<uint8_t*>(value.data()));
+    }
+  };
+
+  template<typename T>
+  struct serializer<typename T, typename std::enable_if_t<Traits::is_instantiation_of<std::vector, T>::value>>
+  {
+    static void serialize(stream& stream, const T& value)
+    {
+      stream.write((uint32_t)value.size());
+
+      for (auto& item : value)
+      {
+        stream.write(item);
+      }
+    }
+
+    static void deserialize(stream& stream, T& value)
+    {
+      value.resize(stream.read<uint32_t>());
+
+      for (auto& item : value)
+      {
+        stream.read(item);
+      }
     }
   };
 
