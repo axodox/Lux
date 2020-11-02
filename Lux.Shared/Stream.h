@@ -28,20 +28,6 @@ namespace Lux::Serialization
   struct serializer { };
 
   template<typename T>
-  struct serializer<T, typename std::enable_if_t<std::is_trivially_copyable<T>::value>>
-  {
-    static void serialize(stream& stream, const T& value)
-    {
-      stream.write(sizeof(T), reinterpret_cast<const uint8_t*>(&value));
-    }
-
-    static void deserialize(stream& stream, T& value)
-    {
-      stream.read(sizeof(T), reinterpret_cast<uint8_t*>(&value));
-    }
-  };
-
-  template<typename T>
   void stream::write(const T& value)
   {
     serializer<T>::serialize(*this, value);

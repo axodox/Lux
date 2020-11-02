@@ -1,11 +1,12 @@
 #pragma once
 
-//Warnings
-#pragma warning ( disable : 4505 ) //unreferenced local function has been removed - caused by many WinRT headers
+//Disable useless warnings
+#pragma warning(disable: 4505) //Unreferenced local function removed - caused by WinRT headers
 
 //Std
 #include <string>
 #include <functional>
+#include <filesystem>
 
 #include <queue>
 #include <unordered_map>
@@ -23,7 +24,6 @@
 #include <hstring.h>
 #include <Windows.h>
 
-#undef GetObjectW
 #undef min
 #undef max
 

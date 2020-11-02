@@ -1,5 +1,6 @@
 #pragma once
 #include "Traits.h"
+#include "EnumNameMapping.h"
 
 namespace Lux::Json
 {
@@ -18,6 +19,10 @@ namespace Lux::Json
       {
         return JsonValue::CreateBooleanValue(value);
       }
+      else if constexpr (std::is_enum<T>::value)
+      {
+        return JsonValue::CreateStringValue(Text::enum_value_name_mapping<T>::name(value));
+      }
       else if constexpr (std::is_arithmetic<T>::value)
       {
         return JsonValue::CreateNumberValue(double(value));
@@ -25,10 +30,6 @@ namespace Lux::Json
       else if constexpr (std::is_convertible<T, std::wstring_view>::value)
       {
         return JsonValue::CreateStringValue(winrt::hstring(value));
-      }
-      else if constexpr (std::is_convertible<T, json_value>::value)
-      {
-        return (json_value)value;
       }
       else if constexpr (Traits::is_instantiation_of<std::vector, T>::value)
       {
@@ -38,6 +39,10 @@ namespace Lux::Json
           jsonArray.Append(to_json(item));
         }
         return jsonArray;
+      }
+      else if constexpr (std::is_convertible<T, json_value>::value)
+      {
+        return (json_value)value;
       }      
       else
       {
@@ -54,6 +59,10 @@ namespace Lux::Json
       {
         return value.GetBoolean();
       }
+      else if constexpr (std::is_enum<T>::value)
+      {
+        return Text::enum_value_name_mapping<T>::value(std::wstring(value.GetString()));
+      }
       else if constexpr (std::is_arithmetic<T>::value)
       {
         return T(value.GetNumber());
@@ -62,19 +71,19 @@ namespace Lux::Json
       {
         return T(value.GetString());
       }
-      else if constexpr (std::is_convertible<json_value, T>::value)
-      {
-        return T(json_value(value));
-      }
       else if constexpr (Traits::is_instantiation_of<std::vector, T>::value)
       {
         auto jsonArray = value.GetArray();
         T result;
-        for (auto& item : value)
+        for (const auto& item : jsonArray)
         {
           result.push_back(from_json<typename T::value_type>(item));
         }
         return result;
+      }
+      else if constexpr (std::is_convertible<json_value, T>::value)
+      {
+        return T(json_value(value));
       }
       else
       {
