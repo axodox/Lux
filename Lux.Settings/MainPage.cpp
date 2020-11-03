@@ -24,6 +24,8 @@ namespace winrt::Lux::Settings::implementation
 
   fire_and_forget MainPage::ClickHandler(IInspectable const&, RoutedEventArgs const&)
   {
+    com_ptr<IDXGIOutput6> out;
+    out->DuplicateOutput1();
     myButton().Content(box_value(L"Clicked"));
     co_await Windows::ApplicationModel::FullTrustProcessLauncher::LaunchFullTrustProcessForCurrentAppAsync();
   }
