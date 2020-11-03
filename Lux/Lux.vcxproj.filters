@@ -41,6 +41,18 @@
     <Image Include="Assets\LockScreenLogo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Images\SourceContext.png">
+      <Filter>Images</Filter>
+    </Image>
+    <Image Include="Images\SourceOff.png">
+      <Filter>Images</Filter>
+    </Image>
+    <Image Include="Images\SourceRainbow.png">
+      <Filter>Images</Filter>
+    </Image>
+    <Image Include="Images\SourceSimple.png">
+      <Filter>Images</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -48,6 +60,9 @@
   <ItemGroup>
     <Filter Include="Assets">
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Images">
+      <UniqueIdentifier>{b9913176-61eb-48cf-a089-5cef89096e38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
