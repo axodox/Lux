@@ -27,56 +27,108 @@
             <Setter Property="Height" Value="256"/>
             <Setter Property="Margin" Value="12"/>
             <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
           </Style>
           <Style TargetType="TextBlock">
             <Setter Property="TextAlignment" Value="Center"/>
           </Style>
+
+          <Style x:Key="SettingStackPanel" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,12"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+          </Style>
+
+          <Style TargetType="Slider">
+            <Setter Property="Width" Value="128"/>
+          </Style>
         </StackPanel.Resources>
         
+        <!-- Off -->
         <RadioButton>
-          <StackPanel>
+          <StackPanel VerticalAlignment="Center">
             <Image Source="Images/SourceOff.png"/>
             <TextBlock>Off</TextBlock>
           </StackPanel>
         </RadioButton>
+        
+        <!-- Static -->
         <RadioButton>
-          <StackPanel>
-            <Image Source="Images/SourceSimple.png"/>
-            <TextBlock>Static</TextBlock>
-          </StackPanel>
+          <local:FlipControl>
+            <local:FlipControl.PrimaryContent>
+              <StackPanel>
+                <Image Source="Images/SourceSimple.png"/>
+                <TextBlock>Static</TextBlock>
+              </StackPanel>
+            </local:FlipControl.PrimaryContent>
+            <local:FlipControl.SecondaryContent>
+              <StackPanel>
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Hue"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Saturation"/>
+                </StackPanel>
+              </StackPanel>
+            </local:FlipControl.SecondaryContent>
+          </local:FlipControl>          
         </RadioButton>
+        
+        <!-- Rainbow -->
         <RadioButton>
-          <StackPanel>
-            <Image Source="Images/SourceRainbow.png"/>
-            <TextBlock>Rainbow</TextBlock>
-          </StackPanel>
+          <local:FlipControl>
+            <local:FlipControl.PrimaryContent>
+              <StackPanel>
+                <Image Source="Images/SourceRainbow.png"/>
+                <TextBlock>Rainbow</TextBlock>
+              </StackPanel>
+            </local:FlipControl.PrimaryContent>
+            <local:FlipControl.SecondaryContent>
+              <StackPanel>
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Frequency"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Speed"/>
+                </StackPanel>
+              </StackPanel>
+            </local:FlipControl.SecondaryContent>
+          </local:FlipControl>          
         </RadioButton>
+        
+        <!-- Context Aware -->
         <RadioButton>
-          <StackPanel>
-            <Image Source="Images/SourceContext.png"/>
-            <TextBlock>Context<LineBreak/>Aware</TextBlock>
-          </StackPanel>
+          <local:FlipControl>
+            <local:FlipControl.PrimaryContent>
+              <StackPanel>
+                <Image Source="Images/SourceContext.png"/>
+                <TextBlock>Context Aware</TextBlock>
+              </StackPanel>
+            </local:FlipControl.PrimaryContent>
+            <local:FlipControl.SecondaryContent>
+              <StackPanel>
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Sample Size"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingStackPanel}">
+                  <Slider/>
+                  <TextBlock Text="Temporal Averaging"/>
+                </StackPanel>
+              </StackPanel>
+            </local:FlipControl.SecondaryContent>
+          </local:FlipControl>          
         </RadioButton>
       </StackPanel>
       
-      <!-- Source settings -->      
-      <StackPanel Orientation="Horizontal" Margin="0,24,0,0" HorizontalAlignment="Center">        
-        <StackPanel.Resources>
-          <Style TargetType="StackPanel">
-            <Setter Property="Margin" Value="24,0"/>
-          </Style>  
-        </StackPanel.Resources>
-        
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-          <Slider Width="128" VerticalAlignment="Center"/>
-          <TextBlock Text="Hue" Margin="12,3" HorizontalAlignment="Center"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-          <Slider Width="128" VerticalAlignment="Center"/>
-          <TextBlock Text="Saturation" Margin="12,3" HorizontalAlignment="Center"/>
-        </StackPanel>
-      </StackPanel>
     </StackPanel>
     
   </Grid>

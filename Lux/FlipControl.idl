@@ -1,0 +1,16 @@
+namespace Lux
+{
+  [default_interface]
+  runtimeclass FlipControl : Windows.UI.Xaml.Controls.UserControl, Windows.UI.Xaml.Data.INotifyPropertyChanged
+  {
+    FlipControl();
+    
+    static Windows.UI.Xaml.DependencyProperty PrimaryContentProperty{ get; };
+    Object PrimaryContent;
+
+    static Windows.UI.Xaml.DependencyProperty SecondaryContentProperty{ get; };
+    Object SecondaryContent;
+
+    Boolean IsShowingSecondary;
+  }
+}

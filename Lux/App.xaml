@@ -15,7 +15,7 @@
       <Setter Property="BackgroundSizing" Value="OuterBorderEdge"/>
       <Setter Property="Template">
         <Setter.Value>
-          <ControlTemplate TargetType="RadioButton">            
+          <ControlTemplate TargetType="RadioButton">
             <ContentPresenter x:Name="ContentPresenter"
                               BackgroundSizing="{TemplateBinding BackgroundSizing}"
                               Background="{TemplateBinding Background}"
