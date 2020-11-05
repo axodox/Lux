@@ -12,6 +12,7 @@ using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace Lux;
 using namespace Lux::implementation;
+using namespace Microsoft::Gaming::XboxGameBar;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -94,6 +95,53 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
       Window::Current().Activate();
     }
   }
+}
+
+void winrt::Lux::implementation::App::OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs const& e)
+{
+  XboxGameBarWidgetActivatedEventArgs widgetArgs{ nullptr };
+  if (e.Kind() == ActivationKind::Protocol)
+  {
+    auto protocolArgs = e.try_as<IProtocolActivatedEventArgs>();
+    if (protocolArgs)
+    {
+      const wchar_t* scheme = protocolArgs.Uri().SchemeName().c_str();
+      if (0 == wcscmp(scheme, L"ms-gamebarwidget"))
+      {
+        widgetArgs = e.try_as<XboxGameBarWidgetActivatedEventArgs>();
+      }
+    }
+  }
+  if (widgetArgs)
+  {
+    if (widgetArgs.IsLaunchActivation())
+    {
+      // Game Bar Widget activation work here
+      auto rootFrame = Frame();
+      rootFrame.NavigationFailed({ this, &App::OnNavigationFailed });
+      Window::Current().Content(rootFrame);
+
+      _gamebarWidget = XboxGameBarWidget(widgetArgs, Window::Current().CoreWindow(), rootFrame);
+
+      rootFrame.Navigate(xaml_typename<Lux::MainPage>());
+      Window::Current().Activate();
+
+      _gamebarWidgetWindowClosedHandlerToken = Window::Current().Closed(
+        { get_weak(), &App::OnWindowClosed });
+    }
+    else
+    {
+      // Repeat activation for this widget. Ignore, or respond to URI payload
+    }
+  }
+}
+
+void App::OnWindowClosed(IInspectable const&, IInspectable const&)
+{
+  // Release widget object
+  _gamebarWidget = nullptr;
+  // Unregister from window closed event
+  Window::Current().Closed(_gamebarWidgetWindowClosedHandlerToken);
 }
 
 /// <summary>
