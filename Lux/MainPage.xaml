@@ -11,9 +11,14 @@
   </Page.Resources>
 
   <Grid Background="{StaticResource SystemControlAcrylicWindowBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
     
     <!-- Source selection -->
-    <ScrollViewer x:Name="scroll" HorizontalAlignment="Center"  
+    <ScrollViewer x:Name="scroll" Grid.Row="1" HorizontalAlignment="Center" MinHeight="280"  
                   HorizontalScrollBarVisibility="Auto"  
                   VerticalScrollBarVisibility="Hidden">
       <StackPanel Orientation="Horizontal">
@@ -127,7 +132,7 @@
     </ScrollViewer>    
     
     <!-- Device setting -->
-    <Button Margin="16" CornerRadius="6" Padding="9" VerticalAlignment="Bottom" Height="48" Style="{StaticResource ButtonRevealStyle}" Background="Transparent">
+    <Button Grid.Row="2" Margin="16,0,0,16" CornerRadius="6" Padding="9" VerticalAlignment="Bottom" Height="48" Style="{StaticResource ButtonRevealStyle}" Background="Transparent">
       <StackPanel Orientation="Horizontal">
         <FontIcon FontFamily="Segoe MDL2 Assets"
                   Glyph="&#xE88E;" Foreground="Green" FontSize="24" VerticalAlignment="Center"/>
@@ -136,7 +141,7 @@
     </Button>
     
     <!-- Brightness setting -->
-    <StackPanel Margin="16" CornerRadius="6" Padding="12,9" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" BorderThickness="{ThemeResource ToggleButtonBorderThemeThickness}" Orientation="Horizontal" Height="48">
+    <StackPanel Grid.Row="2" Margin="0,0,16,16" CornerRadius="6" Padding="12,9" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" BorderThickness="{ThemeResource ToggleButtonBorderThemeThickness}" Orientation="Horizontal" Height="48">
       <FontIcon FontFamily="Segoe MDL2 Assets"
                 Glyph="&#xEC8A;" VerticalAlignment="Center" FontSize="24"/>
       <Slider Width="100" Margin="9,-3" VerticalAlignment="Center"/>
@@ -145,7 +150,7 @@
     </StackPanel>
 
     <!-- Title bar -->
-    <Grid x:Name="AppTitleBar" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent">
+    <Grid Grid.Row="0" x:Name="AppTitleBar" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent">
       <Grid.ColumnDefinitions>
         <ColumnDefinition x:Name="TitleBarLeftPaddingColumn" Width="0"/>
         <ColumnDefinition/>
