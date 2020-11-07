@@ -132,7 +132,9 @@
     </ScrollViewer>    
     
     <!-- Device setting -->
-    <Button Grid.Row="2" Margin="16,0,0,16" CornerRadius="6" Padding="9" VerticalAlignment="Bottom" Height="48" Style="{StaticResource ButtonRevealStyle}" Background="Transparent">
+    <Button Grid.Row="2" Margin="16,0,0,16" CornerRadius="6" Padding="9" VerticalAlignment="Bottom" Height="48" 
+            Style="{StaticResource ButtonRevealStyle}" Background="Transparent"
+            Click="{x:Bind ConfigureDevice}">
       <StackPanel Orientation="Horizontal">
         <FontIcon FontFamily="Segoe MDL2 Assets"
                   Glyph="&#xE88E;" Foreground="Green" FontSize="24" VerticalAlignment="Center"/>

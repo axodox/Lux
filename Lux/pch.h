@@ -1,10 +1,6 @@
 ﻿#pragma once
-#include <windows.h>
-#include <unknwn.h>
-#include <restrictederrorinfo.h>
-#include <hstring.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Foundation.Collections.h>
+#include "shared_pch.h"
+
 #include <winrt/Windows.ApplicationModel.Activation.h>
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.UI.ViewManagement.h>
@@ -20,4 +16,5 @@
 #include <winrt/Windows.UI.Xaml.Input.h>
 #include <winrt/Windows.UI.Xaml.Media.Animation.h>
 #include <winrt/Windows.UI.Input.h>
+#include <winrt/Windows.Storage.Pickers.h>
 #include <winrt/Microsoft.Gaming.XboxGameBar.h>

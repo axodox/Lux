@@ -15,7 +15,11 @@ namespace Lux::Json
     {
       using namespace winrt::Windows::Data::Json;
 
-      if constexpr (std::is_same<T, bool>::value)
+      if constexpr (std::is_same<T, winrt::Windows::Data::Json::JsonValue>::value)
+      {
+        return value;
+      }
+      else if constexpr (std::is_same<T, bool>::value)
       {
         return JsonValue::CreateBooleanValue(value);
       }
@@ -151,6 +155,14 @@ namespace Lux::Json
       {
         value = fallback;
       }
+    }
+
+    template <typename T>
+    T read_or(const wchar_t* name, const T& fallback = T{})
+    {
+      T result;
+      read(name, result, fallback);
+      return result;
     }
 
     operator winrt::Windows::Data::Json::IJsonValue() const

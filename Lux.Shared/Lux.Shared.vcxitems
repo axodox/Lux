@@ -24,7 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)LightLayout.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />
@@ -53,7 +53,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)LightLayout.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />

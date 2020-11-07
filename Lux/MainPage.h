@@ -8,6 +8,8 @@ namespace winrt::Lux::implementation
   {
     MainPage();
 
+    fire_and_forget ConfigureDevice();
+
   private:
     Windows::ApplicationModel::Core::CoreApplicationViewTitleBar::LayoutMetricsChanged_revoker _titleBarLayoutMetricsChangedRevoker;
     Windows::UI::Core::CoreWindow::SizeChanged_revoker _windowSizeChangedRevoker;
