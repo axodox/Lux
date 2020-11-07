@@ -18,6 +18,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Lux.Shared\Lux.Shared.vcxitems*{269307f1-54be-4a4e-abcf-1dfde4352ea2}*SharedItemsImports = 4
 		Lux.Shared\Lux.Shared.vcxitems*{473ba195-8b75-43f1-b134-abb30cc9bce4}*SharedItemsImports = 4
+		Lux.Shared\Lux.Shared.vcxitems*{4d7b3ab8-ddd4-4f60-847a-065d66069210}*SharedItemsImports = 4
 		Lux.Shared\Lux.Shared.vcxitems*{a0cd0794-be27-4422-9dce-1e46860c9e45}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

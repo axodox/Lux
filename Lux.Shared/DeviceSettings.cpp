@@ -1,13 +1,15 @@
 #include "pch.h"
-#include "LightLayout.h"
+#include "DeviceSettings.h"
 
+using namespace Lux::Json;
+using namespace std::chrono;
 using namespace winrt::Windows::Foundation::Numerics;
 
 namespace Lux::Configuration
 {
   DisplaySize::DisplaySize(const Json::json_value& value)
   {
-    Json::json_object object{ value };
+    json_object object{ value };
     object.read(L"width", Width);
     object.read(L"height", Height);
   }
@@ -39,7 +41,7 @@ namespace Lux::Configuration
 
   DisplayPosition::DisplayPosition(const Json::json_value& value)
   {
-    Json::json_object object{ value };
+    json_object object{ value };
     object.read(L"reference", Reference);
     object.read(L"x", X);
     object.read(L"y", Y);
@@ -47,30 +49,52 @@ namespace Lux::Configuration
 
   DisplayLightStrip::DisplayLightStrip(const Json::json_value& value)
   {
-    Json::json_object object{ value };
-    object.read(L"displayPosition", EndPosition);
+    json_object object{ value };
+    object.read(L"endPosition", EndPosition);
     object.read(L"lightCount", LightCount);
   }
 
-  DisplayLightLayout::DisplayLightLayout(const Json::json_value& value)
+  AdaLightSettings::AdaLightSettings(const Json::json_value& value)
   {
-    Json::json_object object{ value };
+    json_object object{ value };
+    object.read(L"usbVendorId", UsbVendorId, 0x1A86ui16);
+    object.read(L"usbProductId", UsbProductId, 0x7523ui16);
+    object.read(L"baudRate", BaudRate, 1000000u);
+    LedSyncDuration = milliseconds{ object.read_or(L"ledSyncDuration", 10) };
+  }
+
+  DeviceSettings::DeviceSettings(const Json::json_value& value)
+  {
+    json_object object{ value };
+    object.read(L"adaLight", AdaLight);
     object.read(L"displaySize", DisplaySize);
     object.read(L"startPosition", StartPosition);
     object.read(L"segments", Segments);
   }
 
-  void DisplayLightLayout::serialize(Serialization::stream& stream) const
+  void DeviceSettings::serialize(Serialization::stream& stream) const
   {
+    stream.write(AdaLight);
     stream.write(DisplaySize);
     stream.write(StartPosition);
     stream.write(Segments);
   }
 
-  void DisplayLightLayout::deserialize(Serialization::stream& stream)
+  void DeviceSettings::deserialize(Serialization::stream& stream)
   {
+    stream.read(AdaLight);
     stream.read(DisplaySize);
     stream.read(StartPosition);
     stream.read(Segments);
+  }
+
+  uint32_t DeviceSettings::LedCount() const
+  {
+    auto count = 0u;    
+    for (auto& segment : Segments)
+    {
+      count += segment.LightCount;
+    }
+    return count;
   }
 }
