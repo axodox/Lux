@@ -1,0 +1,12 @@
+namespace Lux
+{
+  [default_interface]
+  runtimeclass StateHelper
+  {
+    static Windows.UI.Xaml.DependencyProperty StateProperty{ get; };
+    static void OnStateChanged(Windows.UI.Xaml.DependencyObject target, Windows.UI.Xaml.DependencyPropertyChangedEventArgs args);
+
+    static String GetState(Windows.UI.Xaml.UIElement target);
+    static void SetState(Windows.UI.Xaml.UIElement target, String value);
+  }
+}

@@ -2,11 +2,16 @@
 #include "MainPage.h"
 #include "MainPage.g.cpp"
 #include "DeviceSettings.h"
+#include "DependencyConfiguration.h"
 
+using namespace ::Lux;
+using namespace ::Lux::Observable;
 using namespace ::Lux::Configuration;
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel::Core;
+using namespace Windows::UI;
+using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Controls;
@@ -17,10 +22,33 @@ using namespace Windows::Data::Json;
 
 namespace winrt::Lux::implementation
 {
-  MainPage::MainPage()
+  MainPage::MainPage() :
+    _client(DependencyConfiguration::Instance().resolve<observable_client<LightConfiguration>>()),
+    _clientConnectedChanged(_client->is_connected_changed([strong_this{ get_strong() }](auto) { strong_this->OnClientConnectedChanged(); }))
   {
-    InitializeComponent();
-    
+    InitializeComponent();    
+    InitializeView();
+  }
+
+  bool MainPage::IsConnected()
+  {
+    return _client->is_connected();
+  }
+
+  hstring MainPage::ConnectionState()
+  {
+    if (_client->is_connected())
+    {
+      return L"Connected";
+    }
+    else
+    {
+      return L"Pending";
+    }
+  }
+
+  void MainPage::InitializeView()
+  {
     auto currentView = ApplicationView::GetForCurrentView();
     currentView.PreferredLaunchViewSize({ 1024, 512 });
     currentView.PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
@@ -35,10 +63,10 @@ namespace winrt::Lux::implementation
     Window::Current().SetTitleBar(AppTitleBar());
 
     const auto& viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
-    viewTitleBar.ButtonBackgroundColor(Windows::UI::Colors::Transparent());
-    viewTitleBar.ButtonForegroundColor(Windows::UI::Colors::White());
-    viewTitleBar.ButtonInactiveBackgroundColor(Windows::UI::Colors::Transparent());
-    viewTitleBar.ButtonInactiveForegroundColor(Windows::UI::Colors::White());
+    viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
+    viewTitleBar.ButtonForegroundColor(Colors::White());
+    viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
+    viewTitleBar.ButtonInactiveForegroundColor(Colors::White());
   }
 
   void MainPage::UpdateTitleBarLayout(const Windows::ApplicationModel::Core::CoreApplicationViewTitleBar& titleBar)
@@ -47,6 +75,13 @@ namespace winrt::Lux::implementation
 
     TitleBarLeftPaddingColumn().Width({ titleBar.SystemOverlayLeftInset() });
     TitleBarRightPaddingColumn().Width({ titleBar.SystemOverlayRightInset() });
+  }
+
+  void MainPage::OnClientConnectedChanged()
+  {
+    Dispatcher().RunAsync({}, [&] {
+      _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
+    }).get();
   }
 
   fire_and_forget MainPage::ConfigureDevice()
@@ -95,5 +130,15 @@ namespace winrt::Lux::implementation
     {
       co_await messageDialog.ShowAsync();
     }
+  }
+  
+  winrt::event_token MainPage::PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value)
+  {
+    return _propertyChanged.add(value);
+  }
+
+  void MainPage::PropertyChanged(winrt::event_token const& token)
+  {
+    _propertyChanged.remove(token);
   }
 }

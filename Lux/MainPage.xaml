@@ -7,16 +7,16 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d">
   <Page.Resources>
-    
-  </Page.Resources>
 
+  </Page.Resources>
+  
   <Grid Background="{StaticResource SystemControlAcrylicWindowBrush}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    
+
     <!-- Source selection -->
     <ScrollViewer x:Name="scroll" Grid.Row="1" HorizontalAlignment="Center" MinHeight="280"  
                   HorizontalScrollBarVisibility="Auto"  
@@ -129,19 +129,40 @@
           </local:FlipControl>
         </RadioButton>
       </StackPanel>
-    </ScrollViewer>    
-    
+    </ScrollViewer>
+
     <!-- Device setting -->
     <Button Grid.Row="2" Margin="16,0,0,16" CornerRadius="6" Padding="9" VerticalAlignment="Bottom" Height="48" 
             Style="{StaticResource ButtonRevealStyle}" Background="Transparent"
-            Click="{x:Bind ConfigureDevice}">
+            Click="{x:Bind ConfigureDevice}"
+            IsEnabled="{x:Bind IsConnected, Mode=OneWay}"
+            local:StateHelper.State="{x:Bind ConnectionState, Mode=OneWay}">
+      <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup>
+          <VisualState x:Name="Disconnected">
+            <Storyboard>
+              <ColorAnimation Storyboard.TargetProperty="(FontIcon.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ConnectionIcon" To="Red" Duration="0:0:1" />
+            </Storyboard>
+          </VisualState>
+          <VisualState x:Name="Connected">
+            <Storyboard>
+              <ColorAnimation Storyboard.TargetProperty="(FontIcon.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ConnectionIcon" To="Green" Duration="0:0:1" />
+            </Storyboard>
+          </VisualState>
+          <VisualState x:Name="Pending">
+            <Storyboard>
+              <ColorAnimation Storyboard.TargetProperty="(FontIcon.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ConnectionIcon" To="Yellow" Duration="0:0:1" />
+            </Storyboard>
+          </VisualState>
+        </VisualStateGroup>
+      </VisualStateManager.VisualStateGroups>
       <StackPanel Orientation="Horizontal">
-        <FontIcon FontFamily="Segoe MDL2 Assets"
-                  Glyph="&#xE88E;" Foreground="Green" FontSize="24" VerticalAlignment="Center"/>
-        <TextBlock Margin="6,0" VerticalAlignment="Center">242 LEDs</TextBlock>
+        <FontIcon x:Name="ConnectionIcon" FontFamily="Segoe MDL2 Assets"
+                  Glyph="&#xE88E;" Foreground="Gray" FontSize="24" VerticalAlignment="Center"/>
+        <TextBlock Margin="6,0" VerticalAlignment="Center" Text="{x:Bind ConnectionState, Mode=OneWay}"/>
       </StackPanel>
     </Button>
-    
+
     <!-- Brightness setting -->
     <StackPanel Grid.Row="2" Margin="0,0,16,16" CornerRadius="6" Padding="12,9" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" BorderThickness="{ThemeResource ToggleButtonBorderThemeThickness}" Orientation="Horizontal" Height="48">
       <FontIcon FontFamily="Segoe MDL2 Assets"

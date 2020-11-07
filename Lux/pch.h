@@ -18,3 +18,5 @@
 #include <winrt/Windows.UI.Input.h>
 #include <winrt/Windows.Storage.Pickers.h>
 #include <winrt/Microsoft.Gaming.XboxGameBar.h>
+
+#include "DependencyContainer.h"

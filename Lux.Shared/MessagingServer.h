@@ -6,6 +6,9 @@ namespace Lux::Networking
 {
   class messaging_server : public Infrastructure::openable
   {
+  private:
+    Events::event_owner _events;
+
   public:
     messaging_server();
 
@@ -19,7 +22,6 @@ namespace Lux::Networking
     void on_client_connected(std::unique_ptr<messaging_channel>&& channel);
 
   private:
-    Events::event_owner _events;
     std::shared_mutex _mutex;
     std::unordered_map<messaging_channel*, std::unique_ptr<messaging_channel>> _clients;    
   };

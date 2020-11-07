@@ -7,6 +7,7 @@
 #include <string>
 #include <functional>
 #include <filesystem>
+#include <typeindex>
 
 #include <queue>
 #include <unordered_map>

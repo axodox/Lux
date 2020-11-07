@@ -59,6 +59,7 @@ namespace Lux::Networking
           stream.write(_magic);
           stream.write(memory_stream{});
         }
+        stream.flush();
       }
     }
     catch (...)

@@ -1,0 +1,94 @@
+#pragma once
+#include "Observable.h"
+#include "MessagingClient.h"
+#include "Dispatcher.h"
+
+namespace Lux::Observable
+{
+  template<typename T, typename = std::enable_if_t<std::is_convertible<T*, observable*>::value>>
+  class observable_client
+  {
+  private:
+    Events::event_owner _events;
+
+  public:
+    Events::event_publisher<observable_client<T>*> is_connected_changed;
+
+  private:
+    std::shared_ptr<Threading::dispatcher> _dispatcher;
+    std::unique_ptr<Networking::messaging_client> _messaging_client;
+    observable_root<T> _root;
+
+    bool _is_initializing = false;
+
+    void on_message_received(Serialization::memory_stream&& message)
+    {
+      if (_is_initializing)
+      {
+        _dispatcher->invoke([&] {
+          message.read(_root);
+          }).get();
+
+          _is_initializing = false;
+      }
+      else
+      {
+        auto change = message.read<std::unique_ptr<Observable::change>>();
+
+        _dispatcher->invoke([&] {
+          _root.apply_change(change.get());
+          }).get();
+      }
+    }
+
+    void on_connected(Networking::messaging_channel* channel)
+    {
+      _is_initializing = true;
+      channel->received(Events::no_revoke, [&](Networking::messaging_channel* /*channel*/, Serialization::memory_stream&& message) { on_message_received(std::move(message)); });
+      channel->open();
+
+      _events.raise(is_connected_changed, this);
+
+      channel->disconnected(Events::no_revoke, [&](Networking::messaging_channel* /*channel*/) {
+        _events.raise(is_connected_changed, this);
+        });
+    }
+
+    void on_change_reported(std::unique_ptr<change>&& change)
+    {
+      Serialization::memory_stream stream;
+      stream.write(change);
+
+      _messaging_client->send(std::move(stream));
+    }
+
+  public:
+    observable_client(
+      std::unique_ptr<Networking::messaging_client>&& messagingServer,
+      const std::shared_ptr<Threading::dispatcher>& dispatcher) :
+      _messaging_client(std::move(messagingServer)),
+      _dispatcher(dispatcher),
+      is_connected_changed(_events)
+    {
+      _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(std::move(change)); });
+      _messaging_client->connected(Events::no_revoke, [&](Networking::messaging_client*, Networking::messaging_channel* channel) { on_connected(channel); });
+      _messaging_client->open();
+    }
+
+    Threading::dispatcher* dispatcher()
+    {
+      return &_dispatcher;
+    }
+
+    T* root()
+    {
+      if (!_dispatcher->has_access()) throw winrt::hresult_wrong_thread();
+      return &_root;
+    }
+
+    bool is_connected() const
+    {
+      return _messaging_client->is_connected();
+    }
+  };
+}

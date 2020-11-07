@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BooleanToVisibilityConverter.h" />
+    <ClInclude Include="DependencyConfiguration.h" />
     <ClInclude Include="FlipControl.h">
       <DependentUpon>FlipControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -157,6 +158,7 @@
     <ClInclude Include="MainPage.h">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="StateHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -213,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BooleanToVisibilityConverter.cpp" />
+    <ClCompile Include="DependencyConfiguration.cpp" />
     <ClCompile Include="FlipControl.cpp">
       <DependentUpon>FlipControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -227,6 +230,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="StateHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">
@@ -237,6 +241,7 @@
       <DependentUpon>FlipControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="Interaction.idl" />
     <Midl Include="MainPage.idl">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Midl>

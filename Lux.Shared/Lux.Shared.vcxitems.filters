@@ -101,9 +101,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h">
       <Filter>Threading</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h">
-      <Filter>Configuration</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h">
       <Filter>Serialization</Filter>
     </ClInclude>
@@ -117,6 +114,18 @@
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\DeviceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\LightConfiguration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\NetworkSettings.h">
       <Filter>Configuration</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,6 +188,9 @@
       <Filter>Infrastructure</Filter>
     </ClCompile>
     <ClCompile Include="G:\cae\dev\temp\Lux\Lux.Shared\DeviceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,6 +15,9 @@
     <Midl Include="Converters.idl">
       <Filter>Converters</Filter>
     </Midl>
+    <Midl Include="Interaction.idl">
+      <Filter>Interaction</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -24,11 +27,23 @@
     <ClCompile Include="BooleanToVisibilityConverter.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
+    <ClCompile Include="DependencyConfiguration.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="StateHelper.cpp">
+      <Filter>Interaction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="BooleanToVisibilityConverter.h">
       <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="DependencyConfiguration.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="StateHelper.h">
+      <Filter>Interaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +171,12 @@
     </Filter>
     <Filter Include="Controls">
       <UniqueIdentifier>{8a47d24e-66d9-420d-b072-2c32f3319bf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{c0a3d595-0142-44b5-a052-3a854beb70eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interaction">
+      <UniqueIdentifier>{8c02a336-fba0-471d-9a59-ff5ea705da10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

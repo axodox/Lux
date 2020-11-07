@@ -1,8 +1,9 @@
 ﻿#include "pch.h"
-#include "Configuration.h"
+#include "LightConfiguration.h"
 #include "TcpMessagingServer.h"
 #include "Dispatcher.h"
 #include "ObservableServer.h"
+#include "NetworkSettings.h"
 
 using namespace Lux;
 using namespace std;
@@ -18,7 +19,7 @@ int WINAPI wWinMain(
 
   Observable::observable_server<Configuration::LightConfiguration> configuration
   {
-    make_unique<Networking::tcp_messaging_server>(9696ui16),
+    make_unique<Networking::tcp_messaging_server>(Configuration::LuxPort),
     make_unique<Threading::simple_dispatcher>()
   };
 

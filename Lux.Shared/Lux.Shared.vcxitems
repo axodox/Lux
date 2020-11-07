@@ -17,8 +17,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Configuration.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnumNameMapping.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
@@ -54,10 +56,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingServer.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp" />
