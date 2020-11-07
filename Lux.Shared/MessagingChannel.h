@@ -54,6 +54,7 @@ namespace Lux::Networking
   {  
     friend class messaging_server;
     friend class messaging_client;
+    Events::event_owner _events;
 
   public:
     messaging_channel();
@@ -69,7 +70,6 @@ namespace Lux::Networking
     void on_disconnected();
 
   private:
-    Events::event_owner _events;
     std::mutex _connection_mutex;
     bool _is_connected = true;
   };

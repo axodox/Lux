@@ -7,6 +7,9 @@ namespace Lux::Networking
 {
   class messaging_client : public Infrastructure::openable
   {
+  private:
+    Events::event_owner _events;
+
   public:
     messaging_client();
 
@@ -24,7 +27,6 @@ namespace Lux::Networking
     virtual std::unique_ptr<messaging_channel> get_client() = 0;
 
   private:
-    Events::event_owner _events;
     std::mutex _mutex;
     std::unique_ptr<messaging_channel> _channel;
     std::unique_ptr<Threading::background_thread> _connection_thread;

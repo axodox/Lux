@@ -3,6 +3,8 @@
 #include "App.h"
 #include "MainPage.h"
 
+using namespace winrt::Lux;
+using namespace winrt::Lux::implementation;
 using namespace winrt;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
@@ -10,8 +12,6 @@ using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Navigation;
-using namespace Lux;
-using namespace Lux::implementation;
 using namespace Microsoft::Gaming::XboxGameBar;
 
 /// <summary>
