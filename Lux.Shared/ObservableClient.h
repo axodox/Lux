@@ -46,12 +46,6 @@ namespace Lux::Observable
       _is_initializing = true;
       channel->received(Events::no_revoke, [&](Networking::messaging_channel* /*channel*/, Serialization::memory_stream&& message) { on_message_received(std::move(message)); });
       channel->open();
-
-      _events.raise(is_connected_changed, this);
-
-      channel->disconnected(Events::no_revoke, [&](Networking::messaging_channel* /*channel*/) {
-        _events.raise(is_connected_changed, this);
-        });
     }
 
     void on_change_reported(std::unique_ptr<change>&& change)
@@ -72,6 +66,9 @@ namespace Lux::Observable
     {
       _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(std::move(change)); });
       _messaging_client->connected(Events::no_revoke, [&](Networking::messaging_client*, Networking::messaging_channel* channel) { on_connected(channel); });
+      _messaging_client->is_connected_changed(Events::no_revoke, [&](auto...) {
+        _events.raise(is_connected_changed, this);
+        });
       _messaging_client->open();
     }
 

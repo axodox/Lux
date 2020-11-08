@@ -102,12 +102,13 @@ namespace Lux::Networking
 
   void messaging_channel::on_disconnected()
   {
-    lock_guard<mutex> lock(_connection_mutex);
+    if (!_is_connected) return;
 
+    lock_guard<mutex> lock(_connection_mutex);
     if (_is_connected)
     {
-      _events.raise(disconnected, this);
       _is_connected = false;
+      _events.raise(disconnected, this);
     }
   }
 }

@@ -39,11 +39,11 @@ namespace winrt::Lux::implementation
   {
     if (_client->is_connected())
     {
-      return L"Connected";
+      return L"Pending";
     }
     else
     {
-      return L"Pending";
+      return L"Idle";
     }
   }
 
@@ -80,6 +80,7 @@ namespace winrt::Lux::implementation
   void MainPage::OnClientConnectedChanged()
   {
     Dispatcher().RunAsync({}, [&] {
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsConnected"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
     }).get();
   }
@@ -110,6 +111,7 @@ namespace winrt::Lux::implementation
       auto ledCount = settings.LedCount();
       if (ledCount > 0u)
       {
+        _client->root()->Device.value(std::move(settings));
         messageDialog.Content(box_value(L"Successfully loaded configuration from " + file.Path() + L"."));
       }
       else
