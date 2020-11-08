@@ -17,6 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h" />
@@ -52,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />

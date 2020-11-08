@@ -16,7 +16,7 @@ namespace Lux::Observable
   };
 
   template<typename TValue>
-  class observable_value : public observable
+  class observable_value : public observable, public virtual Serialization::serializable
   {
   public:
     typedef TValue value_t;
@@ -100,6 +100,16 @@ namespace Lux::Observable
       }
       break;
       }
+    }
+
+    virtual void serialize(Serialization::stream& stream) const override
+    {
+      stream.write(_value);
+    }
+
+    virtual void deserialize(Serialization::stream& stream) override
+    {
+      stream.read(_value);
     }
   };
 }

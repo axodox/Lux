@@ -22,6 +22,9 @@
     <Filter Include="Configuration">
       <UniqueIdentifier>{811c027e-34c4-46c4-afa3-25f6390cb48f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{4a98fa50-9580-4d0a-897f-7d015eaf6f6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h">
@@ -119,9 +122,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h">
       <Filter>Observable</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -184,6 +196,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
