@@ -113,21 +113,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h">
       <Filter>Threading</Filter>
     </ClInclude>
-    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\DeviceSettings.h">
-      <Filter>Configuration</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h">
       <Filter>Observable</Filter>
     </ClInclude>
-    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\LightConfiguration.h">
-      <Filter>Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="G:\cae\dev\temp\Lux\Lux.Shared\NetworkSettings.h">
-      <Filter>Configuration</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -187,11 +181,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp">
       <Filter>Infrastructure</Filter>
     </ClCompile>
-    <ClCompile Include="G:\cae\dev\temp\Lux\Lux.Shared\DeviceSettings.cpp">
-      <Filter>Configuration</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
   </ItemGroup>
 </Project>

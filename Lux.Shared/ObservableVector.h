@@ -36,6 +36,9 @@ namespace Lux::Observable
   template<typename TItem>
   class observable_vector : public observable, public Serialization::serializable
   {
+  private:
+    Events::event_owner _events;
+
   public:
     typedef TItem item_t;
     Events::event_publisher<observable_vector<item_t>*, uint32_t> added, changed, removed;
@@ -149,7 +152,6 @@ namespace Lux::Observable
       }
     };
 
-    Events::event_owner _events;
     std::vector<item_container> _items;
 
     void on_added(uint32_t index)

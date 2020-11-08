@@ -9,6 +9,7 @@ namespace Lux::Networking
   {
     friend class tcp_messaging_server;
     friend class tcp_messaging_client;
+    Events::event_owner _events;
 
   public:
     Events::event_publisher<tcp_messaging_channel*> disconnected;
@@ -21,7 +22,6 @@ namespace Lux::Networking
 
   private:
     static const uint64_t _magic = 0x0123456789ABCDEF;
-    Events::event_owner _events;
     winrt::Windows::Networking::Sockets::StreamSocket _socket;
     Threading::blocking_collection<std::shared_ptr<message_promise>> _messages_to_send;
     bool _is_open = false;

@@ -97,7 +97,7 @@ namespace Lux::Serialization
       if (value)
       {
         stream.write((type_id_t)value->type());
-        stream.write(value);
+        stream.write(*value);
       }
       else
       {
