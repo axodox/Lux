@@ -5,6 +5,18 @@
     <ClCompile Include="pch.cpp">
       <Filter>Config</Filter>
     </ClCompile>
+    <ClCompile Include="AdaLightController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="LightController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="GammaCorrector.cpp">
+      <Filter>Colors</Filter>
+    </ClCompile>
+    <ClCompile Include="BrightnessLimiter.cpp">
+      <Filter>Colors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -18,10 +30,31 @@
     <Filter Include="Config">
       <UniqueIdentifier>{fb3fa3e1-4a63-43ff-a9e8-dd004e42a701}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{9753bd95-e506-4931-beb1-f54174c45a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Colors">
+      <UniqueIdentifier>{d61a2c9b-83ff-4447-9a3f-b51e7922cbba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="LightController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="AdaLightController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorProcessor.h">
+      <Filter>Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="GammaCorrector.h">
+      <Filter>Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="BrightnessLimiter.h">
+      <Filter>Colors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

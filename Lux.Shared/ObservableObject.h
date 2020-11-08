@@ -15,7 +15,7 @@ namespace Lux::Observable
     virtual void deserialize(Serialization::stream& stream) override;
   };
 
-  class observable_property_base
+  class observable_property_base : public virtual Serialization::serializable
   {
   public:
     virtual uint16_t key() const = 0;
@@ -46,6 +46,8 @@ namespace Lux::Observable
     {
       observable_value<TValue>::apply_change(change);
     }
+
+#pragma warning ( suppress: 4250)
   };
 
   template <typename TPropertyKey, typename = std::enable_if_t<std::is_same<std::underlying_type_t<TPropertyKey>, uint16_t>::value>>
@@ -96,10 +98,10 @@ namespace Lux::Observable
     virtual void serialize(Serialization::stream& stream) const override
     {
       stream.write((uint32_t)_properties.size());
-      for (auto& [key, value] : _properties)
+      for (auto& [key, property] : _properties)
       {
         stream.write(key);
-        stream.write(value);
+        stream.write(*property);
       }
     }
 
@@ -110,7 +112,7 @@ namespace Lux::Observable
       for (auto i = 0u; i < length; i++)
       {
         auto key = stream.read<key_t>();
-        stream.read(_properties.at(key));
+        stream.read(*_properties.at(key));
       }
     }
   };

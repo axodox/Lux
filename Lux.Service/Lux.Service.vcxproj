@@ -121,9 +121,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AdaLightController.h" />
+    <ClInclude Include="BrightnessLimiter.h" />
+    <ClInclude Include="ColorProcessor.h" />
+    <ClInclude Include="GammaCorrector.h" />
+    <ClInclude Include="LightController.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdaLightController.cpp" />
+    <ClCompile Include="BrightnessLimiter.cpp" />
+    <ClCompile Include="GammaCorrector.cpp" />
+    <ClCompile Include="LightController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
