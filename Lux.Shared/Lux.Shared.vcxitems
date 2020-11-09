@@ -29,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MathExtensions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />

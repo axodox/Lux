@@ -140,6 +140,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h">
       <Filter>Threading</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MathExtensions.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">

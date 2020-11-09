@@ -4,6 +4,9 @@
 #pragma warning(disable: 4505) //Unreferenced local function removed - caused by WinRT headers
 
 //Std
+#define _USE_MATH_DEFINES
+
+#include <math.h>
 #include <string>
 #include <functional>
 #include <filesystem>

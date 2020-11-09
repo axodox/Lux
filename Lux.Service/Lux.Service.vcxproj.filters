@@ -23,6 +23,9 @@
     <ClCompile Include="StaticSource.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="RainbowSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -69,6 +72,9 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="StaticSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="RainbowSource.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
