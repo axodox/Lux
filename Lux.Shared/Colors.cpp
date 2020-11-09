@@ -18,6 +18,55 @@ namespace Lux::Graphics
     b(uint8_t(color.z * 255))
   { }
 
+  rgb::operator hsl() const
+  {
+    hsl result;
+
+    auto floatRGB = float3(r, g, b) / 255.f;
+
+    auto max = std::max({ floatRGB.x, floatRGB.y, floatRGB.z });
+    auto min = std::min({ floatRGB.x, floatRGB.y, floatRGB.z });
+
+    auto diff = max - min;
+    result.l = (max + min) / 2.f;
+    if (abs(diff) < 0.00001f)
+    {
+      result.s = 0.f;
+      result.h = 0.f;
+    }
+    else
+    {
+      if (result.l <= 0.5f)
+      {
+        result.s = diff / (max + min);
+      }
+      else
+      {
+        result.s = diff / (2.f - max - min);
+      }
+
+      auto dist = (float3(max) - floatRGB) / diff;
+
+      if (floatRGB.x == max)
+      {
+        result.h = dist.z - dist.y;
+      }
+      else if (floatRGB.y == max)
+      {
+        result.h = 2.f + dist.x - dist.z;
+      }
+      else
+      {
+        result.h = 4.f + dist.y - dist.x;
+      }
+
+      result.h = result.h * 60.f;
+      if (result.h < 0.f) result.h += 360.f;
+    }
+
+    return result;
+  }
+
   hsl::hsl(float h, float s, float l) :
     h(h),
     s(s),
@@ -29,6 +78,46 @@ namespace Lux::Graphics
     s(color.y),
     l(color.z)
   { }
+
+  float qqh_to_rgb(float q1, float q2, float hue)
+  {
+    if (hue > 360.f) hue -= 360.f;
+    else if (hue < 0.f) hue += 360.f;
+
+    if (hue < 60.f) return q1 + (q2 - q1) * hue / 60.f;
+    if (hue < 180.f) return q2;
+    if (hue < 240.f) return q1 + (q2 - q1) * (240.f - hue) / 60.f;
+    return q1;
+  }
+
+  hsl::operator rgb() const
+  {
+    float p2;
+    if (l <= 0.5f) p2 = l * (1 + s);
+    else p2 = l + s - l * s;
+
+    float p1 = 2.f * l - p2;
+    float3 floatRGB;
+    if (s == 0)
+    {
+      floatRGB = float3(l);
+    }
+    else
+    {
+      floatRGB = float3(
+        qqh_to_rgb(p1, p2, h + 120.f),
+        qqh_to_rgb(p1, p2, h),
+        qqh_to_rgb(p1, p2, h - 120.f)
+      );
+    }
+
+    floatRGB *= 255.f;
+    return rgb{
+      (uint8_t)floatRGB.x,
+      (uint8_t)floatRGB.y,
+      (uint8_t)floatRGB.z
+    };
+  }
 
   std::array<float, 256> make_gamma(float gamma, float min)
   {
