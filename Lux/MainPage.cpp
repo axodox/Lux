@@ -108,7 +108,7 @@ namespace winrt::Lux::implementation
       auto json = JsonValue::Parse(text);
       DeviceSettings settings{ json };
 
-      auto ledCount = settings.LedCount();
+      auto ledCount = settings.Layout.LedCount();
       if (ledCount > 0u)
       {
         _client->root()->Device.value(std::move(settings));

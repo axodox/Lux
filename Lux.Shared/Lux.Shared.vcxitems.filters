@@ -134,6 +134,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -200,6 +206,9 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>

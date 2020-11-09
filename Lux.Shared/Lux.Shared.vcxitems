@@ -18,6 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />
@@ -56,6 +58,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp" />

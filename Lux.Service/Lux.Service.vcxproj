@@ -126,17 +126,21 @@
     <ClInclude Include="ColorProcessor.h" />
     <ClInclude Include="GammaCorrector.h" />
     <ClInclude Include="LightController.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="StaticSource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdaLightController.cpp" />
     <ClCompile Include="BrightnessLimiter.cpp" />
     <ClCompile Include="GammaCorrector.cpp" />
     <ClCompile Include="LightController.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StaticSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

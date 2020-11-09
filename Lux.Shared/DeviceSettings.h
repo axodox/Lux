@@ -51,19 +51,30 @@ namespace Lux::Configuration
     AdaLightSettings(const Json::json_value& value);
   };
 
-  struct DeviceSettings : public Serialization::serializable
+  struct DisplayLightLayout : public Serialization::serializable
   {
-    AdaLightSettings AdaLight;
     DisplaySize DisplaySize;
     DisplayPosition StartPosition;
     std::vector<DisplayLightStrip> Segments;
+
+    DisplayLightLayout() = default;
+    DisplayLightLayout(const Json::json_value & value);
+
+    virtual void serialize(Serialization::stream& stream) const;
+    virtual void deserialize(Serialization::stream& stream);
+
+    uint32_t LedCount() const;
+  };
+
+  struct DeviceSettings : public Serialization::serializable
+  {
+    AdaLightSettings AdaLight;
+    DisplayLightLayout Layout;
 
     DeviceSettings() = default;
     DeviceSettings(const Json::json_value& value);
 
     virtual void serialize(Serialization::stream& stream) const;
     virtual void deserialize(Serialization::stream& stream);
-
-    uint32_t LedCount() const;
   };
 }
