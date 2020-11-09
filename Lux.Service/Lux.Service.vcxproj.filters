@@ -17,6 +17,12 @@
     <ClCompile Include="BrightnessLimiter.cpp">
       <Filter>Colors</Filter>
     </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -35,6 +41,9 @@
     </Filter>
     <Filter Include="Colors">
       <UniqueIdentifier>{d61a2c9b-83ff-4447-9a3f-b51e7922cbba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{e14b2a5b-031d-4af8-ac6f-2f8487d3c41a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="BrightnessLimiter.h">
       <Filter>Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticSource.h">
+      <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -63,38 +63,54 @@ namespace Lux::Configuration
     LedSyncDuration = milliseconds{ object.read_or(L"ledSyncDuration", 10) };
   }
 
-  DeviceSettings::DeviceSettings(const Json::json_value& value)
+  DisplayLightLayout::DisplayLightLayout(const Json::json_value& value)
   {
     json_object object{ value };
-    object.read(L"adaLight", AdaLight);
     object.read(L"displaySize", DisplaySize);
     object.read(L"startPosition", StartPosition);
     object.read(L"segments", Segments);
   }
 
-  void DeviceSettings::serialize(Serialization::stream& stream) const
+  void DisplayLightLayout::serialize(Serialization::stream& stream) const
   {
-    stream.write(AdaLight);
     stream.write(DisplaySize);
     stream.write(StartPosition);
     stream.write(Segments);
   }
 
-  void DeviceSettings::deserialize(Serialization::stream& stream)
+  void DisplayLightLayout::deserialize(Serialization::stream& stream)
   {
-    stream.read(AdaLight);
     stream.read(DisplaySize);
     stream.read(StartPosition);
     stream.read(Segments);
   }
-
-  uint32_t DeviceSettings::LedCount() const
+  
+  uint32_t DisplayLightLayout::LedCount() const
   {
-    auto count = 0u;    
+    auto count = 0u;
     for (auto& segment : Segments)
     {
       count += segment.LightCount;
     }
     return count;
+  }
+
+  DeviceSettings::DeviceSettings(const Json::json_value& value)
+  {
+    json_object object{ value };
+    object.read(L"adaLight", AdaLight);
+    object.read(L"layout", Layout);
+  }
+
+  void DeviceSettings::serialize(Serialization::stream& stream) const
+  {
+    stream.write(AdaLight);
+    stream.write(Layout);
+  }
+
+  void DeviceSettings::deserialize(Serialization::stream& stream)
+  {
+    stream.read(AdaLight);
+    stream.read(Layout);
   }
 }
