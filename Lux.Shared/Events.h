@@ -4,6 +4,12 @@
 
 namespace Lux::Events
 {
+  template <typename TInstance, typename TMemberFunc>
+  static auto member_func(TInstance&& instance, TMemberFunc&& memberFunction)
+  {
+    return[member = std::mem_fn(memberFunction), instance](auto&&... args){ return member(*instance, std::forward<decltype(args)>(args)...); };
+  }
+
   class event_handler_collection_base
   {
   public:

@@ -26,7 +26,7 @@ namespace Lux::Colors
     }
 
     //Calculate average brightness
-    auto avg = sum / 255.f / 3.f / colors.size();
+    auto avg = sum / 3.f / colors.size();
 
     //Scale brightness is above limit
     if (avg > _max)

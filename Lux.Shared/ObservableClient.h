@@ -6,7 +6,7 @@
 namespace Lux::Observable
 {
   template<typename T, typename = std::enable_if_t<std::is_convertible<T*, observable*>::value>>
-  class observable_client
+  class observable_client : public Infrastructure::openable
   {
   private:
     Events::event_owner _events;
@@ -20,9 +20,11 @@ namespace Lux::Observable
     observable_root<T> _root;
 
     bool _is_initializing = false;
+    bool _is_refreshing = false;
 
     void on_message_received(Serialization::memory_stream&& message)
     {
+      _is_refreshing = true;
       if (_is_initializing)
       {
         _dispatcher->invoke([&] {
@@ -39,6 +41,7 @@ namespace Lux::Observable
           _root.apply_change(change.get());
           }).get();
       }
+      _is_refreshing = false;
     }
 
     void on_connected(Networking::messaging_channel* channel)
@@ -50,10 +53,18 @@ namespace Lux::Observable
 
     void on_change_reported(std::unique_ptr<change>&& change)
     {
+      if (_is_refreshing) return;
+
       Serialization::memory_stream stream;
       stream.write(change);
 
       _messaging_client->send(std::move(stream));
+    }
+
+  protected:
+    virtual void on_opening() override
+    {
+      _messaging_client->open();
     }
 
   public:
@@ -69,7 +80,6 @@ namespace Lux::Observable
       _messaging_client->is_connected_changed(Events::no_revoke, [&](auto...) {
         _events.raise(is_connected_changed, this);
         });
-      _messaging_client->open();
     }
 
     Threading::dispatcher* dispatcher()

@@ -15,6 +15,13 @@ namespace winrt::Lux::implementation
 
     fire_and_forget ConfigureDevice();
 
+    bool IsSourceOff();
+    bool IsSourceStatic();
+    bool IsSourceRainbow();
+    bool IsSourceContextAware();
+
+    void OnSourceChecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value);
     void PropertyChanged(winrt::event_token const& token);
 
@@ -28,6 +35,8 @@ namespace winrt::Lux::implementation
     std::shared_ptr<::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>> _client;
     ::Lux::Events::event_subscription _clientConnectedChanged;
     void OnClientConnectedChanged();
+
+    void OnSettingChanged(::Lux::Observable::observable_object<::Lux::Configuration::LightConfigurationProperty>* object, ::Lux::Configuration::LightConfigurationProperty propertyKey);
   };
 }
 

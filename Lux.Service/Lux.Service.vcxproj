@@ -126,6 +126,7 @@
     <ClInclude Include="ColorProcessor.h" />
     <ClInclude Include="GammaCorrector.h" />
     <ClInclude Include="LightController.h" />
+    <ClInclude Include="LightService.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RainbowSource.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="BrightnessLimiter.cpp" />
     <ClCompile Include="GammaCorrector.cpp" />
     <ClCompile Include="LightController.cpp" />
+    <ClCompile Include="LightService.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">

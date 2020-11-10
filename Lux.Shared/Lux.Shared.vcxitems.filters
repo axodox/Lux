@@ -143,6 +143,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MathExtensions.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FileStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IO.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -213,6 +219,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp">
       <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FileStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IO.cpp">
+      <Filter>Infrastructure</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

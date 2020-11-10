@@ -12,6 +12,6 @@ namespace Lux::Colors
     virtual void ProcessColors(std::vector<Graphics::rgb>& colors) override;
 
   private:
-    uint8_t _max = 255;
+    uint8_t _max = 178;
   };
 }

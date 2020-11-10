@@ -2,6 +2,7 @@
 #include "RainbowSource.h"
 #include "MathExtensions.h"
 
+using namespace Lux::Configuration;
 using namespace Lux::Graphics;
 using namespace Lux::Math;
 
@@ -14,12 +15,17 @@ using namespace winrt::Windows::System::Threading;
 namespace Lux::Sources
 {
   RainbowSource::RainbowSource() :
-    _spatialFrequency(1ui8),
-    _angularVelocity(float(M_PI) / 10.f),
+    _spatialFrequency(3ui8),
+    _angularVelocity(float(M_PI) / 0.5f),
     _lastRefresh(steady_clock::now()),
     _lastAngle(0.f),
     _timer(ThreadPoolTimer::CreatePeriodicTimer({ this, &RainbowSource::OnTick }, 16ms))    
   { }
+
+  RainbowSource::~RainbowSource()
+  {
+    _timer.Cancel();
+  }
 
   uint8_t RainbowSource::SpatialFrequency() const
   {
@@ -39,6 +45,11 @@ namespace Lux::Sources
   void RainbowSource::AngularVelocity(float value)
   {
     _angularVelocity = value;
+  }
+
+  Configuration::LightSourceKind RainbowSource::Kind()
+  {
+    return LightSourceKind::Rainbow;
   }
 
   void RainbowSource::OnTick(const ThreadPoolTimer& /*timer*/)
@@ -62,8 +73,8 @@ namespace Lux::Sources
       auto position = light;
       position.x *= settings->AspectRatio;
 
-      auto angle = deg(wrap(atan2(position.y, position.x) + rotation, 0.f, float(M_PI)));
-      colors.push_back(hsl{ angle, 1.f, 1.f });
+      auto angle = deg(wrap(_spatialFrequency * atan2(position.y - 0.5f, position.x - 0.5f) + rotation, 0.f, 2 * float(M_PI)));
+      colors.push_back(hsl{ angle, 1.f, 0.5f });
     }
 
     EmitColors(move(colors));

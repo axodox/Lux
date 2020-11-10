@@ -8,9 +8,12 @@ namespace Lux::Sources
   {
   public:
     StaticSource();
+    virtual ~StaticSource();
 
     Graphics::rgb Color() const;
     void Color(Graphics::rgb value);
+
+    virtual Configuration::LightSourceKind Kind() override;
 
   private:
     winrt::Windows::System::Threading::ThreadPoolTimer _timer;

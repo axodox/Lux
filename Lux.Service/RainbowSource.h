@@ -8,12 +8,15 @@ namespace Lux::Sources
   {
   public:
     RainbowSource();
+    virtual ~RainbowSource();
 
     uint8_t SpatialFrequency() const;
     void SpatialFrequency(uint8_t value);
 
     float AngularVelocity() const;
     void AngularVelocity(float value);
+
+    virtual Configuration::LightSourceKind Kind() override;
 
   private:
     uint8_t _spatialFrequency;

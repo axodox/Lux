@@ -8,6 +8,11 @@ namespace Lux
     Boolean IsConnected{ get; };
     String ConnectionState{ get; };
 
+    Boolean IsSourceOff{ get; };
+    Boolean IsSourceStatic{ get; };
+    Boolean IsSourceRainbow{ get; };
+    Boolean IsSourceContextAware{ get; };
+
     void ConfigureDevice();
   }
 }

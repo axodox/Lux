@@ -172,6 +172,15 @@ namespace Lux::Observable
       _events.raise(removed, this, index);
     }
 
+    void on_full_update()
+    {
+      auto change = std::make_unique<value_update_change>();
+      serialize(change->data);
+      report_change(std::move(change));
+
+      _events.raise(changed, this, uint32_t(-1));
+    }
+
     void verify_index(uint32_t index)
     {
       if (index < 0 || index >= _items.size()) throw std::out_of_range("The specified item index is out of range.");
@@ -241,6 +250,12 @@ namespace Lux::Observable
       on_removed(index);
     }
 
+    void clear()
+    {
+      _items.clear();
+      on_full_update();
+    }
+
     auto item(uint32_t index)
     {
       verify_index(index);
@@ -274,6 +289,7 @@ namespace Lux::Observable
       {
         auto valueUpdate = static_cast<value_update_change*>(change);
         deserialize(valueUpdate->data);
+        on_full_update();
       }
       break;
       case change_type::vector_item_insertion:

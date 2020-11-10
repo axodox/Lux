@@ -6,7 +6,7 @@
 namespace Lux::Observable
 {
   template<typename T, typename = std::enable_if_t<std::is_convertible<T*, observable*>::value>>
-  class observable_server
+  class observable_server : public Infrastructure::openable
   {
   private:
     std::unique_ptr<Networking::messaging_server> _messaging_server;
@@ -43,6 +43,12 @@ namespace Lux::Observable
       _messaging_server->broadcast(std::move(stream), _active_channel);
     }
 
+  protected:
+    virtual void on_opening() override
+    {
+      _messaging_server->open();
+    }
+
   public:
     observable_server(
       std::unique_ptr<Networking::messaging_server>&& messagingServer,
@@ -52,17 +58,15 @@ namespace Lux::Observable
     {
       _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(std::move(change)); });
       _messaging_server->client_connected(Events::no_revoke, [&](Networking::messaging_server*, Networking::messaging_channel* channel) { on_client_connected(channel); });
-      _messaging_server->open();
     }
 
     Threading::dispatcher* dispatcher()
     {
-      return &_dispatcher;
+      return _dispatcher.get();
     }
 
     T* root()
     {
-      if (!_dispatcher->has_access()) throw winrt::hresult_wrong_thread();
       return &_root;
     }
   };
