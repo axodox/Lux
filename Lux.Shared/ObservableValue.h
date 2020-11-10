@@ -85,6 +85,7 @@ namespace Lux::Observable
       {
         auto valueUpdate = static_cast<value_update_change*>(change);
         valueUpdate->data.read(_value);
+        on_changed();
       }
       break;
       default:

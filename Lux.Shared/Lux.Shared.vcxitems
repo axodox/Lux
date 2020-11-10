@@ -19,6 +19,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FileStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IO.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h" />
@@ -62,6 +64,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FileStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IO.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />

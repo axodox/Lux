@@ -69,7 +69,7 @@
         </StackPanel.Resources>
 
         <!-- Off -->
-        <RadioButton>
+        <RadioButton x:Name="SourceOffButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceOff, Mode=OneWay}">
           <StackPanel VerticalAlignment="Center">
             <Image Source="Images/SourceOff.png"/>
             <TextBlock>Off</TextBlock>
@@ -77,7 +77,7 @@
         </RadioButton>
 
         <!-- Static -->
-        <RadioButton>
+        <RadioButton x:Name="SourceStaticButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceStatic, Mode=OneWay}">
           <local:FlipControl>
             <local:FlipControl.PrimaryContent>
               <StackPanel>
@@ -102,7 +102,7 @@
         </RadioButton>
 
         <!-- Rainbow -->
-        <RadioButton>
+        <RadioButton x:Name="SourceRainbowButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceRainbow, Mode=OneWay}">
           <local:FlipControl>
             <local:FlipControl.PrimaryContent>
               <StackPanel>
@@ -127,7 +127,7 @@
         </RadioButton>
 
         <!-- Context Aware -->
-        <RadioButton>
+        <RadioButton x:Name="SourceContextAwareButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceContextAware, Mode=OneWay}">
           <local:FlipControl>
             <local:FlipControl.PrimaryContent>
               <StackPanel>

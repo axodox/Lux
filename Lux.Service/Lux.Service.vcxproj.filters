@@ -26,6 +26,9 @@
     <ClCompile Include="RainbowSource.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="LightService.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -47,6 +50,9 @@
     </Filter>
     <Filter Include="Sources">
       <UniqueIdentifier>{e14b2a5b-031d-4af8-ac6f-2f8487d3c41a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{9372c4f5-98c1-403b-887d-c83fbad6e51e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="RainbowSource.h">
       <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="LightService.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

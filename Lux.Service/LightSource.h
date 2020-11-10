@@ -3,6 +3,7 @@
 #include "Colors.h"
 #include "DisplaySettings.h"
 #include "LockedPtr.h"
+#include "LightConfiguration.h"
 
 namespace Lux::Sources
 {
@@ -19,6 +20,9 @@ namespace Lux::Sources
     Events::event_publisher<LightSource*, std::vector<Graphics::rgb>&&> ColorsEmitted;
 
     LightSource();
+    virtual ~LightSource() = default;
+
+    virtual Configuration::LightSourceKind Kind() = 0;
 
     Threading::locked_ref<Configuration::DisplaySettings> Settings();
     void Settings(Configuration::DisplaySettings&& value);

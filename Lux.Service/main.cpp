@@ -1,11 +1,7 @@
 ﻿#include "pch.h"
-#include "LightConfiguration.h"
-#include "TcpMessagingServer.h"
-#include "Dispatcher.h"
-#include "ObservableServer.h"
-#include "NetworkSettings.h"
+#include "LightService.h"
 
-using namespace Lux;
+using namespace Lux::Service;
 using namespace std;
 using namespace winrt;
 
@@ -16,19 +12,6 @@ int WINAPI wWinMain(
   _In_ int /*nShowCmd*/)
 {
   init_apartment();
-
-  Observable::observable_server<Configuration::LightConfiguration> configuration
-  {
-    make_unique<Networking::tcp_messaging_server>(Configuration::LuxPort),
-    make_unique<Threading::simple_dispatcher>()
-  };
-
-  MSG message;
-  while (GetMessage(&message, NULL, 0, 0) > 0)
-  {
-    TranslateMessage(&message);
-    DispatchMessage(&message);
-  }
-
+  LightService{}.Run();
   return 0;
 }

@@ -5,6 +5,7 @@
 #include "DependencyConfiguration.h"
 
 using namespace ::Lux;
+using namespace ::Lux::Events;
 using namespace ::Lux::Observable;
 using namespace ::Lux::Configuration;
 using namespace winrt;
@@ -13,6 +14,7 @@ using namespace Windows::ApplicationModel::Core;
 using namespace Windows::UI;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml;
+using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::ViewManagement;
@@ -28,6 +30,9 @@ namespace winrt::Lux::implementation
   {
     InitializeComponent();    
     InitializeView();
+
+    _client->root()->property_changed(no_revoke, member_func(this, &MainPage::OnSettingChanged));
+    _client->open();
   }
 
   bool MainPage::IsConnected()
@@ -69,7 +74,7 @@ namespace winrt::Lux::implementation
     viewTitleBar.ButtonInactiveForegroundColor(Colors::White());
   }
 
-  void MainPage::UpdateTitleBarLayout(const Windows::ApplicationModel::Core::CoreApplicationViewTitleBar& titleBar)
+  void MainPage::UpdateTitleBarLayout(const CoreApplicationViewTitleBar& titleBar)
   {
     AppTitleBar().Height(titleBar.Height());
 
@@ -83,6 +88,19 @@ namespace winrt::Lux::implementation
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsConnected"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
     }).get();
+  }
+
+  void MainPage::OnSettingChanged(observable_object<LightConfigurationProperty>* object, LightConfigurationProperty propertyKey)
+  {
+    switch (propertyKey)
+    {
+    case LightConfigurationProperty::LightSource:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceOff"));
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceStatic"));
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceRainbow"));
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceContextAware"));
+      break;
+    }
   }
 
   fire_and_forget MainPage::ConfigureDevice()
@@ -133,14 +151,54 @@ namespace winrt::Lux::implementation
       co_await messageDialog.ShowAsync();
     }
   }
+
+  bool MainPage::IsSourceOff()
+  {
+    return _client->root()->LightSource.value() == LightSourceKind::Off;
+  }
+
+  bool MainPage::IsSourceStatic()
+  {
+    return _client->root()->LightSource.value() == LightSourceKind::Static;
+  }
+
+  bool MainPage::IsSourceRainbow()
+  {
+    return _client->root()->LightSource.value() == LightSourceKind::Rainbow;
+  }
+
+  bool MainPage::IsSourceContextAware()
+  {
+    return _client->root()->LightSource.value() == LightSourceKind::ContextAware;
+  }
   
-  winrt::event_token MainPage::PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value)
+  winrt::event_token MainPage::PropertyChanged(PropertyChangedEventHandler const& value)
   {
     return _propertyChanged.add(value);
   }
 
-  void MainPage::PropertyChanged(winrt::event_token const& token)
+  void MainPage::PropertyChanged(event_token const& token)
   {
     _propertyChanged.remove(token);
+  }
+
+  void MainPage::OnSourceChecked(IInspectable const& sender, RoutedEventArgs const& eventArgs)
+  {
+    if (sender == SourceOffButton())
+    {
+      _client->root()->LightSource.value(LightSourceKind::Off);
+    }
+    else if (sender == SourceStaticButton())
+    {
+      _client->root()->LightSource.value(LightSourceKind::Static);
+    }
+    else if (sender == SourceRainbowButton())
+    {
+      _client->root()->LightSource.value(LightSourceKind::Rainbow);
+    }
+    else if (sender == SourceContextAwareButton())
+    {
+      _client->root()->LightSource.value(LightSourceKind::ContextAware);
+    }
   }
 }
