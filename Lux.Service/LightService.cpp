@@ -120,6 +120,20 @@ namespace Lux::Service
 
       _source->Settings(move(displaySettings));
       _source->ColorsEmitted(no_revoke, member_func(this, &LightService::OnColorsEmitted));
+
+      switch (sourceKind)
+      {
+      case LightSourceKind::Static:
+      {
+        auto staticSource = static_cast<StaticSource*>(_source.get());
+        staticSource->Color(_server.root()->StaticSourceOptions->Color);
+        break;
+      }
+      case LightSourceKind::Rainbow:
+      {
+        break;
+      }
+      }
     }
   }
 
@@ -150,6 +164,12 @@ namespace Lux::Service
       break;
     case LightConfigurationProperty::LightSource:
       ApplySourceSettings();
+      break;
+    case LightConfigurationProperty::StaticSourceOptions:
+      if (_source && _source->Kind() == LightSourceKind::Static)
+      {
+        static_cast<StaticSource*>(_source.get())->Color(_server.root()->StaticSourceOptions->Color);
+      }
       break;
     default:
 

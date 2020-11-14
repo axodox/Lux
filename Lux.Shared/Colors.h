@@ -12,8 +12,10 @@ namespace Lux::Graphics
     rgb() = default;
     rgb(uint8_t r, uint8_t g, uint8_t b);
     rgb(const winrt::Windows::Foundation::Numerics::float3& color);
+    rgb(winrt::Windows::UI::Color color);
 
     operator hsl() const;
+    operator winrt::Windows::UI::Color() const;
   };
 
   struct hsl

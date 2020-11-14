@@ -37,5 +37,6 @@
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.Networking.h>
 #include <winrt/Windows.Networking.Sockets.h>
+#include <winrt/Windows.UI.h>
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.Data.Json.h>

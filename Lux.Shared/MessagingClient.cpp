@@ -50,8 +50,10 @@ namespace Lux::Networking
 
         manual_reset_event event;
         {
-          lock_guard<mutex> lock(_mutex);
-          _channel = move(channel);
+          {
+            lock_guard<mutex> lock(_mutex);
+            _channel = move(channel);
+          }
           _events.raise(connected, this, _channel.get());
           _events.raise(is_connected_changed, this, true);
 
@@ -69,8 +71,8 @@ namespace Lux::Networking
       {
         lock_guard<mutex> lock(_mutex);
         _channel.reset();
-        _events.raise(is_connected_changed, this, false);
       }
+      _events.raise(is_connected_changed, this, false);
     }
   }
 }

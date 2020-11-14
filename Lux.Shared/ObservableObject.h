@@ -30,8 +30,23 @@ namespace Lux::Observable
     const uint16_t _key;
 
   public:
+    using observable_value<TValue>::operator TValue;
+    using observable_value<TValue>::operator const TValue&;
+    using observable_value<TValue>::operator TValue&;
+    using observable_value<TValue>::operator=;
+    using observable_value<TValue>::operator==;
+
+    template<typename = std::enable_if_t<std::negation<std::is_convertible<TValue*, observable*>>::value>>
     observable_property(const observable::callback_t& callback, std::function<void(observable_property_base*)>&& initialize, uint16_t key, const TValue& value) :
       observable_value<TValue>(callback, value),
+      _key(key)
+    {
+      initialize(this);
+    }
+
+    template<typename = std::enable_if_t<std::is_convertible<TValue*, observable*>::value>>
+    observable_property(const observable::callback_t& callback, std::function<void(observable_property_base*)>&& initialize, uint16_t key) :
+      observable_value<TValue>(callback),
       _key(key)
     {
       initialize(this);
@@ -55,10 +70,25 @@ namespace Lux::Observable
   {
   public:
     typedef TPropertyKey key_t;
+    typedef std::enable_if_t<std::is_same<std::underlying_type_t<TPropertyKey>, uint16_t>::value> enabled_t;
 
   private:
     const Events::event_owner _events;
     std::unordered_map<key_t, observable_property_base*> _properties;
+
+    void on_child_added(uint16_t key, observable_property_base* property)
+    {
+      _properties.emplace((key_t)key, property);
+    }
+
+    void on_child_changed(uint16_t key, std::unique_ptr<change>&& change)
+    {
+      auto propertyChange = std::make_unique<object_property_update_change>();
+      propertyChange->key = (uint16_t)key;
+      propertyChange->value = std::move(change);
+      report_change(std::move(propertyChange));
+      _events.raise(property_changed, this, (key_t)key);
+    }
 
   public:
     Events::event_publisher<observable_object*, key_t> property_changed;
@@ -68,20 +98,23 @@ namespace Lux::Observable
       property_changed(_events)
     { }
 
-    template<typename T>
+    template<typename T, typename = std::enable_if_t<std::negation<std::is_convertible<T*, observable*>>::value>>
     observable_property<T> make_property(key_t key, const T& value = {})
     {
-      return observable_property<T>([this, key](std::unique_ptr<change>&& change) {
-        auto propertyChange = std::make_unique<object_property_update_change>();
-        propertyChange->key = (uint16_t)key;
-        propertyChange->value = std::move(change);
-        report_change(std::move(propertyChange));
+      return observable_property<T>(
+        Events::bind_func(&observable_object<key_t, enabled_t>::on_child_changed, this, (uint16_t)key),
+        Events::bind_func(&observable_object<key_t, enabled_t>::on_child_added, this, (uint16_t)key),
+        (uint16_t)key,
+        value);
+    }
 
-        _events.raise(property_changed, this, key);
-        },
-        [this, key](observable_property_base* property) { _properties.emplace(key, property); },
-          (uint16_t)key,
-          value);
+    template<typename T, typename = std::enable_if_t<std::is_convertible<T*, observable*>::value>>
+    observable_property<T> make_property(key_t key)
+    {
+      return observable_property<T>(
+        Events::bind_func(&observable_object<key_t, enabled_t>::on_child_changed, this, (uint16_t)key),
+        Events::bind_func(&observable_object<key_t, enabled_t>::on_child_added, this, (uint16_t)key),
+        (uint16_t)key);
     }
 
     void apply_change(change* change)

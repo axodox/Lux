@@ -3,11 +3,14 @@
 #include "MainPage.g.cpp"
 #include "DeviceSettings.h"
 #include "DependencyConfiguration.h"
+#include "ThreadName.h"
 
 using namespace ::Lux;
 using namespace ::Lux::Events;
 using namespace ::Lux::Observable;
+using namespace ::Lux::Graphics;
 using namespace ::Lux::Configuration;
+using namespace ::Lux::Threading;
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel::Core;
@@ -25,11 +28,13 @@ using namespace Windows::Data::Json;
 namespace winrt::Lux::implementation
 {
   MainPage::MainPage() :
-    _client(DependencyConfiguration::Instance().resolve<observable_client<LightConfiguration>>()),
-    _clientConnectedChanged(_client->is_connected_changed([strong_this{ get_strong() }](auto) { strong_this->OnClientConnectedChanged(); }))
+    _client(DependencyConfiguration::Instance().resolve<observable_client<LightConfiguration>>())
   {
     InitializeComponent();    
     InitializeView();
+
+    _client->is_connected_changed(no_revoke, member_func(this, &MainPage::OnClientConnectedChanged));
+    _client->full_data_reset(no_revoke, member_func(this, &MainPage::OnFullDataReset));
 
     _client->root()->property_changed(no_revoke, member_func(this, &MainPage::OnSettingChanged));
     _client->open();
@@ -54,6 +59,8 @@ namespace winrt::Lux::implementation
 
   void MainPage::InitializeView()
   {
+    set_thread_name(L"* UI thread");
+
     auto currentView = ApplicationView::GetForCurrentView();
     currentView.PreferredLaunchViewSize({ 1024, 512 });
     currentView.PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
@@ -82,12 +89,19 @@ namespace winrt::Lux::implementation
     TitleBarRightPaddingColumn().Width({ titleBar.SystemOverlayRightInset() });
   }
 
-  void MainPage::OnClientConnectedChanged()
+  void MainPage::OnClientConnectedChanged(observable_client<LightConfiguration>* /*sender*/)
   {
     Dispatcher().RunAsync({}, [&] {
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsConnected"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
     }).get();
+  }
+
+  void MainPage::OnFullDataReset(::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>* /*sender*/)
+  {
+    Dispatcher().RunAsync({}, [&] {
+      _propertyChanged(*this, PropertyChangedEventArgs(L""));
+      });
   }
 
   void MainPage::OnSettingChanged(observable_object<LightConfigurationProperty>* object, LightConfigurationProperty propertyKey)
@@ -99,6 +113,9 @@ namespace winrt::Lux::implementation
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceStatic"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceRainbow"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceContextAware"));
+      break;
+    case LightConfigurationProperty::StaticSourceOptions:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"StaticSourceColor"));
       break;
     }
   }
@@ -154,22 +171,34 @@ namespace winrt::Lux::implementation
 
   bool MainPage::IsSourceOff()
   {
-    return _client->root()->LightSource.value() == LightSourceKind::Off;
+    return _client->root()->LightSource == LightSourceKind::Off;
   }
 
   bool MainPage::IsSourceStatic()
   {
-    return _client->root()->LightSource.value() == LightSourceKind::Static;
+    return _client->root()->LightSource == LightSourceKind::Static;
   }
 
   bool MainPage::IsSourceRainbow()
   {
-    return _client->root()->LightSource.value() == LightSourceKind::Rainbow;
+    return _client->root()->LightSource == LightSourceKind::Rainbow;
   }
 
   bool MainPage::IsSourceContextAware()
   {
-    return _client->root()->LightSource.value() == LightSourceKind::ContextAware;
+    return _client->root()->LightSource == LightSourceKind::ContextAware;
+  }
+
+  Windows::UI::Color MainPage::StaticSourceColor()
+  {
+    return rgb(_client->root()->StaticSourceOptions->Color);
+  }
+
+  void MainPage::StaticSourceColor(Windows::UI::Color color)
+  {
+    if (_client->root()->StaticSourceOptions->Color == color) return;
+
+    _client->root()->StaticSourceOptions->Color = rgb(color);
   }
   
   winrt::event_token MainPage::PropertyChanged(PropertyChangedEventHandler const& value)

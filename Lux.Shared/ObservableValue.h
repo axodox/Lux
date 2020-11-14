@@ -48,7 +48,7 @@ namespace Lux::Observable
     template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
     observable_value(const callback_t& callback) :
       observable(callback),
-      _value(callback, value),
+      _value(callback),
       changed(_events)
     { }
 
@@ -64,10 +64,57 @@ namespace Lux::Observable
     }
 
     template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
+    operator value_t() const
+    {
+      return _value;
+    }
+
+    operator const value_t&() const
+    {
+      return _value;
+    }
+
+    template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
+    operator value_t&()
+    {
+      return _value;
+    }
+
+    const value_t& operator*() const
+    {
+      return _value;
+    }
+
+    template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
+    value_t& operator*()
+    {
+      return _value;
+    }
+
+    const value_t* operator->() const
+    {
+      return &_value;
+    }
+
+    template<typename = std::enable_if_t<std::is_convertible<value_t*, observable*>::value>>
+    value_t* operator->()
+    {
+      return &_value;
+    }
+
+    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
     void value(const value_t& value)
     {
       _value = value;
       on_changed();
+    }
+
+    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
+    const value_t& operator=(const value_t& value)
+    {
+      _value = value;
+      on_changed();
+      return _value;
     }
 
     template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
@@ -77,29 +124,38 @@ namespace Lux::Observable
       on_changed();
     }
 
+    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
+    const value_t& operator=(value_t&& value)
+    {
+      _value = std::move(value);
+      on_changed();
+      return _value;
+    }
+
+    template<typename = std::enable_if_t<std::negation<std::is_convertible<value_t*, observable*>>::value>>
+    bool operator ==(const value_t& other)
+    {
+      return _value == other;
+    }
+
     virtual void apply_change(change* change) override
     {
-      switch (change->type())
+      if constexpr (std::is_convertible<value_t*, observable*>::value)
       {
-      case change_type::value_update:
-      {
-        auto valueUpdate = static_cast<value_update_change*>(change);
-        valueUpdate->data.read(_value);
-        on_changed();
+        _value.apply_change(change);
       }
-      break;
-      default:
+      else
       {
-        if constexpr (std::is_convertible<value_t*, observable*>::value)
+        if (change->type() == change_type::value_update)
         {
-          _value.apply_change(change);
+          auto valueUpdate = static_cast<value_update_change*>(change);
+          valueUpdate->data.read(_value);
+          on_changed();
         }
         else
         {
           throw std::exception("This object does not support the specified change type!");
         }
-      }
-      break;
       }
     }
 

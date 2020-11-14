@@ -11,9 +11,6 @@ namespace Lux::Observable
     unknown,
     value_update,
     object_property_update,
-    vector_item_insertion,
-    vector_item_update,
-    vector_item_removal
   };
 
   struct change : public Serialization::serializable

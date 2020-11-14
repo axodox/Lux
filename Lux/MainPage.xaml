@@ -87,15 +87,11 @@
             </local:FlipControl.PrimaryContent>
             <local:FlipControl.SecondaryContent>
               <StackPanel>
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
-                  <TextBlock Text="Hue"/>
-                </StackPanel>
+                <ColorSpectrum Width="128" Height="128" Margin="0,32" Shape="Ring"
+                               Color="{x:Bind StaticSourceColor, Mode=TwoWay}" />
 
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
-                  <TextBlock Text="Saturation"/>
-                </StackPanel>
+                <TextBlock>Color</TextBlock>
+
               </StackPanel>
             </local:FlipControl.SecondaryContent>
           </local:FlipControl>

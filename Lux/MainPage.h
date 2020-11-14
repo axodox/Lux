@@ -20,6 +20,9 @@ namespace winrt::Lux::implementation
     bool IsSourceRainbow();
     bool IsSourceContextAware();
 
+    Windows::UI::Color StaticSourceColor();
+    void StaticSourceColor(Windows::UI::Color color);
+
     void OnSourceChecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value);
@@ -33,8 +36,8 @@ namespace winrt::Lux::implementation
     void UpdateTitleBarLayout(const Windows::ApplicationModel::Core::CoreApplicationViewTitleBar& titleBar);
 
     std::shared_ptr<::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>> _client;
-    ::Lux::Events::event_subscription _clientConnectedChanged;
-    void OnClientConnectedChanged();
+    void OnClientConnectedChanged(::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>* sender);
+    void OnFullDataReset(::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>* sender);
 
     void OnSettingChanged(::Lux::Observable::observable_object<::Lux::Configuration::LightConfigurationProperty>* object, ::Lux::Configuration::LightConfigurationProperty propertyKey);
   };

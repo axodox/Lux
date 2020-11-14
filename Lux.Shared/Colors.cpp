@@ -18,6 +18,12 @@ namespace Lux::Graphics
     b(uint8_t(color.z * 255))
   { }
 
+  rgb::rgb(winrt::Windows::UI::Color color) :
+    r(color.R),
+    g(color.G),
+    b(color.B)
+  { }
+
   rgb::operator hsl() const
   {
     hsl result;
@@ -65,6 +71,11 @@ namespace Lux::Graphics
     }
 
     return result;
+  }
+
+  rgb::operator winrt::Windows::UI::Color() const
+  {
+    return { 255ui8, r, g, b };
   }
 
   hsl::hsl(float h, float s, float l) :
