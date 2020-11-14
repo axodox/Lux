@@ -18,18 +18,26 @@ namespace winrt::Lux::implementation
 
     bool IsShowingSecondary();
     void IsShowingSecondary(bool value);
+    static Windows::UI::Xaml::DependencyProperty IsShowingSecondaryProperty();
 
-    event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value);
-    void PropertyChanged(winrt::event_token const& token);
+    bool IsToggleVisible();
+    void IsToggleVisible(bool value);
+    static Windows::UI::Xaml::DependencyProperty IsToggleVisibleProperty();
+
+    bool IsExitClickHandled();
+    void IsExitClickHandled(bool value);
+    static Windows::UI::Xaml::DependencyProperty IsExitClickHandledProperty();
 
   private:
     static Windows::UI::Xaml::DependencyProperty _primaryContentProperty;
     static Windows::UI::Xaml::DependencyProperty _secondaryContentProperty;
+    static Windows::UI::Xaml::DependencyProperty _isShowingSecondaryProperty;
+    static Windows::UI::Xaml::DependencyProperty _isToggleVisibleProperty;
+    static Windows::UI::Xaml::DependencyProperty _isExitClickHandledProperty;
 
-    event<Windows::UI::Xaml::Data::PropertyChangedEventHandler> _propertyChanged;
-    bool _isShowingSecondary = false;
+    IInspectable _windowPointerHandler;
 
-    IInspectable _windowPointerPressedHandler;
+    static void OnIsShowingSecondaryChanged(Windows::UI::Xaml::DependencyObject const& sender, Windows::UI::Xaml::DependencyPropertyChangedEventArgs eventArgs);
   };
 }
 

@@ -1,11 +1,11 @@
 #pragma once
-#include "BooleanToVisibilityConverter.g.h"
+#include "BooleanToStringSwitchConverter.g.h"
 
 namespace winrt::Lux::implementation
 {
-  struct BooleanToVisibilityConverter : BooleanToVisibilityConverterT<BooleanToVisibilityConverter>
+  struct BooleanToStringSwitchConverter : BooleanToStringSwitchConverterT<BooleanToStringSwitchConverter>
   {
-    BooleanToVisibilityConverter() = default;
+    BooleanToStringSwitchConverter() = default;
 
     Windows::Foundation::IInspectable Convert(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const& targetType, Windows::Foundation::IInspectable const& parameter, hstring const& language);
     Windows::Foundation::IInspectable ConvertBack(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const& targetType, Windows::Foundation::IInspectable const& parameter, hstring const& language);
@@ -14,7 +14,7 @@ namespace winrt::Lux::implementation
 
 namespace winrt::Lux::factory_implementation
 {
-  struct BooleanToVisibilityConverter : BooleanToVisibilityConverterT<BooleanToVisibilityConverter, implementation::BooleanToVisibilityConverter>
+  struct BooleanToStringSwitchConverter : BooleanToStringSwitchConverterT<BooleanToStringSwitchConverter, implementation::BooleanToStringSwitchConverter>
   {
   };
 }

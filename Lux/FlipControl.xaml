@@ -45,10 +45,11 @@
 
     <ToggleButton HorizontalAlignment="Right" 
                   VerticalAlignment="Top"
-                  Margin="9"
+                  Margin="{x:Bind Padding, Mode=OneWay}"
                   Padding="6,0"
                   CornerRadius="12"
-                  IsChecked="{x:Bind IsShowingSecondary, Mode=TwoWay}">
+                  IsChecked="{x:Bind IsShowingSecondary, Mode=TwoWay}"
+                  Visibility="{x:Bind IsToggleVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
       <FontIcon FontFamily="Segoe MDL2 Assets"
                 Glyph="&#xE712;"/>
     </ToggleButton>

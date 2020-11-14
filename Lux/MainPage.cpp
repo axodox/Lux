@@ -30,7 +30,7 @@ namespace winrt::Lux::implementation
   MainPage::MainPage() :
     _client(DependencyConfiguration::Instance().resolve<observable_client<LightConfiguration>>())
   {
-    InitializeComponent();    
+    InitializeComponent();
     InitializeView();
 
     _client->is_connected_changed(no_revoke, member_func(this, &MainPage::OnClientConnectedChanged));
@@ -94,7 +94,7 @@ namespace winrt::Lux::implementation
     Dispatcher().RunAsync({}, [&] {
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsConnected"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
-    }).get();
+      }).get();
   }
 
   void MainPage::OnFullDataReset(::Lux::Observable::observable_client<::Lux::Configuration::LightConfiguration>* /*sender*/)
@@ -169,61 +169,6 @@ namespace winrt::Lux::implementation
     }
   }
 
-  bool MainPage::IsSourceOff()
-  {
-    return _client->root()->LightSource == LightSourceKind::Off;
-  }
-
-  bool MainPage::IsSourceStatic()
-  {
-    return _client->root()->LightSource == LightSourceKind::Static;
-  }
-
-  bool MainPage::IsSourceRainbow()
-  {
-    return _client->root()->LightSource == LightSourceKind::Rainbow;
-  }
-
-  bool MainPage::IsSourceContextAware()
-  {
-    return _client->root()->LightSource == LightSourceKind::ContextAware;
-  }
-
-  Windows::UI::Color MainPage::StaticSourceColor()
-  {
-    return rgb(_client->root()->StaticSourceOptions->Color);
-  }
-
-  void MainPage::StaticSourceColor(Windows::UI::Color color)
-  {
-    if (_client->root()->StaticSourceOptions->Color == color) return;
-    _client->root()->StaticSourceOptions->Color = rgb(color);
-  }
-
-  uint8_t MainPage::RainbowSourceSpatialFrequency()
-  {
-    return _client->root()->RainbowSourceOptions->SpatialFrequency;
-  }
-
-  void MainPage::RainbowSourceSpatialFrequency(uint8_t value)
-  {
-    if (_client->root()->RainbowSourceOptions->SpatialFrequency == value) return;
-    _client->root()->RainbowSourceOptions->SpatialFrequency = value;
-  }
-
-  float MainPage::RainbowSourceAngularVelocity()
-  {
-    return _client->root()->RainbowSourceOptions->AngularVelocity / 2.f / float(M_PI);
-  }
-
-  void MainPage::RainbowSourceAngularVelocity(float value)
-  {
-    value = value * 2.f * float(M_PI);
-
-    if (_client->root()->RainbowSourceOptions->AngularVelocity == value) return;
-    _client->root()->RainbowSourceOptions->AngularVelocity = value;
-  }
-  
   winrt::event_token MainPage::PropertyChanged(PropertyChangedEventHandler const& value)
   {
     return _propertyChanged.add(value);
@@ -234,23 +179,14 @@ namespace winrt::Lux::implementation
     _propertyChanged.remove(token);
   }
 
-  void MainPage::OnSourceChecked(IInspectable const& sender, RoutedEventArgs const& eventArgs)
+  bool MainPage::IsShowingSettings()
   {
-    if (sender == SourceOffButton())
-    {
-      _client->root()->LightSource.value(LightSourceKind::Off);
-    }
-    else if (sender == SourceStaticButton())
-    {
-      _client->root()->LightSource.value(LightSourceKind::Static);
-    }
-    else if (sender == SourceRainbowButton())
-    {
-      _client->root()->LightSource.value(LightSourceKind::Rainbow);
-    }
-    else if (sender == SourceContextAwareButton())
-    {
-      _client->root()->LightSource.value(LightSourceKind::ContextAware);
-    }
+    return _isShowingSettings;
+  }
+
+  void MainPage::IsShowingSettings(bool value)
+  {
+    _isShowingSettings = value;
+    _propertyChanged(*this, PropertyChangedEventArgs(L"IsShowingSettings"));
   }
 }

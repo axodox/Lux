@@ -7,6 +7,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
   local:StateHelper.State="{x:Bind ConnectionState, Mode=OneWay}">
+   
   <Grid Background="{StaticResource SystemControlAcrylicWindowBrush}">
     <VisualStateManager.VisualStateGroups>
       <VisualStateGroup>
@@ -40,118 +41,16 @@
     </Grid.RowDefinitions>
 
     <!-- Source selection -->
-    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" MinHeight="280"  
-                  HorizontalScrollBarVisibility="Auto"  
-                  VerticalScrollBarVisibility="Hidden">
-      <StackPanel Orientation="Horizontal">
-        <StackPanel.Resources>
-          <Style TargetType="RadioButton" BasedOn="{StaticResource TileRadioButtonStyle}">
-            <Setter Property="Width" Value="196"/>
-            <Setter Property="Height" Value="256"/>
-            <Setter Property="Margin" Value="12"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-          </Style>
-          <Style TargetType="TextBlock">
-            <Setter Property="TextAlignment" Value="Center"/>
-          </Style>
-
-          <Style x:Key="SettingStackPanel" TargetType="StackPanel">
-            <Setter Property="Margin" Value="0,12"/>
-            <Setter Property="Orientation" Value="Vertical"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Width" Value="64"/>
-          </Style>
-
-          <Style TargetType="Slider">
-            <Setter Property="Height" Value="192"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-          </Style>
-        </StackPanel.Resources>
-
-        <!-- Off -->
-        <RadioButton x:Name="SourceOffButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceOff, Mode=OneWay}">
-          <StackPanel VerticalAlignment="Center">
-            <Image Source="Images/SourceOff.png"/>
-            <TextBlock>Off</TextBlock>
-          </StackPanel>
-        </RadioButton>
-
-        <!-- Static -->
-        <RadioButton x:Name="SourceStaticButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceStatic, Mode=OneWay}">
-          <local:FlipControl>
-            <local:FlipControl.PrimaryContent>
-              <StackPanel>
-                <Image Source="Images/SourceSimple.png"/>
-                <TextBlock>Static</TextBlock>
-              </StackPanel>
-            </local:FlipControl.PrimaryContent>
-            <local:FlipControl.SecondaryContent>
-              <StackPanel>
-                <ColorSpectrum Width="128" Height="128" Margin="0,32" Shape="Ring"
-                               Color="{x:Bind StaticSourceColor, Mode=TwoWay}" />
-
-                <TextBlock>Color</TextBlock>
-
-              </StackPanel>
-            </local:FlipControl.SecondaryContent>
-          </local:FlipControl>
-        </RadioButton>
-
-        <!-- Rainbow -->
-        <RadioButton x:Name="SourceRainbowButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceRainbow, Mode=OneWay}">
-          <local:FlipControl>
-            <local:FlipControl.PrimaryContent>
-              <StackPanel>
-                <Image Source="Images/SourceRainbow.png"/>
-                <TextBlock>Rainbow</TextBlock>
-              </StackPanel>
-            </local:FlipControl.PrimaryContent>
-            <local:FlipControl.SecondaryContent>
-              <StackPanel Orientation="Horizontal">
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider Orientation="Vertical" Maximum="5" StepFrequency="1" TickFrequency="1" TickPlacement="Outside"
-                          Value="{x:Bind RainbowSourceSpatialFrequency, Mode=TwoWay}"/>
-                  <TextBlock Text="Frequency"/>
-                </StackPanel>
-
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.01"
-                          Value="{x:Bind RainbowSourceAngularVelocity, Mode=TwoWay}"/>
-                  <TextBlock Text="Speed"/>
-                </StackPanel>
-              </StackPanel>
-            </local:FlipControl.SecondaryContent>
-          </local:FlipControl>
-        </RadioButton>
-
-        <!-- Context Aware -->
-        <RadioButton x:Name="SourceContextAwareButton" Checked="OnSourceChecked" IsChecked="{x:Bind IsSourceContextAware, Mode=OneWay}">
-          <local:FlipControl>
-            <local:FlipControl.PrimaryContent>
-              <StackPanel>
-                <Image Source="Images/SourceContext.png"/>
-                <TextBlock>Context Aware</TextBlock>
-              </StackPanel>
-            </local:FlipControl.PrimaryContent>
-            <local:FlipControl.SecondaryContent>
-              <StackPanel>
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
-                  <TextBlock Text="Sample Size"/>
-                </StackPanel>
-
-                <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
-                  <TextBlock Text="Temporal Averaging"/>
-                </StackPanel>
-              </StackPanel>
-            </local:FlipControl.SecondaryContent>
-          </local:FlipControl>
-        </RadioButton>
-      </StackPanel>
-    </ScrollViewer>
+    <local:FlipControl x:Name="MainFlip" Grid.Row="1" Padding="24" IsToggleVisible="False" IsExitClickHandled="True"
+                       IsShowingSecondary="{x:Bind IsShowingSettings, Mode=TwoWay}">
+      <local:FlipControl.PrimaryContent>
+        <local:SourcesView/>
+      </local:FlipControl.PrimaryContent>
+      <local:FlipControl.SecondaryContent>
+        <local:SettingsView/>
+      </local:FlipControl.SecondaryContent>
+    </local:FlipControl>
+    
 
     <!-- Device setting -->
     <Button x:Name="DeviceButton" 
@@ -166,6 +65,17 @@
         <TextBlock Margin="6,0" VerticalAlignment="Center" Text="{x:Bind ConnectionState, Mode=OneWay}"/>
       </StackPanel>
     </Button>
+    
+    <!-- Settings toggle -->
+    <ToggleButton Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,16" Height="48"
+            CornerRadius="6" Padding="9" IsChecked="{x:Bind IsShowingSettings, Mode=TwoWay}"
+            Style="{StaticResource ToggleButtonRevealStyle}" Background="Transparent">
+      <StackPanel Orientation="Horizontal">
+        <FontIcon FontFamily="Segoe MDL2 Assets"
+                  Glyph="&#xE713;" FontSize="24" VerticalAlignment="Center"/>
+        <TextBlock Margin="6,0" VerticalAlignment="Center" Text="Settings"/>
+      </StackPanel>
+    </ToggleButton>
 
     <!-- Brightness setting -->
     <StackPanel Grid.Row="2" Margin="0,0,16,16" CornerRadius="6" Padding="12,9" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" BorderThickness="{ThemeResource ToggleButtonBorderThemeThickness}" Orientation="Horizontal" Height="48">

@@ -8,6 +8,12 @@
     <Page Include="FlipControl.xaml">
       <Filter>Controls</Filter>
     </Page>
+    <Page Include="SettingsView.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="SourcesView.xaml">
+      <Filter>Views</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -17,6 +23,12 @@
     </Midl>
     <Midl Include="Interaction.idl">
       <Filter>Interaction</Filter>
+    </Midl>
+    <Midl Include="Views.idl">
+      <Filter>Views</Filter>
+    </Midl>
+    <Midl Include="ViewModels.idl">
+      <Filter>ViewModel</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +45,15 @@
     <ClCompile Include="StateHelper.cpp">
       <Filter>Interaction</Filter>
     </ClCompile>
+    <ClCompile Include="BooleanToStringSwitchConverter.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsViewModel.cpp">
+      <Filter>ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="SourcesViewModel.cpp">
+      <Filter>ViewModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -44,6 +65,15 @@
     </ClInclude>
     <ClInclude Include="StateHelper.h">
       <Filter>Interaction</Filter>
+    </ClInclude>
+    <ClInclude Include="BooleanToStringSwitchConverter.h">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsViewModel.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="SourcesViewModel.h">
+      <Filter>ViewModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +207,9 @@
     </Filter>
     <Filter Include="Interaction">
       <UniqueIdentifier>{8c02a336-fba0-471d-9a59-ff5ea705da10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel">
+      <UniqueIdentifier>{69a73fa0-0d99-464f-b06b-f20ec94abe5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
