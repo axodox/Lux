@@ -72,7 +72,7 @@ namespace Lux::Sources
 
     for (auto& light : settings->SamplePoints)
     {
-      auto rotation = deg(wrap(_spatialFrequency * (atan2(light.y - 0.5f, settings->AspectRatio * (light.x - 0.5f)) + float(M_PI_2)) + currentAngle, 0.f, 2 * float(M_PI)));
+      auto rotation = deg(wrap(_spatialFrequency * (atan2(light.y - 0.5f, settings->AspectRatio * (light.x - 0.5f)) + float(M_PI_2)) + max(1ui8, _spatialFrequency) * currentAngle, 0.f, 2 * float(M_PI)));
       colors.push_back(hsl{ rotation, 1.f, 0.5f });
     }
 

@@ -152,6 +152,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BitwiseOperators.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">

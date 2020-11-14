@@ -1,101 +1,180 @@
 ﻿#include "pch.h"
 #include "FlipControl.h"
 #include "FlipControl.g.cpp"
+#include "Events.h"
 
 using namespace winrt;
+using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
+using namespace Windows::UI::Xaml::Input;
 
 namespace winrt::Lux::implementation
 {
   FlipControl::FlipControl()
   {
     InitializeComponent();
+    Padding({ 9, 9, 9, 9 });
 
-    _windowPointerPressedHandler = box_value(winrt::Windows::UI::Xaml::Input::PointerEventHandler([&](auto&, const winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs& eventArgs) {
+    _windowPointerHandler = box_value(PointerEventHandler([&](auto&, const PointerRoutedEventArgs& eventArgs) {
       auto point = eventArgs.GetCurrentPoint(*this).Position();
       if (point.X < 0 || point.Y < 0 || point.X > ActualWidth() || point.Y > ActualHeight())
       {
         IsShowingSecondary(false);
-      }
+      }      
+      eventArgs.Handled(IsExitClickHandled());
       }));
 
     ExitStoryboard().Begin();
   }
 
-  Windows::Foundation::IInspectable FlipControl::PrimaryContent()
+#pragma region PrimaryContent
+  IInspectable FlipControl::PrimaryContent()
   {
     return GetValue(_primaryContentProperty);
   }
 
-  void FlipControl::PrimaryContent(Windows::Foundation::IInspectable const& value)
+  void FlipControl::PrimaryContent(IInspectable const& value)
   {
     SetValue(_primaryContentProperty, value);
   }
 
-  Windows::UI::Xaml::DependencyProperty FlipControl::PrimaryContentProperty()
+  DependencyProperty FlipControl::PrimaryContentProperty()
   {
     return _primaryContentProperty;
   }
 
-  Windows::UI::Xaml::DependencyProperty FlipControl::_primaryContentProperty =
-    Windows::UI::Xaml::DependencyProperty::Register(
+  DependencyProperty FlipControl::_primaryContentProperty =
+    DependencyProperty::Register(
       L"PrimaryContent",
-      xaml_typename<Windows::Foundation::IInspectable>(),
+      xaml_typename<IInspectable>(),
       xaml_typename<Lux::FlipControl>(),
       nullptr);
+#pragma endregion
 
-  Windows::Foundation::IInspectable FlipControl::SecondaryContent()
+#pragma region SecondaryContent
+  IInspectable FlipControl::SecondaryContent()
   {
     return GetValue(_secondaryContentProperty);
   }
 
-  void FlipControl::SecondaryContent(Windows::Foundation::IInspectable const& value)
+  void FlipControl::SecondaryContent(IInspectable const& value)
   {
     SetValue(_secondaryContentProperty, value);
   }
 
-  Windows::UI::Xaml::DependencyProperty FlipControl::SecondaryContentProperty()
+  DependencyProperty FlipControl::SecondaryContentProperty()
   {
     return _secondaryContentProperty;
   }
 
+  DependencyProperty FlipControl::_secondaryContentProperty =
+    DependencyProperty::Register(
+      L"SecondaryContent",
+      xaml_typename<IInspectable>(),
+      xaml_typename<Lux::FlipControl>(),
+      nullptr);
+#pragma endregion
+
+#pragma region IsShowingSecondary
   bool FlipControl::IsShowingSecondary()
   {
-    return _isShowingSecondary;
+    return unbox_value<bool>(GetValue(_isShowingSecondaryProperty));
   }
 
   void FlipControl::IsShowingSecondary(bool value)
   {
-    _isShowingSecondary = value;
+    SetValue(_isShowingSecondaryProperty, box_value(value));
+  }
 
-    if (value)
+  DependencyProperty FlipControl::IsShowingSecondaryProperty()
+  {
+    return _isShowingSecondaryProperty;
+  }
+
+  DependencyProperty FlipControl::_isShowingSecondaryProperty =
+    DependencyProperty::Register(
+      L"IsShowingSecondary",
+      xaml_typename<bool>(),
+      xaml_typename<Lux::FlipControl>(),
+      PropertyMetadata{ box_value(false), &FlipControl::OnIsShowingSecondaryChanged });
+
+  void FlipControl::OnIsShowingSecondaryChanged(DependencyObject const& sender, DependencyPropertyChangedEventArgs eventArgs)
+  {
+    auto control = sender.as<FlipControl>();
+    if (control->IsShowingSecondary())
     {
-      EnterStoryboard().Begin();
-      Window::Current().Content().AddHandler(UIElement::PointerPressedEvent(), _windowPointerPressedHandler, true);
+      control->EnterStoryboard().Begin();
+      
+      if (control->IsExitClickHandled())
+      {
+        Window::Current().Content().AddHandler(UIElement::PointerReleasedEvent(), control->_windowPointerHandler, false);
+      }
+      else
+      {
+        Window::Current().Content().AddHandler(UIElement::PointerPressedEvent(), control->_windowPointerHandler, true);
+      }      
     }
     else
     {
-      ExitStoryboard().Begin();
-      Window::Current().Content().RemoveHandler(UIElement::PointerPressedEvent(), _windowPointerPressedHandler);
+      control->ExitStoryboard().Begin();
+
+      if (control->IsExitClickHandled())
+      {
+        Window::Current().Content().RemoveHandler(UIElement::PointerReleasedEvent(), control->_windowPointerHandler);
+      }
+      else
+      {
+        Window::Current().Content().RemoveHandler(UIElement::PointerPressedEvent(), control->_windowPointerHandler);
+      }
     }
+  }
+#pragma endregion
 
-    _propertyChanged(*this, PropertyChangedEventArgs(L"IsShowingSecondary"));
+#pragma region IsToggleVisible
+  bool FlipControl::IsToggleVisible()
+  {
+    return unbox_value<bool>(GetValue(_isToggleVisibleProperty));
   }
 
-  Windows::UI::Xaml::DependencyProperty FlipControl::_secondaryContentProperty =
-    Windows::UI::Xaml::DependencyProperty::Register(
-      L"SecondaryContent",
-      xaml_typename<Windows::Foundation::IInspectable>(),
+  void FlipControl::IsToggleVisible(bool value)
+  {
+    SetValue(_isToggleVisibleProperty, box_value(value));
+  }
+
+  DependencyProperty FlipControl::IsToggleVisibleProperty()
+  {
+    return _isToggleVisibleProperty;
+  }
+
+  DependencyProperty FlipControl::_isToggleVisibleProperty =
+    DependencyProperty::Register(
+      L"IsToggleVisible",
+      xaml_typename<bool>(),
       xaml_typename<Lux::FlipControl>(),
-      nullptr);
-
-  winrt::event_token FlipControl::PropertyChanged(Data::PropertyChangedEventHandler const& value)
+      PropertyMetadata{ box_value(true) });
+#pragma endregion
+    
+#pragma region IsExitClickHandled
+  bool FlipControl::IsExitClickHandled()
   {
-    return _propertyChanged.add(value);
+    return unbox_value<bool>(GetValue(_isExitClickHandledProperty));
   }
 
-  void FlipControl::PropertyChanged(winrt::event_token const& token)
+  void FlipControl::IsExitClickHandled(bool value)
   {
-    _propertyChanged.remove(token);
+    SetValue(_isExitClickHandledProperty, box_value(value));
   }
+
+  DependencyProperty FlipControl::IsExitClickHandledProperty()
+  {
+    return _isExitClickHandledProperty;
+  }
+
+  DependencyProperty FlipControl::_isExitClickHandledProperty =
+    DependencyProperty::Register(
+      L"IsExitClickHandledProperty",
+      xaml_typename<bool>(),
+      xaml_typename<Lux::FlipControl>(),
+      PropertyMetadata{ box_value(false) });
+#pragma endregion
 }

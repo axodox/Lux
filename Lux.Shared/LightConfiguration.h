@@ -21,7 +21,11 @@ namespace Lux::Configuration
     Device,
     LightSource,
     StaticSourceOptions,
-    RainbowSourceOptions
+    RainbowSourceOptions,
+    ContextAwareOptions,
+    Brightness,
+    BrightnessLimit,
+    Gamma
   };
 
   struct LightConfiguration : public Observable::observable_object<LightConfigurationProperty>
@@ -31,6 +35,10 @@ namespace Lux::Configuration
 
     Observable::observable_property<StaticSourceSettings> StaticSourceOptions;
     Observable::observable_property<RainbowSourceSettings> RainbowSourceOptions;
+
+    Observable::observable_property<uint8_t> Brightness;
+    Observable::observable_property<uint8_t> BrightnessLimit;
+    Observable::observable_property<winrt::Windows::Foundation::Numerics::float3> Gamma;
 
     LightConfiguration(const callback_t& callback);
   };

@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BitwiseOperators.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h" />

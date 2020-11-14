@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BooleanToStringSwitchConverter.h" />
     <ClInclude Include="BooleanToVisibilityConverter.h" />
     <ClInclude Include="DependencyConfiguration.h" />
     <ClInclude Include="FlipControl.h">
@@ -158,6 +159,16 @@
     <ClInclude Include="MainPage.h">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SettingsView.h">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SettingsViewModel.h" />
+    <ClInclude Include="SourcesView.h">
+      <DependentUpon>SourcesView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SourcesViewModel.h" />
     <ClInclude Include="StateHelper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +179,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SourcesView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -214,6 +231,7 @@
     <Image Include="Images\SourceSimple.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BooleanToStringSwitchConverter.cpp" />
     <ClCompile Include="BooleanToVisibilityConverter.cpp" />
     <ClCompile Include="DependencyConfiguration.cpp" />
     <ClCompile Include="FlipControl.cpp">
@@ -230,6 +248,16 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="SettingsView.cpp">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SettingsViewModel.cpp" />
+    <ClCompile Include="SourcesView.cpp">
+      <DependentUpon>SourcesView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SourcesViewModel.cpp" />
     <ClCompile Include="StateHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +273,8 @@
     <Midl Include="MainPage.idl">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Midl>
+    <Midl Include="ViewModels.idl" />
+    <Midl Include="Views.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
