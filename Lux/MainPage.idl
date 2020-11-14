@@ -15,6 +15,9 @@ namespace Lux
 
     Windows.UI.Color StaticSourceColor;
 
+    UInt8 RainbowSourceSpatialFrequency;
+    Single RainbowSourceAngularVelocity;
+
     void ConfigureDevice();
   }
 }

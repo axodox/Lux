@@ -197,8 +197,31 @@ namespace winrt::Lux::implementation
   void MainPage::StaticSourceColor(Windows::UI::Color color)
   {
     if (_client->root()->StaticSourceOptions->Color == color) return;
-
     _client->root()->StaticSourceOptions->Color = rgb(color);
+  }
+
+  uint8_t MainPage::RainbowSourceSpatialFrequency()
+  {
+    return _client->root()->RainbowSourceOptions->SpatialFrequency;
+  }
+
+  void MainPage::RainbowSourceSpatialFrequency(uint8_t value)
+  {
+    if (_client->root()->RainbowSourceOptions->SpatialFrequency == value) return;
+    _client->root()->RainbowSourceOptions->SpatialFrequency = value;
+  }
+
+  float MainPage::RainbowSourceAngularVelocity()
+  {
+    return _client->root()->RainbowSourceOptions->AngularVelocity / 2.f / float(M_PI);
+  }
+
+  void MainPage::RainbowSourceAngularVelocity(float value)
+  {
+    value = value * 2.f * float(M_PI);
+
+    if (_client->root()->RainbowSourceOptions->AngularVelocity == value) return;
+    _client->root()->RainbowSourceOptions->AngularVelocity = value;
   }
   
   winrt::event_token MainPage::PropertyChanged(PropertyChangedEventHandler const& value)

@@ -61,10 +61,12 @@
             <Setter Property="Margin" Value="0,12"/>
             <Setter Property="Orientation" Value="Vertical"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="64"/>
           </Style>
 
           <Style TargetType="Slider">
-            <Setter Property="Width" Value="128"/>
+            <Setter Property="Height" Value="192"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
           </Style>
         </StackPanel.Resources>
 
@@ -107,14 +109,16 @@
               </StackPanel>
             </local:FlipControl.PrimaryContent>
             <local:FlipControl.SecondaryContent>
-              <StackPanel>
+              <StackPanel Orientation="Horizontal">
                 <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
+                  <Slider Orientation="Vertical" Maximum="5" StepFrequency="1" TickFrequency="1" TickPlacement="Outside"
+                          Value="{x:Bind RainbowSourceSpatialFrequency, Mode=TwoWay}"/>
                   <TextBlock Text="Frequency"/>
                 </StackPanel>
 
                 <StackPanel Style="{StaticResource SettingStackPanel}">
-                  <Slider/>
+                  <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.01"
+                          Value="{x:Bind RainbowSourceAngularVelocity, Mode=TwoWay}"/>
                   <TextBlock Text="Speed"/>
                 </StackPanel>
               </StackPanel>
