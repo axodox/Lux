@@ -23,6 +23,9 @@ namespace Lux::Service
 
     void OnSettingChanged(Observable::observable_object<Configuration::LightConfigurationProperty>* object, Configuration::LightConfigurationProperty propertyKey);
 
+    void ApplyStaticSourceSettings();
+    void ApplyRainbowSourceSettings();
+
     std::unique_ptr<Controllers::AdaLightController> _controller;
     std::unique_ptr<Sources::LightSource> _source;
     std::vector<std::unique_ptr<Colors::ColorProcessor>> _colorProcessors;

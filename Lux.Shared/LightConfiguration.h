@@ -2,6 +2,7 @@
 #include "ObservableObject.h"
 #include "DeviceSettings.h"
 #include "StaticSourceSettings.h"
+#include "RainbowSourceSettings.h"
 #include "Colors.h"
 
 namespace Lux::Configuration
@@ -19,7 +20,8 @@ namespace Lux::Configuration
     None,
     Device,
     LightSource,
-    StaticSourceOptions
+    StaticSourceOptions,
+    RainbowSourceOptions
   };
 
   struct LightConfiguration : public Observable::observable_object<LightConfigurationProperty>
@@ -28,6 +30,7 @@ namespace Lux::Configuration
     Observable::observable_property<LightSourceKind> LightSource;
 
     Observable::observable_property<StaticSourceSettings> StaticSourceOptions;
+    Observable::observable_property<RainbowSourceSettings> RainbowSourceOptions;
 
     LightConfiguration(const callback_t& callback);
   };

@@ -124,15 +124,11 @@ namespace Lux::Service
       switch (sourceKind)
       {
       case LightSourceKind::Static:
-      {
-        auto staticSource = static_cast<StaticSource*>(_source.get());
-        staticSource->Color(_server.root()->StaticSourceOptions->Color);
+        ApplyStaticSourceSettings();
         break;
-      }
       case LightSourceKind::Rainbow:
-      {
+        ApplyRainbowSourceSettings();
         break;
-      }
       }
     }
   }
@@ -166,14 +162,33 @@ namespace Lux::Service
       ApplySourceSettings();
       break;
     case LightConfigurationProperty::StaticSourceOptions:
-      if (_source && _source->Kind() == LightSourceKind::Static)
-      {
-        static_cast<StaticSource*>(_source.get())->Color(_server.root()->StaticSourceOptions->Color);
-      }
+      ApplyStaticSourceSettings();
+      break;
+    case LightConfigurationProperty::RainbowSourceOptions:
+      ApplyRainbowSourceSettings();
       break;
     default:
 
       break;
+    }
+  }
+
+  void LightService::ApplyStaticSourceSettings()
+  {
+    if (_source && _source->Kind() == LightSourceKind::Static)
+    {
+      auto staticSource = static_cast<StaticSource*>(_source.get());
+      staticSource->Color(_server.root()->StaticSourceOptions->Color);
+    }
+  }
+
+  void LightService::ApplyRainbowSourceSettings()
+  {
+    if (_source && _source->Kind() == LightSourceKind::Rainbow)
+    {
+      auto rainbowSource = static_cast<RainbowSource*>(_source.get());
+      rainbowSource->SpatialFrequency(_server.root()->RainbowSourceOptions->SpatialFrequency);
+      rainbowSource->AngularVelocity(_server.root()->RainbowSourceOptions->AngularVelocity);
     }
   }
 

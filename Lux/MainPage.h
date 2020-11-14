@@ -23,6 +23,11 @@ namespace winrt::Lux::implementation
     Windows::UI::Color StaticSourceColor();
     void StaticSourceColor(Windows::UI::Color color);
 
+    uint8_t RainbowSourceSpatialFrequency();
+    void RainbowSourceSpatialFrequency(uint8_t value);
+    float RainbowSourceAngularVelocity();
+    void RainbowSourceAngularVelocity(float value);
+
     void OnSourceChecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& value);

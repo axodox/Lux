@@ -149,6 +149,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h">
       <Filter>Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -224,6 +227,9 @@
       <Filter>Infrastructure</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>

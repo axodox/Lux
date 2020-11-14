@@ -60,21 +60,20 @@ namespace Lux::Sources
     auto count = settings->SamplePoints.size();
     if (count == 0u) return;
 
-    auto now = steady_clock::now();
-    auto elapsedTime = duration_cast<duration<float>>(now - _lastRefresh);
+    auto currentRefresh = steady_clock::now();
+    auto elapsedTime = duration_cast<duration<float>>(currentRefresh - _lastRefresh);
+    auto currentAngle = _lastAngle + elapsedTime.count() * _angularVelocity;
 
-    auto rotation = _lastAngle + elapsedTime.count() * _angularVelocity;
+    _lastRefresh = currentRefresh;
+    _lastAngle = currentAngle;
 
     vector<rgb> colors;
     colors.reserve(count);
 
     for (auto& light : settings->SamplePoints)
     {
-      auto position = light;
-      position.x *= settings->AspectRatio;
-
-      auto angle = deg(wrap(_spatialFrequency * atan2(position.y - 0.5f, position.x - 0.5f) + rotation, 0.f, 2 * float(M_PI)));
-      colors.push_back(hsl{ angle, 1.f, 0.5f });
+      auto rotation = deg(wrap(_spatialFrequency * (atan2(light.y - 0.5f, settings->AspectRatio * (light.x - 0.5f)) + float(M_PI_2)) + currentAngle, 0.f, 2 * float(M_PI)));
+      colors.push_back(hsl{ rotation, 1.f, 0.5f });
     }
 
     EmitColors(move(colors));
