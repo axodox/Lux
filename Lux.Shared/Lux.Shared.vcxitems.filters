@@ -51,9 +51,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h">
       <Filter>Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h">
-      <Filter>Observable</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h">
       <Filter>Infrastructure</Filter>
@@ -149,6 +146,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IO.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -161,9 +161,6 @@
       <Filter>Observable</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp">
-      <Filter>Observable</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp">
       <Filter>Observable</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp">
@@ -225,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)IO.cpp">
       <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp">
+      <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

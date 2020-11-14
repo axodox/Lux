@@ -41,12 +41,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableVector.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Openable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h" />
@@ -71,11 +71,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableVector.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ResetEvent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp" />

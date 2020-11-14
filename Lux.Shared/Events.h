@@ -10,6 +10,14 @@ namespace Lux::Events
     return[member = std::mem_fn(memberFunction), instance](auto&&... args){ return member(*instance, std::forward<decltype(args)>(args)...); };
   }
 
+  template <typename TFunc, typename... TBoundArgs>
+  static auto bind_func(TFunc&& func, TBoundArgs... boundArgs)
+  {
+    return[function = std::mem_fn(func), boundArgs...](auto&&... args){ 
+      return function(boundArgs..., std::forward<decltype(args)>(args)...);
+    };
+  }
+
   class event_handler_collection_base
   {
   public:

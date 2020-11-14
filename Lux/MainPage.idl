@@ -13,6 +13,8 @@ namespace Lux
     Boolean IsSourceRainbow{ get; };
     Boolean IsSourceContextAware{ get; };
 
+    Windows.UI.Color StaticSourceColor;
+
     void ConfigureDevice();
   }
 }

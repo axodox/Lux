@@ -12,7 +12,7 @@ namespace Lux::Observable
     Events::event_owner _events;
 
   public:
-    Events::event_publisher<observable_client<T>*> is_connected_changed;
+    Events::event_publisher<observable_client<T>*> is_connected_changed, full_data_reset;
 
   private:
     std::shared_ptr<Threading::dispatcher> _dispatcher;
@@ -27,11 +27,10 @@ namespace Lux::Observable
       _is_refreshing = true;
       if (_is_initializing)
       {
-        _dispatcher->invoke([&] {
-          message.read(_root);
-          }).get();
+        _dispatcher->invoke([&] { message.read(_root); }).get();
 
-          _is_initializing = false;
+        _events.raise(full_data_reset, this);
+        _is_initializing = false;
       }
       else
       {
@@ -73,7 +72,8 @@ namespace Lux::Observable
       const std::shared_ptr<Threading::dispatcher>& dispatcher) :
       _messaging_client(std::move(messagingServer)),
       _dispatcher(dispatcher),
-      is_connected_changed(_events)
+      is_connected_changed(_events),
+      full_data_reset(_events)
     {
       _root.change_reported(Events::no_revoke, [&](observable_root<T>*, std::unique_ptr<change>&& change) { on_change_reported(std::move(change)); });
       _messaging_client->connected(Events::no_revoke, [&](Networking::messaging_client*, Networking::messaging_channel* channel) { on_connected(channel); });
