@@ -45,6 +45,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Openable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Rect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />

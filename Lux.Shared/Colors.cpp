@@ -130,6 +130,16 @@ namespace Lux::Graphics
     };
   }
 
+  rgb lerp(const rgb& a, const rgb& b, float factor)
+  {
+    auto invFactor = 1 - factor;
+    return {
+      uint8_t(a.r * invFactor + b.r * factor),
+      uint8_t(a.g * invFactor + b.g * factor),
+      uint8_t(a.b * invFactor + b.b * factor)
+    };
+  }
+
   std::array<float, 256> make_gamma(float gamma, float min)
   {
     std::array<float, 256> values;

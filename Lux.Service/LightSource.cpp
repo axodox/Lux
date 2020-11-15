@@ -21,6 +21,7 @@ namespace Lux::Sources
   void LightSource::Settings(DisplaySettings&& value)
   {
     _settings = make_unique<DisplaySettings>(move(value));
+    OnSettingsChanged();
   }
 
   void LightSource::EmitColors(vector<rgb>&& colors)

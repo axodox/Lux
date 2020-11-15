@@ -18,6 +18,8 @@ namespace Lux::Graphics
     operator winrt::Windows::UI::Color() const;
   };
 
+  rgb lerp(const rgb& a, const rgb& b, float factor);
+
   struct hsl
   {
     float h, s, l; //h: [0..360], s: [0..1], l: [0..1]

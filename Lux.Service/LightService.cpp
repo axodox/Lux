@@ -4,6 +4,7 @@
 #include "FileStream.h"
 #include "StaticSource.h"
 #include "RainbowSource.h"
+#include "DesktopSource.h"
 #include "DisplaySettings.h"
 
 using namespace Lux;
@@ -112,6 +113,10 @@ namespace Lux::Service
         break;
       case LightSourceKind::Rainbow:
         _source = make_unique<RainbowSource>();
+        isNew = true;
+        break;
+      case LightSourceKind::Desktop:
+        _source = make_unique<DesktopSource>();
         isNew = true;
         break;
       }

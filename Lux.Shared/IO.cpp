@@ -1,12 +1,27 @@
 #include "pch.h"
 #include "IO.h"
 
+using namespace std;
+using namespace std::filesystem;
+using namespace winrt;
+using namespace winrt::Windows::Storage;
+
 namespace Lux::IO
 {
-  std::filesystem::path app_folder()
+  path app_folder()
   {
-    std::wstring filePath(MAX_PATH, L'\0');
+    wstring filePath(MAX_PATH, L'\0');
     GetModuleFileName(nullptr, filePath.data(), (DWORD)filePath.size());
-    return std::filesystem::path(filePath).parent_path();
+    return path(filePath).parent_path();
+  }
+  
+  vector<uint8_t> load_file(const path& path)
+  {
+    auto file = StorageFile::GetFileFromPathAsync(path.c_str()).get();
+    auto buffer = FileIO::ReadBufferAsync(file).get();
+    
+    vector<uint8_t> result(buffer.Length());
+    memcpy(result.data(), buffer.data(), result.size());
+    return result;
   }
 }

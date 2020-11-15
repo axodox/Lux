@@ -11,6 +11,8 @@ int WINAPI wWinMain(
   _In_ LPWSTR /*lpCmdLine*/,
   _In_ int /*nShowCmd*/)
 {
+  check_bool(SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2));
+
   init_apartment();
   LightService{}.Run();
   return 0;
