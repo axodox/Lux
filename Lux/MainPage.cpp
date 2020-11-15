@@ -49,7 +49,7 @@ namespace winrt::Lux::implementation
   {
     if (_client->is_connected())
     {
-      return L"Pending";
+      return _client->root()->IsConnected ? L"Connected" : L"Disconnected";
     }
     else
     {
@@ -108,6 +108,9 @@ namespace winrt::Lux::implementation
   {
     switch (propertyKey)
     {
+    case LightConfigurationProperty::IsConnected:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"ConnectionState"));
+      break;
     case LightConfigurationProperty::Brightness:
       _propertyChanged(*this, PropertyChangedEventArgs(L"Brightness"));
       break;

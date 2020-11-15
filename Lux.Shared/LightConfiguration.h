@@ -25,7 +25,8 @@ namespace Lux::Configuration
     ContextAwareOptions,
     Brightness,
     BrightnessLimit,
-    Gamma
+    Gamma,
+    IsConnected
   };
 
   struct LightConfiguration : public Observable::observable_object<LightConfigurationProperty>
@@ -39,6 +40,8 @@ namespace Lux::Configuration
     Observable::observable_property<uint8_t> Brightness;
     Observable::observable_property<uint8_t> BrightnessLimit;
     Observable::observable_property<winrt::Windows::Foundation::Numerics::float3> Gamma;
+
+    Observable::observable_property<bool> IsConnected;
 
     LightConfiguration(const callback_t& callback);
   };
