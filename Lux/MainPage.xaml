@@ -81,7 +81,8 @@
     <StackPanel Grid.Row="2" Margin="0,0,16,16" CornerRadius="6" Padding="12,9" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}" BorderThickness="{ThemeResource ToggleButtonBorderThemeThickness}" Orientation="Horizontal" Height="48">
       <FontIcon FontFamily="Segoe MDL2 Assets"
                 Glyph="&#xEC8A;" VerticalAlignment="Center" FontSize="24"/>
-      <Slider Width="100" Margin="9,-3" VerticalAlignment="Center"/>
+      <Slider Width="100" Margin="9,-3" VerticalAlignment="Center" Maximum="255"
+              Value="{x:Bind Brightness, Mode=TwoWay}"/>
       <FontIcon FontFamily="Segoe MDL2 Assets"
                 Glyph="&#xE706;" VerticalAlignment="Center" FontSize="24"/>
     </StackPanel>

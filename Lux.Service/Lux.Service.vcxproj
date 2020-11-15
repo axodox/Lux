@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="AdaLightController.h" />
     <ClInclude Include="BrightnessLimiter.h" />
+    <ClInclude Include="BrightnessSetter.h" />
     <ClInclude Include="ColorProcessor.h" />
     <ClInclude Include="GammaCorrector.h" />
     <ClInclude Include="LightController.h" />
@@ -135,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="AdaLightController.cpp" />
     <ClCompile Include="BrightnessLimiter.cpp" />
+    <ClCompile Include="BrightnessSetter.cpp" />
     <ClCompile Include="GammaCorrector.cpp" />
     <ClCompile Include="LightController.cpp" />
     <ClCompile Include="LightService.cpp" />
