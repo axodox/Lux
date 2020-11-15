@@ -19,6 +19,9 @@ namespace winrt::Lux::implementation
     bool IsGammaLocked();
     void IsGammaLocked(bool value);
 
+    uint8_t BrightnessLimit();
+    void BrightnessLimit(uint8_t value);
+
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
     void PropertyChanged(winrt::event_token const& token) noexcept;
 

@@ -101,6 +101,18 @@ namespace winrt::Lux::implementation
     _propertyChanged(*this, PropertyChangedEventArgs(L"IsGammaLocked"));
   }
 
+  uint8_t SettingsViewModel::BrightnessLimit()
+  {
+    return _client->root()->BrightnessLimit;
+  }
+
+  void SettingsViewModel::BrightnessLimit(uint8_t value)
+  {
+    if (_client->root()->BrightnessLimit == value) return;
+
+    _client->root()->BrightnessLimit = value;
+  }
+
   winrt::event_token SettingsViewModel::PropertyChanged(PropertyChangedEventHandler const& handler)
   {
     return _propertyChanged.add(handler);

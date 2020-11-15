@@ -94,5 +94,10 @@ namespace winrt::Lux::implementation
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceRainbow"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceContextAware"));
     }
+
+    if (eventArgs.PropertyName() == L"")
+    {
+      _propertyChanged(*this, PropertyChangedEventArgs(L""));
+    }
   }
 }

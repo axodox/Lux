@@ -6,6 +6,8 @@
 #include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
 #include "SettingsView.g.h"
 
+#include "BooleanToStringSwitchConverter.h"
+
 namespace winrt::Lux::implementation
 {
   struct SettingsView : SettingsViewT<SettingsView>

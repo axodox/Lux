@@ -108,15 +108,7 @@ namespace winrt::Lux::implementation
   {
     switch (propertyKey)
     {
-    case LightConfigurationProperty::LightSource:
-      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceOff"));
-      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceStatic"));
-      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceRainbow"));
-      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceContextAware"));
-      break;
-    case LightConfigurationProperty::StaticSourceOptions:
-      _propertyChanged(*this, PropertyChangedEventArgs(L"StaticSourceColor"));
-      break;
+
     }
   }
 
