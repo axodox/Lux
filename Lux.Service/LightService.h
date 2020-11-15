@@ -7,6 +7,8 @@
 #include "AdaLightController.h"
 #include "LightSource.h"
 #include "ColorProcessor.h"
+#include "GammaCorrector.h"
+#include "BrightnessLimiter.h"
 
 namespace Lux::Service
 {
@@ -18,6 +20,13 @@ namespace Lux::Service
     winrt::Windows::System::Threading::ThreadPoolTimer _timer;
     bool _isDirty = false;
     
+    std::unique_ptr<Controllers::AdaLightController> _controller;
+    std::unique_ptr<Sources::LightSource> _source;
+    Colors::GammaCorrector _gammaCorrector;
+    Colors::BrightnessLimiter _brightnessLimiter;
+    std::vector<Colors::ColorProcessor*> _colorProcessors;
+    std::mutex _mutex;
+
     void LoadSettings();
     void SaveSettings(const winrt::Windows::System::Threading::ThreadPoolTimer& timer);
 
@@ -25,11 +34,6 @@ namespace Lux::Service
 
     void ApplyStaticSourceSettings();
     void ApplyRainbowSourceSettings();
-
-    std::unique_ptr<Controllers::AdaLightController> _controller;
-    std::unique_ptr<Sources::LightSource> _source;
-    std::vector<std::unique_ptr<Colors::ColorProcessor>> _colorProcessors;
-    std::mutex _mutex;
 
     void ApplyContollerSettings();
     void ApplySourceSettings();

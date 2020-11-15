@@ -4,8 +4,6 @@
 #include "FileStream.h"
 #include "StaticSource.h"
 #include "RainbowSource.h"
-#include "GammaCorrector.h"
-#include "BrightnessLimiter.h"
 #include "DisplaySettings.h"
 
 using namespace Lux;
@@ -31,8 +29,8 @@ namespace Lux::Service
     _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) },
     _controller(make_unique<AdaLightController>())
   {
-    _colorProcessors.push_back(make_unique<BrightnessLimiter>());
-    _colorProcessors.push_back(make_unique<GammaCorrector>());
+    _colorProcessors.push_back(&_brightnessLimiter);
+    _colorProcessors.push_back(&_gammaCorrector);
 
     LoadSettings();
     _server.root()->property_changed(no_revoke, member_func(this, &LightService::OnSettingChanged));
@@ -166,6 +164,12 @@ namespace Lux::Service
       break;
     case LightConfigurationProperty::RainbowSourceOptions:
       ApplyRainbowSourceSettings();
+      break;
+    case LightConfigurationProperty::BrightnessLimit:
+      _brightnessLimiter.MaxBrightness(_server.root()->BrightnessLimit);
+      break;
+    case LightConfigurationProperty::Gamma:
+      _gammaCorrector.Gamma(_server.root()->Gamma);
       break;
     default:
 
