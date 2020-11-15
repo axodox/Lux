@@ -16,6 +16,8 @@ namespace Lux::Sources
   protected:
     void EmitColors(std::vector<Graphics::rgb>&& colors);
 
+    virtual void OnSettingsChanged() { }
+
   public:
     Events::event_publisher<LightSource*, std::vector<Graphics::rgb>&&> ColorsEmitted;
 

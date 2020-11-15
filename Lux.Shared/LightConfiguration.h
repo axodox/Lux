@@ -12,7 +12,7 @@ namespace Lux::Configuration
     Off,
     Static,
     Rainbow,
-    ContextAware
+    Desktop
   };
 
   enum class LightConfigurationProperty : uint16_t

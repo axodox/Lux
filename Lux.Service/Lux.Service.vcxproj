@@ -125,6 +125,18 @@
     <ClInclude Include="BrightnessLimiter.h" />
     <ClInclude Include="BrightnessSetter.h" />
     <ClInclude Include="ColorProcessor.h" />
+    <ClInclude Include="D3D11ConstantBuffer.h" />
+    <ClInclude Include="D3D11Buffer.h" />
+    <ClInclude Include="D3D11ComputeShader.h" />
+    <ClInclude Include="D3D11DesktopDuplication.h" />
+    <ClInclude Include="D3D11Renderer.h" />
+    <ClInclude Include="D3D11Resource.h" />
+    <ClInclude Include="D3D11SamplerState.h" />
+    <ClInclude Include="D3D11StructuredBuffer.h" />
+    <ClInclude Include="D3D11Texture2D.h" />
+    <ClInclude Include="D3D11ShaderStage.h" />
+    <ClInclude Include="DesktopSource.h" />
+    <ClInclude Include="DXGIOutput.h" />
     <ClInclude Include="GammaCorrector.h" />
     <ClInclude Include="LightController.h" />
     <ClInclude Include="LightService.h" />
@@ -137,6 +149,17 @@
     <ClCompile Include="AdaLightController.cpp" />
     <ClCompile Include="BrightnessLimiter.cpp" />
     <ClCompile Include="BrightnessSetter.cpp" />
+    <ClCompile Include="D3D11Buffer.cpp" />
+    <ClCompile Include="D3D11ComputeShader.cpp" />
+    <ClCompile Include="D3D11ConstantBuffer.cpp" />
+    <ClCompile Include="D3D11DesktopDuplication.cpp" />
+    <ClCompile Include="D3D11Renderer.cpp" />
+    <ClCompile Include="D3D11Resource.cpp" />
+    <ClCompile Include="D3D11SamplerState.cpp" />
+    <ClCompile Include="D3D11StructuredBuffer.cpp" />
+    <ClCompile Include="D3D11Texture2D.cpp" />
+    <ClCompile Include="DesktopSource.cpp" />
+    <ClCompile Include="DXGIOutput.cpp" />
     <ClCompile Include="GammaCorrector.cpp" />
     <ClCompile Include="LightController.cpp" />
     <ClCompile Include="LightService.cpp" />
@@ -151,6 +174,18 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DesktopSamplingComputeShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
