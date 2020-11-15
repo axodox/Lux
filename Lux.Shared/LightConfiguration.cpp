@@ -15,6 +15,7 @@ namespace Lux::Configuration
 
     Brightness(make_property(LightConfigurationProperty::Brightness, 255ui8)),
     BrightnessLimit(make_property(LightConfigurationProperty::BrightnessLimit, 168ui8)),
-    Gamma(make_property(LightConfigurationProperty::Gamma, float3(1.6f, 1.5f, 1.6f)))
+    Gamma(make_property(LightConfigurationProperty::Gamma, float3(1.6f, 1.5f, 1.6f))),
+    IsConnected(make_property(LightConfigurationProperty::IsConnected, false))
   { }
 }

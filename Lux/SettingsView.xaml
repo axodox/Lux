@@ -14,7 +14,7 @@
     <Grid Margin="12,0">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>        
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
@@ -31,26 +31,26 @@
           <Setter Property="StepFrequency" Value="0.05"/>
         </Style>
       </Grid.Resources>
-      <TextBlock Text="Gamma" Grid.ColumnSpan="3" TextAlignment="Center" Margin="0,0,0,12"/>
+      <ToggleButton Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,9,0,12"
+                    FontFamily="Segoe MDL2 Assets" CornerRadius="6"
+                    IsChecked="{x:Bind ViewModel.IsGammaLocked, Mode=TwoWay}"                    
+                    Content="{x:Bind ViewModel.IsGammaLocked, Mode=OneWay, Converter={StaticResource BooleanToStringSwitchConverter}, ConverterParameter='&#xE72E;|&#xE785;'}"/>
       <Slider Grid.Row="1" Grid.Column="0" Value="{x:Bind ViewModel.GammaR, Mode=TwoWay}"/>
       <Slider Grid.Row="1" Grid.Column="1" Value="{x:Bind ViewModel.GammaG, Mode=TwoWay}"/>
       <Slider Grid.Row="1" Grid.Column="2" Value="{x:Bind ViewModel.GammaB, Mode=TwoWay}"/>
       <TextBlock Text="R" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,12,0,0"/>
       <TextBlock Text="G" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Margin="0,12,0,0"/>
       <TextBlock Text="B" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Margin="0,12,0,0"/>
-      <ToggleButton Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,12,0,0"
-                    FontFamily="Segoe MDL2 Assets" CornerRadius="6"
-                    IsChecked="{x:Bind ViewModel.IsGammaLocked, Mode=TwoWay}"                    
-                    Content="{x:Bind ViewModel.IsGammaLocked, Mode=OneWay, Converter={StaticResource BooleanToStringSwitchConverter}, ConverterParameter='&#xE72E;|&#xE785;'}"/>
+      <TextBlock Text="Gamma" Grid.Row="3" Grid.ColumnSpan="3" TextAlignment="Center"/>
     </Grid>
 
     <Grid Margin="12,0">
       <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <TextBlock Text="Brightness&#13;&#10;Limit" TextAlignment="Center" Margin="0,0,0,12"/>
-      <Slider Grid.Row="1" Value="{x:Bind ViewModel.BrightnessLimit, Mode=TwoWay}" Maximum="255" Orientation="Vertical" HorizontalAlignment="Center"/>
+      <Slider Grid.Row="0" Value="{x:Bind ViewModel.BrightnessLimit, Mode=TwoWay}" Maximum="255" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,48,0,9"/>
+      <TextBlock Grid.Row="1" Text="Brightness&#13;&#10;Limit" TextAlignment="Center"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -33,6 +33,10 @@ namespace Lux::Service
     _colorProcessors.push_back(&_brightnessLimiter);
     _colorProcessors.push_back(&_gammaCorrector);
 
+    _controller->IsConnectedChanged(no_revoke, [&](LightController*) { 
+      _server.root()->IsConnected = _controller->IsConnected();
+      });
+
     LoadSettings();
     _server.root()->property_changed(no_revoke, member_func(this, &LightService::OnSettingChanged));
     _server.open();
