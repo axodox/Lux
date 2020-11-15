@@ -8,6 +8,8 @@ namespace Lux
     Boolean IsConnected{ get; };
     String ConnectionState{ get; };
 
+    UInt8 Brightness;
+
     Boolean IsShowingSettings;
 
     void ConfigureDevice();

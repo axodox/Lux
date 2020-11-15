@@ -29,6 +29,9 @@
     <ClCompile Include="LightService.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="BrightnessSetter.cpp">
+      <Filter>Colors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="LightService.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BrightnessSetter.h">
+      <Filter>Colors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

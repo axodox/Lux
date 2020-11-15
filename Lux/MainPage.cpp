@@ -108,7 +108,9 @@ namespace winrt::Lux::implementation
   {
     switch (propertyKey)
     {
-
+    case LightConfigurationProperty::Brightness:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"Brightness"));
+      break;
     }
   }
 
@@ -159,6 +161,17 @@ namespace winrt::Lux::implementation
     {
       co_await messageDialog.ShowAsync();
     }
+  }
+
+  uint8_t MainPage::Brightness()
+  {
+    return _client->root()->Brightness;
+  }
+
+  void MainPage::Brightness(uint8_t value)
+  {
+    if (_client->root()->Brightness == value) return;
+    _client->root()->Brightness = value;
   }
 
   winrt::event_token MainPage::PropertyChanged(PropertyChangedEventHandler const& value)

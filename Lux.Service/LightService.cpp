@@ -29,6 +29,7 @@ namespace Lux::Service
     _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) },
     _controller(make_unique<AdaLightController>())
   {
+    _colorProcessors.push_back(&_brightnessSetter);
     _colorProcessors.push_back(&_brightnessLimiter);
     _colorProcessors.push_back(&_gammaCorrector);
 
@@ -164,6 +165,9 @@ namespace Lux::Service
       break;
     case LightConfigurationProperty::RainbowSourceOptions:
       ApplyRainbowSourceSettings();
+      break;
+    case LightConfigurationProperty::Brightness:
+      _brightnessSetter.Brightness(_server.root()->Brightness);
       break;
     case LightConfigurationProperty::BrightnessLimit:
       _brightnessLimiter.MaxBrightness(_server.root()->BrightnessLimit);

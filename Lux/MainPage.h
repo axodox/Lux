@@ -15,6 +15,9 @@ namespace winrt::Lux::implementation
 
     fire_and_forget ConfigureDevice();
 
+    uint8_t Brightness();
+    void Brightness(uint8_t value);
+
     bool IsShowingSettings();
     void IsShowingSettings(bool value);
 
