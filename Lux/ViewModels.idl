@@ -31,8 +31,10 @@ namespace Lux
     Single GammaG;
     Single GammaB;
     Boolean IsGammaLocked;
-
+        
     UInt8 BrightnessLimit;
+
+    Single Saturation;
 
     SettingsViewModel();
   }

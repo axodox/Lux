@@ -10,9 +10,6 @@
     <ClCompile Include="LightController.cpp">
       <Filter>Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="GammaCorrector.cpp">
-      <Filter>Colors</Filter>
-    </ClCompile>
     <ClCompile Include="LightSource.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="ColorCorrector.cpp">
+      <Filter>Colors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -104,9 +104,6 @@
       <Filter>Controllers</Filter>
     </ClInclude>
     <ClInclude Include="ColorProcessor.h">
-      <Filter>Colors</Filter>
-    </ClInclude>
-    <ClInclude Include="GammaCorrector.h">
       <Filter>Colors</Filter>
     </ClInclude>
     <ClInclude Include="LightSource.h">
@@ -156,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="D3D11ConstantBuffer.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorCorrector.h">
+      <Filter>Colors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

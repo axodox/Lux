@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GammaCorrector.h"
+#include "ColorCorrector.h"
 
 using namespace DirectX;
 using namespace std;
@@ -8,56 +8,76 @@ using namespace winrt::Windows::Foundation::Numerics;
 
 namespace Lux::Colors
 {
-  GammaCorrector::GammaCorrector()
+  ColorCorrector::ColorCorrector()
   {
     Gamma({ 1.6f, 1.5f, 1.6f });
+    Saturation(1.f);
   }
 
-  float3 GammaCorrector::Gamma() const
+  float3 ColorCorrector::Gamma() const
   {
     return _gamma;
   }
 
-  void GammaCorrector::Gamma(const float3& value)
+  void ColorCorrector::Gamma(const float3& value)
   {
     _gamma = value;
     RebuildGamma();
   }
 
-  float GammaCorrector::Brightness() const
+  float ColorCorrector::Saturation() const
+  {
+    return _saturation;
+  }
+
+  void ColorCorrector::Saturation(float value)
+  {
+    _saturation = value;
+  }
+
+  float ColorCorrector::Brightness() const
   {
     return _brightness;
   }
 
-  void GammaCorrector::Brightness(float value)
+  void ColorCorrector::Brightness(float value)
   {
     _brightness = value;
     RebuildGamma();
   }
 
-  float GammaCorrector::MaxBrightness() const
+  float ColorCorrector::MaxBrightness() const
   {
     return _maxBrightness;
   }
 
-  void GammaCorrector::MaxBrightness(float value)
+  void ColorCorrector::MaxBrightness(float value)
   {
     _maxBrightness = value;
   }
 
-  void GammaCorrector::RebuildGamma()
+  void ColorCorrector::RebuildGamma()
   {
     _gammaMappingR = make_gamma(_gamma.x, _brightness);
     _gammaMappingG = make_gamma(_gamma.y, _brightness);
     _gammaMappingB = make_gamma(_gamma.z, _brightness);
   }
 
-  void GammaCorrector::ProcessColors(vector<rgb>& colors)
+  void ColorCorrector::ProcessColors(vector<rgb>& colors)
   {
-    //Brightness limit
+    //Brightness limit & saturation adjustment
+    auto saturation = 1.f / (4.f * _saturation);
+
     XMVECTOR sum{};
     for (auto& color : colors)
     {
+      if (saturation != 1.f)
+      {
+        hsl hslColor = color;
+        hslColor.s = saturation < 10 ? pow(hslColor.s, saturation) : 0.f ;
+        color = hslColor;
+      }
+
       sum = XMVectorAdd(XMVectorSet(
         _gammaMappingR[color.r],
         _gammaMappingG[color.g],

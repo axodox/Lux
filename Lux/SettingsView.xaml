@@ -52,5 +52,14 @@
       <Slider Grid.Row="0" Value="{x:Bind ViewModel.BrightnessLimit, Mode=TwoWay}" Maximum="255" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,48,0,9"/>
       <TextBlock Grid.Row="1" Text="Brightness&#13;&#10;Limit" TextAlignment="Center"/>
     </Grid>
+
+    <Grid Margin="12,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Slider Grid.Row="0" Value="{x:Bind ViewModel.Saturation, Mode=TwoWay}" Maximum="1" StepFrequency="0.05" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,48,0,9"/>
+      <TextBlock Grid.Row="1" Text="Saturation" TextAlignment="Center"/>
+    </Grid>
   </StackPanel>
 </UserControl>

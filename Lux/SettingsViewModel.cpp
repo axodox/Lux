@@ -109,8 +109,18 @@ namespace winrt::Lux::implementation
   void SettingsViewModel::BrightnessLimit(uint8_t value)
   {
     if (_client->root()->BrightnessLimit == value) return;
-
     _client->root()->BrightnessLimit = value;
+  }
+
+  float SettingsViewModel::Saturation()
+  {
+    return _client->root()->Saturation;
+  }
+
+  void SettingsViewModel::Saturation(float value)
+  {
+    if (_client->root()->Saturation == value) return;
+    _client->root()->Saturation = value;
   }
 
   winrt::event_token SettingsViewModel::PropertyChanged(PropertyChangedEventHandler const& handler)
@@ -141,6 +151,9 @@ namespace winrt::Lux::implementation
       break;
     case LightConfigurationProperty::BrightnessLimit:
       _propertyChanged(*this, PropertyChangedEventArgs(L"BrightnessLimit"));
+      break;
+    case LightConfigurationProperty::Saturation:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"Saturation"));
       break;
     }
   }
