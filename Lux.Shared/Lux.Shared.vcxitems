@@ -18,7 +18,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BitwiseOperators.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CallAggregator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FileStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IO.h" />
@@ -63,6 +65,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />

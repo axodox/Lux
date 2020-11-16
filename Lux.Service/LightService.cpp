@@ -137,43 +137,64 @@ namespace Lux::Service
       case LightSourceKind::Rainbow:
         ApplyRainbowSourceSettings();
         break;
+      case LightSourceKind::Desktop:
+        ApplyDesktopSourceSettings();
+        break;
       }
     }
   }
 
   void LightService::OnColorsEmitted(Sources::LightSource* /*source*/, std::vector<Graphics::rgb>&& colors)
   {
-    lock_guard<mutex> lock(_mutex);
-    auto output = move(colors);
-
-    //Apply color processors
-    for (auto& processor : _colorProcessors)
+    if (_mutex.try_lock())
     {
-      processor->ProcessColors(output);
-    }
+      try
+      {
+        auto output = move(colors);
 
-    _controller->Push(output);
+        //Apply color processors
+        for (auto& processor : _colorProcessors)
+        {
+          processor->ProcessColors(output);
+        }
+
+        _controller->Push(output);
+      }
+      catch (...)
+      {
+        //log
+      }
+      _mutex.unlock();
+    }
   }
 
   void LightService::OnSettingChanged(observable_object<LightConfigurationProperty>* /*object*/, LightConfigurationProperty propertyKey)
   {
-    lock_guard<mutex> lock(_mutex);
     _isDirty = true;
 
     switch (propertyKey)
     {
     case LightConfigurationProperty::Device:
+    {
+      lock_guard<mutex> lock(_mutex);
       ApplyContollerSettings();
       ApplySourceSettings();
       break;
+    }
     case LightConfigurationProperty::LightSource:
+    {
+      lock_guard<mutex> lock(_mutex);
       ApplySourceSettings();
       break;
+    }
     case LightConfigurationProperty::StaticSourceOptions:
       ApplyStaticSourceSettings();
       break;
     case LightConfigurationProperty::RainbowSourceOptions:
       ApplyRainbowSourceSettings();
+      break;
+    case LightConfigurationProperty::DesktopSourceOptions:
+      ApplyDesktopSourceSettings();
       break;
     case LightConfigurationProperty::Brightness:
       _brightnessSetter.Brightness(_server.root()->Brightness);
@@ -206,6 +227,16 @@ namespace Lux::Service
       auto rainbowSource = static_cast<RainbowSource*>(_source.get());
       rainbowSource->SpatialFrequency(_server.root()->RainbowSourceOptions->SpatialFrequency);
       rainbowSource->AngularVelocity(_server.root()->RainbowSourceOptions->AngularVelocity);
+    }
+  }
+
+  void LightService::ApplyDesktopSourceSettings()
+  {
+    if (_source && _source->Kind() == LightSourceKind::Desktop)
+    {
+      auto desktopSource = static_cast<DesktopSource*>(_source.get());
+      desktopSource->TemporalAveraging(_server.root()->DesktopSourceOptions->TemporalAveraging);
+      desktopSource->SampleSize(_server.root()->DesktopSourceOptions->SampleSize);
     }
   }
 

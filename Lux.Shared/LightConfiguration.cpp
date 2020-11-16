@@ -12,6 +12,7 @@ namespace Lux::Configuration
 
     StaticSourceOptions(make_property<StaticSourceSettings>(LightConfigurationProperty::StaticSourceOptions)),
     RainbowSourceOptions(make_property<RainbowSourceSettings>(LightConfigurationProperty::RainbowSourceOptions)),
+    DesktopSourceOptions(make_property<DesktopSourceSettings>(LightConfigurationProperty::DesktopSourceOptions)),
 
     Brightness(make_property(LightConfigurationProperty::Brightness, 255ui8)),
     BrightnessLimit(make_property(LightConfigurationProperty::BrightnessLimit, 168ui8)),

@@ -5,7 +5,7 @@ namespace Lux
     Off,
     Static,
     Rainbow,
-    ContextAware
+    Desktop
   };
 
   [default_interface]
@@ -17,6 +17,9 @@ namespace Lux
 
     UInt8 RainbowSourceSpatialFrequency;
     Single RainbowSourceAngularVelocity;
+
+    Single DesktopSourceTemporalAveraging;
+    Single DesktopSourceSampleSize;
 
     SourcesViewModel();
   }

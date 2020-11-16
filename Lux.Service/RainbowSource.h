@@ -1,5 +1,6 @@
 #pragma once
 #include "LightSource.h"
+#include "BackgroundThread.h"
 
 namespace Lux::Sources
 {
@@ -7,7 +8,6 @@ namespace Lux::Sources
   {
   public:
     RainbowSource();
-    virtual ~RainbowSource();
 
     uint8_t SpatialFrequency() const;
     void SpatialFrequency(uint8_t value);
@@ -22,9 +22,8 @@ namespace Lux::Sources
     float _angularVelocity;
     std::chrono::steady_clock::time_point _lastRefresh;
     float _lastAngle;
-    winrt::Windows::System::Threading::ThreadPoolTimer _timer;
+    Threading::background_thread _worker;
     
-
-    void OnTick(const winrt::Windows::System::Threading::ThreadPoolTimer& timer);
+    void Worker();
   };
 }

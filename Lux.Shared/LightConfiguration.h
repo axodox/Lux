@@ -3,6 +3,7 @@
 #include "DeviceSettings.h"
 #include "StaticSourceSettings.h"
 #include "RainbowSourceSettings.h"
+#include "DesktopSourceSettings.h"
 #include "Colors.h"
 
 namespace Lux::Configuration
@@ -22,7 +23,7 @@ namespace Lux::Configuration
     LightSource,
     StaticSourceOptions,
     RainbowSourceOptions,
-    ContextAwareOptions,
+    DesktopSourceOptions,
     Brightness,
     BrightnessLimit,
     Gamma,
@@ -36,6 +37,7 @@ namespace Lux::Configuration
 
     Observable::observable_property<StaticSourceSettings> StaticSourceOptions;
     Observable::observable_property<RainbowSourceSettings> RainbowSourceOptions;
+    Observable::observable_property<DesktopSourceSettings> DesktopSourceOptions;
 
     Observable::observable_property<uint8_t> Brightness;
     Observable::observable_property<uint8_t> BrightnessLimit;

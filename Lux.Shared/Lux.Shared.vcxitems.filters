@@ -158,6 +158,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Rect.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CallAggregator.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -236,6 +242,9 @@
       <Filter>Configuration</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>
