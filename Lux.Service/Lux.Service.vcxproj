@@ -122,8 +122,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AdaLightController.h" />
-    <ClInclude Include="BrightnessLimiter.h" />
-    <ClInclude Include="BrightnessSetter.h" />
     <ClInclude Include="ColorProcessor.h" />
     <ClInclude Include="D3D11ConstantBuffer.h" />
     <ClInclude Include="D3D11Buffer.h" />
@@ -147,8 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdaLightController.cpp" />
-    <ClCompile Include="BrightnessLimiter.cpp" />
-    <ClCompile Include="BrightnessSetter.cpp" />
     <ClCompile Include="D3D11Buffer.cpp" />
     <ClCompile Include="D3D11ComputeShader.cpp" />
     <ClCompile Include="D3D11ConstantBuffer.cpp" />

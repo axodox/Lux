@@ -8,8 +8,6 @@
 #include "LightSource.h"
 #include "ColorProcessor.h"
 #include "GammaCorrector.h"
-#include "BrightnessLimiter.h"
-#include "BrightnessSetter.h"
 
 namespace Lux::Service
 {
@@ -23,8 +21,6 @@ namespace Lux::Service
     
     std::unique_ptr<Controllers::AdaLightController> _controller;
     std::unique_ptr<Sources::LightSource> _source;
-    Colors::BrightnessSetter _brightnessSetter;
-    Colors::BrightnessLimiter _brightnessLimiter;
     Colors::GammaCorrector _gammaCorrector;
     std::vector<Colors::ColorProcessor*> _colorProcessors;
     std::mutex _mutex;

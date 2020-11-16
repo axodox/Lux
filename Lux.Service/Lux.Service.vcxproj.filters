@@ -13,9 +13,6 @@
     <ClCompile Include="GammaCorrector.cpp">
       <Filter>Colors</Filter>
     </ClCompile>
-    <ClCompile Include="BrightnessLimiter.cpp">
-      <Filter>Colors</Filter>
-    </ClCompile>
     <ClCompile Include="LightSource.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -27,9 +24,6 @@
     </ClCompile>
     <ClCompile Include="LightService.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="BrightnessSetter.cpp">
-      <Filter>Colors</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Renderer.cpp">
       <Filter>Graphics</Filter>
@@ -115,9 +109,6 @@
     <ClInclude Include="GammaCorrector.h">
       <Filter>Colors</Filter>
     </ClInclude>
-    <ClInclude Include="BrightnessLimiter.h">
-      <Filter>Colors</Filter>
-    </ClInclude>
     <ClInclude Include="LightSource.h">
       <Filter>Sources</Filter>
     </ClInclude>
@@ -129,9 +120,6 @@
     </ClInclude>
     <ClInclude Include="LightService.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="BrightnessSetter.h">
-      <Filter>Colors</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Renderer.h">
       <Filter>Graphics</Filter>
