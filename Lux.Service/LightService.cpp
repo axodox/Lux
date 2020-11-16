@@ -30,8 +30,6 @@ namespace Lux::Service
     _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) },
     _controller(make_unique<AdaLightController>())
   {
-    _colorProcessors.push_back(&_brightnessSetter);
-    _colorProcessors.push_back(&_brightnessLimiter);
     _colorProcessors.push_back(&_gammaCorrector);
 
     _controller->IsConnectedChanged(no_revoke, [&](LightController*) { 
@@ -39,6 +37,10 @@ namespace Lux::Service
       });
 
     LoadSettings();
+    _gammaCorrector.Brightness(_server.root()->Brightness / 255.f);
+    _gammaCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
+    _gammaCorrector.Gamma(_server.root()->Gamma);
+
     _server.root()->property_changed(no_revoke, member_func(this, &LightService::OnSettingChanged));
     _server.open();
   }
@@ -199,10 +201,10 @@ namespace Lux::Service
       ApplyDesktopSourceSettings();
       break;
     case LightConfigurationProperty::Brightness:
-      _brightnessSetter.Brightness(_server.root()->Brightness);
+      _gammaCorrector.Brightness(_server.root()->Brightness / 255.f);
       break;
     case LightConfigurationProperty::BrightnessLimit:
-      _brightnessLimiter.MaxBrightness(_server.root()->BrightnessLimit);
+      _gammaCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
       break;
     case LightConfigurationProperty::Gamma:
       _gammaCorrector.Gamma(_server.root()->Gamma);
