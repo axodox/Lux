@@ -57,7 +57,7 @@
           <local:FlipControl.SecondaryContent>
             <StackPanel>
               <ColorSpectrum Width="128" Height="128" Margin="0,32" Shape="Ring"
-                              Color="{x:Bind ViewModel.StaticSourceColor, Mode=TwoWay}" />
+                             Color="{x:Bind ViewModel.StaticSourceColor, Mode=TwoWay}" />
 
               <TextBlock>Color</TextBlock>
 
@@ -94,7 +94,7 @@
       </RadioButton>
 
       <!-- Context Aware -->
-      <RadioButton x:Name="SourceContextAwareButton" IsChecked="{x:Bind IsSourceContextAware, Mode=TwoWay}">
+      <RadioButton x:Name="SourceDesktopButton" IsChecked="{x:Bind IsSourceDesktop, Mode=TwoWay}">
         <local:FlipControl>
           <local:FlipControl.PrimaryContent>
             <StackPanel>
@@ -103,15 +103,17 @@
             </StackPanel>
           </local:FlipControl.PrimaryContent>
           <local:FlipControl.SecondaryContent>
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
               <StackPanel Style="{StaticResource SettingStackPanel}">
-                <Slider/>
-                <TextBlock Text="Sample Size"/>
+                <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.05" TickFrequency="0.1" TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.DesktopSourceSampleSize, Mode=TwoWay}"/>
+                <TextBlock Text="Sample&#13;&#10;Size"/>
               </StackPanel>
 
               <StackPanel Style="{StaticResource SettingStackPanel}">
-                <Slider/>
-                <TextBlock Text="Temporal Averaging"/>
+                <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.05" TickFrequency="0.1" TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.DesktopSourceTemporalAveraging, Mode=TwoWay}"/>
+                <TextBlock Text="Temporal&#13;&#10;Averaging"/>
               </StackPanel>
             </StackPanel>
           </local:FlipControl.SecondaryContent>

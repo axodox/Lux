@@ -36,6 +36,7 @@ namespace Lux::Service
 
     void ApplyStaticSourceSettings();
     void ApplyRainbowSourceSettings();
+    void ApplyDesktopSourceSettings();
 
     void ApplyContollerSettings();
     void ApplySourceSettings();

@@ -19,26 +19,48 @@ using namespace Lux::Graphics;
 using namespace Lux::Threading;
 
 using namespace std;
+using namespace std::chrono;
+using namespace std::chrono_literals;
 using namespace winrt;
 using namespace winrt::Windows::Foundation::Numerics;
 
-
 namespace Lux::Sources
 {
-  DesktopSource::~DesktopSource()
-  {
-    _isWorkerActive = false;
-    _workerThread.reset();
-  }
+  DesktopSource::DesktopSource() :
+    _restartAggregator(member_func(this, &DesktopSource::RestartCapture), 100ms, L"desktop capture restarter")
+  { }
 
   LightSourceKind DesktopSource::Kind()
   {
     return LightSourceKind::Desktop;
   }
 
+  float DesktopSource::TemporalAveraging() const
+  {
+    return _temporalAveraging;
+  }
+
+  void DesktopSource::TemporalAveraging(float value)
+  {
+    _temporalAveraging = value;
+  }
+
+  float DesktopSource::SampleSize() const
+  {
+    return _sampleSize;
+  }
+
+  void DesktopSource::SampleSize(float value)
+  {
+    if (_sampleSize == value) return;
+
+    _sampleSize = value;
+    _restartAggregator.call();
+  }
+
   std::pair<std::vector<Math::rect>, std::vector<std::vector<std::pair<uint16_t, float>>>> DesktopSource::CalculateSamplingRegions(const DisplaySettings& settings)
   {
-    auto horizontalDivisions = size_t(_verticalDivisions * settings.AspectRatio);
+    auto horizontalDivisions = size_t(_verticalDivisions * (isnan(settings.AspectRatio) ? 1 : settings.AspectRatio));
     float2 sampleSize{ _sampleSize / settings.AspectRatio, _sampleSize };
 
     //Define light sampling areas
@@ -112,17 +134,21 @@ namespace Lux::Sources
     return pair{ move(displayRects), move(lightsDisplayRectFactors) };
   }
 
+
+  void DesktopSource::RestartCapture()
+  {
+    _workerThread.reset();
+    _workerThread = make_unique<background_thread>(member_func(this, &DesktopSource::Capture), L"desktop capture");
+  }
+
   void DesktopSource::OnSettingsChanged()
   {
-    _isWorkerActive = false;
-    _workerThread.reset();
-
-    _isWorkerActive = true;
-    _workerThread = make_unique<background_thread>(member_func(this, &DesktopSource::Capture), L"desktop capture");
+    _restartAggregator.call();
   }
 
   void DesktopSource::Capture()
   {
+    auto worker = _workerThread.get();
     auto output = get_default_output();
     auto adapter = get_adapter(output);
 
@@ -148,7 +174,7 @@ namespace Lux::Sources
     vector<rgb> targetColors(factors.size());
     vector<rgb> currentColors(factors.size());
 
-    while (_isWorkerActive)
+    while (!worker->is_shutting_down())
     {
       auto texture = duplication.lock_frame(17ms);
       if (texture)
@@ -187,13 +213,19 @@ namespace Lux::Sources
         this_thread::sleep_for(100ms);
       }
 
-      auto it = currentColors.begin();
-      for (auto& color : targetColors)
+      if (_temporalAveraging > 0)
       {
-        *it++ = lerp(*it, color, 0.2f);
+        auto it = currentColors.begin();
+        for (auto& color : targetColors)
+        {
+          *it++ = lerp(*it, color, max(1.f - _temporalAveraging, 0.01f));
+        }
+        EmitColors(vector<rgb>{ currentColors });
       }
-
-      EmitColors(vector<rgb>{ currentColors });
+      else
+      {
+        EmitColors(vector<rgb>{ targetColors });
+      }      
     }
   }
 }

@@ -11,7 +11,7 @@ namespace Lux
     Boolean IsSourceOff;
     Boolean IsSourceStatic;
     Boolean IsSourceRainbow;
-    Boolean IsSourceContextAware;
+    Boolean IsSourceDesktop;
   }
 
   [default_interface]

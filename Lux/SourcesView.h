@@ -23,8 +23,8 @@ namespace winrt::Lux::implementation
     bool IsSourceRainbow();
     void IsSourceRainbow(bool value);
 
-    bool IsSourceContextAware();
-    void IsSourceContextAware(bool value);
+    bool IsSourceDesktop();
+    void IsSourceDesktop(bool value);
 
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
     void PropertyChanged(winrt::event_token const& token);

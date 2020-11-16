@@ -62,16 +62,16 @@ namespace winrt::Lux::implementation
     }
   }
 
-  bool SourcesView::IsSourceContextAware()
+  bool SourcesView::IsSourceDesktop()
   {
-    return _viewModel.Source() == SourceKind::ContextAware;
+    return _viewModel.Source() == SourceKind::Desktop;
   }
 
-  void SourcesView::IsSourceContextAware(bool value)
+  void SourcesView::IsSourceDesktop(bool value)
   {
     if (value)
     {
-      _viewModel.Source(SourceKind::ContextAware);
+      _viewModel.Source(SourceKind::Desktop);
     }
   }
 
@@ -92,7 +92,7 @@ namespace winrt::Lux::implementation
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceOff"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceStatic"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceRainbow"));
-      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceContextAware"));
+      _propertyChanged(*this, PropertyChangedEventArgs(L"IsSourceDesktop"));
     }
 
     if (eventArgs.PropertyName() == L"")

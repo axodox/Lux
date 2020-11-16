@@ -4,13 +4,12 @@
 
 using namespace Lux::Configuration;
 using namespace Lux::Graphics;
+using namespace Lux::Events;
 using namespace Lux::Math;
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::chrono_literals;
-
-using namespace winrt::Windows::System::Threading;
 
 namespace Lux::Sources
 {
@@ -19,13 +18,8 @@ namespace Lux::Sources
     _angularVelocity(float(M_PI) / 0.5f),
     _lastRefresh(steady_clock::now()),
     _lastAngle(0.f),
-    _timer(ThreadPoolTimer::CreatePeriodicTimer({ this, &RainbowSource::OnTick }, 16ms))    
+    _worker(member_func(this, &RainbowSource::Worker))
   { }
-
-  RainbowSource::~RainbowSource()
-  {
-    _timer.Cancel();
-  }
 
   uint8_t RainbowSource::SpatialFrequency() const
   {
@@ -52,30 +46,40 @@ namespace Lux::Sources
     return LightSourceKind::Rainbow;
   }
 
-  void RainbowSource::OnTick(const ThreadPoolTimer& /*timer*/)
+  void RainbowSource::Worker()
   {
-    auto settings = Settings();
-    if (!settings) return;
+    const duration<float> refreshInterval = 16ms;
 
-    auto count = settings->SamplePoints.size();
-    if (count == 0u) return;
-
-    auto currentRefresh = steady_clock::now();
-    auto elapsedTime = duration_cast<duration<float>>(currentRefresh - _lastRefresh);
-    auto currentAngle = _lastAngle + elapsedTime.count() * _angularVelocity;
-
-    _lastRefresh = currentRefresh;
-    _lastAngle = currentAngle;
-
-    vector<rgb> colors;
-    colors.reserve(count);
-
-    for (auto& light : settings->SamplePoints)
+    while (!_worker.is_shutting_down())
     {
-      auto rotation = deg(wrap(_spatialFrequency * (atan2(light.y - 0.5f, settings->AspectRatio * (light.x - 0.5f)) + float(M_PI_2)) + max(1ui8, _spatialFrequency) * currentAngle, 0.f, 2 * float(M_PI)));
-      colors.push_back(hsl{ rotation, 1.f, 0.5f });
-    }
+      auto currentRefresh = steady_clock::now();
+      auto elapsedTime = duration_cast<duration<float>>(currentRefresh - _lastRefresh);
+      if (elapsedTime < refreshInterval)
+      {
+        this_thread::sleep_for(refreshInterval - elapsedTime);
+      }
 
-    EmitColors(move(colors));
+      auto settings = Settings();
+      if (!settings) continue;
+
+      auto count = settings->SamplePoints.size();
+      if (count == 0u) continue;
+
+      auto currentAngle = _lastAngle + refreshInterval.count() * _angularVelocity;
+
+      _lastRefresh = currentRefresh;
+      _lastAngle = currentAngle;
+
+      vector<rgb> colors;
+      colors.reserve(count);
+
+      for (auto& light : settings->SamplePoints)
+      {
+        auto rotation = deg(wrap(_spatialFrequency * (atan2(light.y - 0.5f, settings->AspectRatio * (light.x - 0.5f)) + float(M_PI_2)) + max(1ui8, _spatialFrequency) * currentAngle, 0.f, 2 * float(M_PI)));
+        colors.push_back(hsl{ rotation, 1.f, 0.5f });
+      }
+
+      EmitColors(move(colors));
+    }
   }
 }

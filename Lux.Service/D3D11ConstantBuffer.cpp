@@ -21,11 +21,11 @@ namespace Lux::Graphics
     return d3d11_constant_buffer(buffer);
   }
   
-  d3d11_constant_buffer::d3d11_constant_buffer(const winrt::com_ptr<ID3D11Buffer>& buffer) :
+  d3d11_constant_buffer::d3d11_constant_buffer(const com_ptr<ID3D11Buffer>& buffer) :
     d3d11_buffer(buffer)
   { }
 
-  void d3d11_constant_buffer::set(const winrt::com_ptr<ID3D11DeviceContext> & context, d3d11_shader_stage stage, uint32_t slot) const
+  void d3d11_constant_buffer::set(const com_ptr<ID3D11DeviceContext> & context, d3d11_shader_stage stage, uint32_t slot) const
   {
     auto buffer = _buffer.get();
 

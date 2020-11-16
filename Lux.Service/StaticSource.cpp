@@ -3,22 +3,18 @@
 
 using namespace Lux::Configuration;
 using namespace Lux::Graphics;
+using namespace Lux::Events;
 
 using namespace std;
+using namespace std::chrono;
 using namespace std::chrono_literals;
-
-using namespace winrt::Windows::System::Threading;
 
 namespace Lux::Sources
 {
   StaticSource::StaticSource() :
-    _timer(ThreadPoolTimer::CreatePeriodicTimer({ this, &StaticSource::OnTick}, 16ms))
+    _lastRefresh(steady_clock::now()),
+    _worker(member_func(this, &StaticSource::Worker))
   { }
-
-  StaticSource::~StaticSource()
-  {
-    _timer.Cancel();
-  }
 
   Graphics::rgb StaticSource::Color() const
   {
@@ -35,14 +31,26 @@ namespace Lux::Sources
     return LightSourceKind::Static;
   }
 
-  void StaticSource::OnTick(const winrt::Windows::System::Threading::ThreadPoolTimer& /*timer*/)
+  void StaticSource::Worker()
   {
-    auto settings = Settings();
-    if (!settings) return;
+    const duration<float> refreshInterval = 16ms;
 
-    auto count = settings->SamplePoints.size();    
-    if (count == 0u) return;
+    while (!_worker.is_shutting_down())
+    {
+      auto currentRefresh = steady_clock::now();
+      auto elapsedTime = currentRefresh - _lastRefresh;
+      if (elapsedTime < refreshInterval)
+      {
+        this_thread::sleep_for(refreshInterval - elapsedTime);
+      }
 
-    EmitColors({ count, _color });
+      auto settings = Settings();
+      if (!settings) continue;
+
+      auto count = settings->SamplePoints.size();
+      if (count == 0u) continue;
+
+      EmitColors({ count, _color });
+    }
   }
 }

@@ -20,6 +20,11 @@ namespace winrt::Lux::implementation
     void RainbowSourceSpatialFrequency(uint8_t value);
     float RainbowSourceAngularVelocity();
     void RainbowSourceAngularVelocity(float value);
+
+    float DesktopSourceTemporalAveraging();
+    void DesktopSourceTemporalAveraging(float value);
+    float DesktopSourceSampleSize();
+    void DesktopSourceSampleSize(float value);
         
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
     void PropertyChanged(winrt::event_token const& token);

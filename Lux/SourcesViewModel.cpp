@@ -73,6 +73,28 @@ namespace winrt::Lux::implementation
     _client->root()->RainbowSourceOptions->AngularVelocity = value;
   }
 
+  float SourcesViewModel::DesktopSourceTemporalAveraging()
+  {
+    return _client->root()->DesktopSourceOptions->TemporalAveraging;
+  }
+
+  void SourcesViewModel::DesktopSourceTemporalAveraging(float value)
+  {
+    if (_client->root()->DesktopSourceOptions->TemporalAveraging == value) return;
+    _client->root()->DesktopSourceOptions->TemporalAveraging = value;
+  }
+
+  float SourcesViewModel::DesktopSourceSampleSize()
+  {
+    return _client->root()->DesktopSourceOptions->SampleSize;
+  }
+
+  void SourcesViewModel::DesktopSourceSampleSize(float value)
+  {
+    if (_client->root()->DesktopSourceOptions->SampleSize == value) return;
+    _client->root()->DesktopSourceOptions->SampleSize = value;
+  }
+
   event_token SourcesViewModel::PropertyChanged(PropertyChangedEventHandler const& value)
   {
     return _propertyChanged.add(value);
@@ -90,7 +112,7 @@ namespace winrt::Lux::implementation
       });
   }
 
-  void SourcesViewModel::OnSettingChanged(observable_object<LightConfigurationProperty>* object, LightConfigurationProperty propertyKey)
+  void SourcesViewModel::OnSettingChanged(observable_object<LightConfigurationProperty>* /*object*/, LightConfigurationProperty propertyKey)
   {
     switch (propertyKey)
     {
@@ -103,6 +125,10 @@ namespace winrt::Lux::implementation
     case LightConfigurationProperty::RainbowSourceOptions:
       _propertyChanged(*this, PropertyChangedEventArgs(L"RainbowSourceSpatialFrequency"));
       _propertyChanged(*this, PropertyChangedEventArgs(L"RainbowSourceAngularVelocity"));
+      break;
+    case LightConfigurationProperty::DesktopSourceOptions:
+      _propertyChanged(*this, PropertyChangedEventArgs(L"DesktopSourceTemporalAveraging"));
+      _propertyChanged(*this, PropertyChangedEventArgs(L"DesktopSourceSampleSize"));
       break;
     }
   }

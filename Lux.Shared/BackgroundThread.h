@@ -17,6 +17,7 @@ namespace Lux::Threading
 
     bool is_running() const;
     bool is_current() const;
+    bool is_shutting_down() const;
 
     void wait() const;
     bool wait_for(std::chrono::duration<uint32_t, std::milli> time) const;
@@ -25,6 +26,7 @@ namespace Lux::Threading
     std::wstring _name;
     std::function<void()> _action;
     winrt::handle _worker;
+    bool _is_shutting_down = false;
 
     static DWORD WINAPI worker(void* param);
   };

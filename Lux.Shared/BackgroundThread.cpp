@@ -51,8 +51,14 @@ namespace Lux::Threading
     return GetThreadId(GetCurrentThread()) == GetThreadId(_worker.get());
   }
 
+  bool background_thread::is_shutting_down() const
+  {
+    return _is_shutting_down;
+  }
+
   background_thread::~background_thread()
   {
+    _is_shutting_down = true;
     WaitForSingleObject(_worker.get(), INFINITE);
   }
 }
