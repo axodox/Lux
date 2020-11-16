@@ -2,6 +2,8 @@
 #include "BackgroundThread.h"
 #include "ThreadName.h"
 
+using namespace std;
+using namespace std::chrono;
 using namespace winrt;
 
 namespace Lux::Threading
@@ -36,7 +38,7 @@ namespace Lux::Threading
     WaitForSingleObject(_worker.get(), INFINITE);
   }
 
-  bool background_thread::wait_for(std::chrono::duration<uint32_t, std::milli> time) const
+  bool background_thread::wait_for(duration<uint32_t, milli> time) const
   {
     return WaitForSingleObject(_worker.get(), time.count()) == WAIT_OBJECT_0;
   }
@@ -58,7 +60,8 @@ namespace Lux::Threading
 
   background_thread::~background_thread()
   {
+    assert(!is_current());
     _is_shutting_down = true;
-    WaitForSingleObject(_worker.get(), INFINITE);
+    wait();
   }
 }

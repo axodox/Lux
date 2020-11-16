@@ -20,7 +20,6 @@ namespace Lux::Sources
   private:
     uint8_t _spatialFrequency;
     float _angularVelocity;
-    std::chrono::steady_clock::time_point _lastRefresh;
     float _lastAngle;
     Threading::background_thread _worker;
     

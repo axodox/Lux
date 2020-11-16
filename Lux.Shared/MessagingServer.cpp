@@ -43,7 +43,8 @@ namespace Lux::Networking
     channel->disconnected(Events::no_revoke, [&](messaging_channel* channel) {
       unique_lock<shared_mutex> lock(_mutex);
       _events.raise(client_disconnected, this, channel);
-      _clients.erase(channel);
+      auto removed = _clients.extract(channel);
+      _client_parking_space = move(removed.mapped());
       });
     channel->open();
 

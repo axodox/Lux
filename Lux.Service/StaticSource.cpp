@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "StaticSource.h"
+#include "SteadyTimer.h"
 
 using namespace Lux::Configuration;
 using namespace Lux::Graphics;
 using namespace Lux::Events;
+using namespace Lux::Threading;
 
 using namespace std;
 using namespace std::chrono;
@@ -12,8 +14,7 @@ using namespace std::chrono_literals;
 namespace Lux::Sources
 {
   StaticSource::StaticSource() :
-    _lastRefresh(steady_clock::now()),
-    _worker(member_func(this, &StaticSource::Worker))
+    _worker(member_func(this, &StaticSource::Worker), L"static source")
   { }
 
   Graphics::rgb StaticSource::Color() const
@@ -33,16 +34,11 @@ namespace Lux::Sources
 
   void StaticSource::Worker()
   {
-    const duration<float> refreshInterval = 16ms;
+    steady_timer timer{ 16ms };
 
     while (!_worker.is_shutting_down())
     {
-      auto currentRefresh = steady_clock::now();
-      auto elapsedTime = currentRefresh - _lastRefresh;
-      if (elapsedTime < refreshInterval)
-      {
-        this_thread::sleep_for(refreshInterval - elapsedTime);
-      }
+      timer.wait();
 
       auto settings = Settings();
       if (!settings) continue;

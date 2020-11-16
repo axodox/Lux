@@ -164,6 +164,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CallAggregator.h">
       <Filter>Threading</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SteadyTimer.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
@@ -247,5 +250,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SteadyTimer.cpp" />
   </ItemGroup>
 </Project>

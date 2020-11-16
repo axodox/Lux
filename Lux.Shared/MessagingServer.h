@@ -23,6 +23,7 @@ namespace Lux::Networking
 
   private:
     std::shared_mutex _mutex;
-    std::unordered_map<messaging_channel*, std::unique_ptr<messaging_channel>> _clients;    
+    std::unordered_map<messaging_channel*, std::unique_ptr<messaging_channel>> _clients;
+    std::unique_ptr<messaging_channel> _client_parking_space;
   };
 }

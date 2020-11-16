@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "RainbowSource.h"
 #include "MathExtensions.h"
+#include "SteadyTimer.h"
 
 using namespace Lux::Configuration;
 using namespace Lux::Graphics;
 using namespace Lux::Events;
 using namespace Lux::Math;
+using namespace Lux::Threading;
 
 using namespace std;
 using namespace std::chrono;
@@ -16,9 +18,8 @@ namespace Lux::Sources
   RainbowSource::RainbowSource() :
     _spatialFrequency(3ui8),
     _angularVelocity(float(M_PI) / 0.5f),
-    _lastRefresh(steady_clock::now()),
     _lastAngle(0.f),
-    _worker(member_func(this, &RainbowSource::Worker))
+    _worker(member_func(this, &RainbowSource::Worker), L"rainbow source")
   { }
 
   uint8_t RainbowSource::SpatialFrequency() const
@@ -48,16 +49,11 @@ namespace Lux::Sources
 
   void RainbowSource::Worker()
   {
-    const duration<float> refreshInterval = 16ms;
+    steady_timer timer{ 16ms };
 
     while (!_worker.is_shutting_down())
     {
-      auto currentRefresh = steady_clock::now();
-      auto elapsedTime = duration_cast<duration<float>>(currentRefresh - _lastRefresh);
-      if (elapsedTime < refreshInterval)
-      {
-        this_thread::sleep_for(refreshInterval - elapsedTime);
-      }
+      timer.wait();
 
       auto settings = Settings();
       if (!settings) continue;
@@ -65,9 +61,7 @@ namespace Lux::Sources
       auto count = settings->SamplePoints.size();
       if (count == 0u) continue;
 
-      auto currentAngle = _lastAngle + refreshInterval.count() * _angularVelocity;
-
-      _lastRefresh = currentRefresh;
+      auto currentAngle = _lastAngle + timer.interval().count() / 1000.f * _angularVelocity;
       _lastAngle = currentAngle;
 
       vector<rgb> colors;

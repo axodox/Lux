@@ -52,6 +52,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SteadyTimer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h" />
@@ -79,6 +80,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MessagingServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SteadyTimer.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
