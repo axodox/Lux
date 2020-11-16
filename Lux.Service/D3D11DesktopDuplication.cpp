@@ -12,7 +12,7 @@ namespace Lux::Graphics
     _output(output)
   { }
 
-  d3d11_texture_2d* d3d11_desktop_duplication::lock_frame(duration<uint32_t, milli> timeout)
+  d3d11_desktop_duplication_state d3d11_desktop_duplication::try_lock_frame(duration<uint32_t, milli> timeout, d3d11_texture_2d*& frame)
   {
     if (_outputDuplication == nullptr)
     {
@@ -51,18 +51,19 @@ namespace Lux::Graphics
           _texture = make_unique<d3d11_texture_2d>(texture);
         }
 
-        return _texture.get();
+        frame = _texture.get();
+        return d3d11_desktop_duplication_state::ready;
       }
       case DXGI_ERROR_WAIT_TIMEOUT:
-        return nullptr;
+        return d3d11_desktop_duplication_state::timeout;
       default:
         _outputDuplication = nullptr;
-        return nullptr;
+        return d3d11_desktop_duplication_state::unavailable;
       }
     }
     else
     {
-      return nullptr;
+      return d3d11_desktop_duplication_state::unavailable;
     }
   }
 

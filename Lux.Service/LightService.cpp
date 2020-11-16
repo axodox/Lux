@@ -105,6 +105,8 @@ namespace Lux::Service
     }
     else if(!_source || _source->Kind() != sourceKind)
     {
+      _source.reset();
+
       switch (sourceKind)
       {
       case LightSourceKind::Static:

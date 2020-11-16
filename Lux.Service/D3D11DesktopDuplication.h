@@ -3,6 +3,13 @@
 
 namespace Lux::Graphics
 {
+  enum class d3d11_desktop_duplication_state
+  {
+    unavailable,
+    timeout,
+    ready
+  };
+
   class d3d11_desktop_duplication
   {
   private:
@@ -17,7 +24,7 @@ namespace Lux::Graphics
   public:
     d3d11_desktop_duplication(const winrt::com_ptr<ID3D11Device>& device, const winrt::com_ptr<IDXGIOutput5>& output);
 
-    d3d11_texture_2d* lock_frame(std::chrono::duration<uint32_t, std::milli> timeout = std::chrono::duration<uint32_t, std::milli>(1000));
+    d3d11_desktop_duplication_state try_lock_frame(std::chrono::duration<uint32_t, std::milli> timeout, d3d11_texture_2d*& texture);
     void unlock_frame();
 
     bool is_hdr() const;

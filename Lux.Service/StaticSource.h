@@ -16,7 +16,6 @@ namespace Lux::Sources
 
   private:
     Graphics::rgb _color = { 255, 255, 255 };
-    std::chrono::steady_clock::time_point _lastRefresh;
     Threading::background_thread _worker;
 
     void Worker();

@@ -18,6 +18,7 @@ using namespace Lux::Events;
 using namespace Lux::Graphics;
 using namespace Lux::Threading;
 
+using namespace DirectX;
 using namespace std;
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -172,12 +173,13 @@ namespace Lux::Sources
     auto constantsBuffer = d3d11_constant_buffer::make_dynamic<bool>(renderer.device());
 
     vector<rgb> targetColors(factors.size());
-    vector<rgb> currentColors(factors.size());
+    vector<XMFLOAT3> currentColors(factors.size());
 
     while (!worker->is_shutting_down())
     {
-      auto texture = duplication.lock_frame(17ms);
-      if (texture)
+      d3d11_texture_2d* texture;
+      auto state = duplication.try_lock_frame(17ms, texture);
+      if (state == d3d11_desktop_duplication_state::ready)
       {
         constantsBuffer.write(renderer.context(), duplication.is_hdr());
         constantsBuffer.set(renderer.context(), d3d11_shader_stage::cs);
@@ -194,33 +196,52 @@ namespace Lux::Sources
         auto it = targetColors.begin();
         for (auto rectFactors : factors)
         {
-          float4 color{};
+          XMVECTOR avgColor{};
           for (auto& [cell, factor] : rectFactors)
           {
             auto& sampleU = *((led_color_t*)data.data() + cell);
-            auto sampleF = float3((float)sampleU[0], (float)sampleU[1], (float)sampleU[2]);
-            color += float4(sampleF * factor, factor);
+            auto sampleF = XMVectorSet((float)sampleU[0], (float)sampleU[1], (float)sampleU[2], 1.f);
+            avgColor = XMVectorAdd(avgColor, XMVectorScale(sampleF, factor));
           }
 
-          rgb newColor{ uint8_t(color.x / color.w), uint8_t(color.y / color.w), uint8_t(color.z / color.w) };
+          avgColor = XMVectorScale(avgColor, 1.f / XMVectorGetW(avgColor));
+
+          XMFLOAT3 color;
+          XMStoreFloat3(&color, avgColor);
+
+          rgb newColor{ uint8_t(color.x), uint8_t(color.y), uint8_t(color.z) };
           *it++ = newColor;
         }
 
         duplication.unlock_frame();
       }
-      else
+      else if(state != d3d11_desktop_duplication_state::timeout)
       {
         this_thread::sleep_for(100ms);
       }
 
       if (_temporalAveraging > 0)
       {
-        auto it = currentColors.begin();
+        auto sourceIt = currentColors.begin();
+
+        auto factor = max(1.f - _temporalAveraging, 0.01f);
+        auto invFactor = 1.f - factor;
+
+        vector<rgb> results;
+        results.reserve(currentColors.size());
         for (auto& color : targetColors)
         {
-          *it++ = lerp(*it, color, max(1.f - _temporalAveraging, 0.01f));
+          auto& sourceColor = *sourceIt++;
+
+          auto source = XMLoadFloat3(&sourceColor);
+          auto target = XMVectorSet(color.r, color.g, color.b, 0);
+
+          auto blend = XMVectorAdd(XMVectorScale(source, invFactor), XMVectorScale(target, factor));
+
+          XMStoreFloat3(&sourceColor, blend);
+          results.push_back({ uint8_t(sourceColor.x), uint8_t(sourceColor.y), uint8_t(sourceColor.z) });
         }
-        EmitColors(vector<rgb>{ currentColors });
+        EmitColors(move(results));
       }
       else
       {
