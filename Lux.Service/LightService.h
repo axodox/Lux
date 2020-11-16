@@ -7,7 +7,7 @@
 #include "AdaLightController.h"
 #include "LightSource.h"
 #include "ColorProcessor.h"
-#include "GammaCorrector.h"
+#include "ColorCorrector.h"
 
 namespace Lux::Service
 {
@@ -21,11 +21,12 @@ namespace Lux::Service
     
     std::unique_ptr<Controllers::AdaLightController> _controller;
     std::unique_ptr<Sources::LightSource> _source;
-    Colors::GammaCorrector _gammaCorrector;
+    Colors::ColorCorrector _colorCorrector;
     std::vector<Colors::ColorProcessor*> _colorProcessors;
     std::mutex _mutex;
 
     void LoadSettings();
+    void ApplyColorCorrectorSettings();
     void SaveSettings(const winrt::Windows::System::Threading::ThreadPoolTimer& timer);
 
     void OnSettingChanged(Observable::observable_object<Configuration::LightConfigurationProperty>* object, Configuration::LightConfigurationProperty propertyKey);

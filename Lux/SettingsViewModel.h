@@ -22,6 +22,9 @@ namespace winrt::Lux::implementation
     uint8_t BrightnessLimit();
     void BrightnessLimit(uint8_t value);
 
+    float Saturation();
+    void Saturation(float value);
+
     winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
     void PropertyChanged(winrt::event_token const& token) noexcept;
 

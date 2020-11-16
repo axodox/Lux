@@ -3,13 +3,16 @@
 
 namespace Lux::Colors
 {
-  class GammaCorrector : public ColorProcessor
+  class ColorCorrector : public ColorProcessor
   {
   public:
-    GammaCorrector();
+    ColorCorrector();
 
     winrt::Windows::Foundation::Numerics::float3 Gamma() const;
     void Gamma(const winrt::Windows::Foundation::Numerics::float3& value);
+
+    float Saturation() const;
+    void Saturation(float value);
 
     float Brightness() const;
     void Brightness(float value);
@@ -21,6 +24,7 @@ namespace Lux::Colors
 
   private:
     float _brightness = 1.f;
+    float _saturation = 1.f;
     float _maxBrightness = 0.7f;
     winrt::Windows::Foundation::Numerics::float3 _gamma;
 

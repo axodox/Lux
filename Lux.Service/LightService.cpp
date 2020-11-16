@@ -30,16 +30,13 @@ namespace Lux::Service
     _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) },
     _controller(make_unique<AdaLightController>())
   {
-    _colorProcessors.push_back(&_gammaCorrector);
+    _colorProcessors.push_back(&_colorCorrector);
 
     _controller->IsConnectedChanged(no_revoke, [&](LightController*) { 
       _server.root()->IsConnected = _controller->IsConnected();
       });
 
     LoadSettings();
-    _gammaCorrector.Brightness(_server.root()->Brightness / 255.f);
-    _gammaCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
-    _gammaCorrector.Gamma(_server.root()->Gamma);
 
     _server.root()->property_changed(no_revoke, member_func(this, &LightService::OnSettingChanged));
     _server.open();
@@ -70,6 +67,16 @@ namespace Lux::Service
 
     ApplyContollerSettings();
     ApplySourceSettings();
+
+    ApplyColorCorrectorSettings();
+  }
+
+  void LightService::ApplyColorCorrectorSettings()
+  {
+    _colorCorrector.Saturation(_server.root()->Saturation);
+    _colorCorrector.Brightness(_server.root()->Brightness / 255.f);
+    _colorCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
+    _colorCorrector.Gamma(_server.root()->Gamma);
   }
 
   void LightService::SaveSettings(const ThreadPoolTimer& /*timer*/)
@@ -200,14 +207,17 @@ namespace Lux::Service
     case LightConfigurationProperty::DesktopSourceOptions:
       ApplyDesktopSourceSettings();
       break;
+    case LightConfigurationProperty::Saturation:
+      _colorCorrector.Saturation(_server.root()->Saturation);
+      break; 
     case LightConfigurationProperty::Brightness:
-      _gammaCorrector.Brightness(_server.root()->Brightness / 255.f);
+      _colorCorrector.Brightness(_server.root()->Brightness / 255.f);
       break;
     case LightConfigurationProperty::BrightnessLimit:
-      _gammaCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
+      _colorCorrector.MaxBrightness(_server.root()->BrightnessLimit / 255.f);
       break;
     case LightConfigurationProperty::Gamma:
-      _gammaCorrector.Gamma(_server.root()->Gamma);
+      _colorCorrector.Gamma(_server.root()->Gamma);
       break;
     default:
 

@@ -135,7 +135,7 @@
     <ClInclude Include="D3D11ShaderStage.h" />
     <ClInclude Include="DesktopSource.h" />
     <ClInclude Include="DXGIOutput.h" />
-    <ClInclude Include="GammaCorrector.h" />
+    <ClInclude Include="ColorCorrector.h" />
     <ClInclude Include="LightController.h" />
     <ClInclude Include="LightService.h" />
     <ClInclude Include="LightSource.h" />
@@ -156,7 +156,7 @@
     <ClCompile Include="D3D11Texture2D.cpp" />
     <ClCompile Include="DesktopSource.cpp" />
     <ClCompile Include="DXGIOutput.cpp" />
-    <ClCompile Include="GammaCorrector.cpp" />
+    <ClCompile Include="ColorCorrector.cpp" />
     <ClCompile Include="LightController.cpp" />
     <ClCompile Include="LightService.cpp" />
     <ClCompile Include="LightSource.cpp" />
