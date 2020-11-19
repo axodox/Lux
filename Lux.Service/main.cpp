@@ -11,6 +11,9 @@ int WINAPI wWinMain(
   _In_ LPWSTR /*lpCmdLine*/,
   _In_ int /*nShowCmd*/)
 {
+  auto event = handle(CreateEvent(nullptr, false, true, L"Lux.Service.IsRunning"));
+  if (GetLastError() == ERROR_ALREADY_EXISTS) return 0;
+
   check_bool(SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2));
 
   init_apartment();
