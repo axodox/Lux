@@ -5,7 +5,7 @@
     xmlns:local="using:Lux">
   <Application.Resources>
     <Style x:Key="TileRadioButtonStyle" TargetType="RadioButton">
-      <Setter Property="Padding" Value="{StaticResource ButtonPadding}"/>
+      <Setter Property="Padding" Value="{ThemeResource ButtonPadding}"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="CornerRadius" Value="6"/>

@@ -22,6 +22,7 @@ App::App()
 {
   InitializeComponent();
   Suspending({ this, &App::OnSuspending });
+  EnsureService();
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
   UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
@@ -164,4 +165,9 @@ void App::OnSuspending([[maybe_unused]] IInspectable const& sender, [[maybe_unus
 void App::OnNavigationFailed(IInspectable const&, NavigationFailedEventArgs const& e)
 {
   throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
+}
+
+winrt::fire_and_forget winrt::Lux::implementation::App::EnsureService()
+{
+  co_await winrt::Windows::ApplicationModel::FullTrustProcessLauncher::LaunchFullTrustProcessForCurrentAppAsync();
 }

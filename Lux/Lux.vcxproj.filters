@@ -215,5 +215,6 @@
   <ItemGroup>
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
+    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\Lux.Service.exe" />
   </ItemGroup>
 </Project>

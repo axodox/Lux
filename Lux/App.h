@@ -17,5 +17,7 @@ namespace winrt::Lux::implementation
     event_token _gamebarWidgetWindowClosedHandlerToken{};
 
     void OnWindowClosed(IInspectable const&, IInspectable const&);
+    
+    winrt::fire_and_forget EnsureService();
   };
 }
