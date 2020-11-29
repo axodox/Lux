@@ -73,7 +73,7 @@ namespace Lux::Sources
       lightRects.push_back({ samplePoint - sampleOffset, samplePoint + sampleOffset });
     }
 
-    //Allocata screen samples to lights
+    //Allocate screen samples to lights
     vector<vector<pair<uint16_t, float>>> lightsDisplayRectFactors(settings.SamplePoints.size());
 
     vector<rect> displayRects;

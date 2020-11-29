@@ -83,9 +83,6 @@
     <Image Include="Assets\Square150x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\Square44x44Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
@@ -216,5 +213,6 @@
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
     <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\Lux.Service.exe" />
+    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\DesktopSamplingComputeShader.cso" />
   </ItemGroup>
 </Project>
