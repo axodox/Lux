@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="MainPage.xaml" />
     <Page Include="FlipControl.xaml">
       <Filter>Controls</Filter>
     </Page>
@@ -13,6 +9,9 @@
     </Page>
     <Page Include="SourcesView.xaml">
       <Filter>Views</Filter>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Filter>Startup</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -32,10 +31,8 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="MainPage.cpp" />
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="BooleanToVisibilityConverter.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
@@ -54,9 +51,14 @@
     <ClCompile Include="SourcesViewModel.cpp">
       <Filter>ViewModel</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
     <ClInclude Include="BooleanToVisibilityConverter.h">
       <Filter>Converters</Filter>
     </ClInclude>
@@ -74,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="SourcesViewModel.h">
       <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +186,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Assets">
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
     </Filter>
@@ -208,11 +210,35 @@
     <Filter Include="ViewModel">
       <UniqueIdentifier>{69a73fa0-0d99-464f-b06b-f20ec94abe5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{cf9524cb-cdda-4d84-9c80-4f0254c1fcb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Startup">
+      <UniqueIdentifier>{abcd6a1f-36af-4b8e-abf5-d59c47a031f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PropertySheet.props" />
-    <None Include="packages.config" />
-    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\Lux.Service.exe" />
-    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\DesktopSamplingComputeShader.cso" />
+    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\DesktopSamplingComputeShader.cso">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="$(SolutionDir)Lux.Service\bin\$(Platform)\$(Configuration)\Lux.Service.exe">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="packages.config">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="PropertySheet.props">
+      <Filter>Include</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <Filter>Include</Filter>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Filter>Startup</Filter>
+    </ApplicationDefinition>
   </ItemGroup>
 </Project>

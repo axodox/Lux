@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>Config</Filter>
+      <Filter>Include</Filter>
     </ClCompile>
     <ClCompile Include="AdaLightController.cpp">
       <Filter>Controllers</Filter>
@@ -64,16 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
-      <Filter>Config</Filter>
+      <Filter>Include</Filter>
     </None>
     <None Include="PropertySheet.props">
-      <Filter>Config</Filter>
+      <Filter>Include</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Config">
-      <UniqueIdentifier>{fb3fa3e1-4a63-43ff-a9e8-dd004e42a701}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Controllers">
       <UniqueIdentifier>{9753bd95-e506-4931-beb1-f54174c45a70}</UniqueIdentifier>
     </Filter>
@@ -92,10 +89,13 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{20b9df6d-7057-4c26-9f97-2f1f9506ca76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{fb3fa3e1-4a63-43ff-a9e8-dd004e42a701}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>Config</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="LightController.h">
       <Filter>Controllers</Filter>
