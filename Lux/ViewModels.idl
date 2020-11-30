@@ -1,0 +1,41 @@
+namespace Lux
+{
+  enum SourceKind
+  {
+    Off,
+    Static,
+    Rainbow,
+    Desktop
+  };
+
+  [default_interface]
+  runtimeclass SourcesViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
+  {
+    SourceKind Source;
+
+    Windows.UI.Color StaticSourceColor;
+
+    UInt8 RainbowSourceSpatialFrequency;
+    Single RainbowSourceAngularVelocity;
+
+    Single DesktopSourceTemporalAveraging;
+    Single DesktopSourceSampleSize;
+
+    SourcesViewModel();
+  }
+
+  [default_interface]
+  runtimeclass SettingsViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
+  {
+    Single GammaR;
+    Single GammaG;
+    Single GammaB;
+    Boolean IsGammaLocked;
+        
+    UInt8 BrightnessLimit;
+
+    Single Saturation;
+
+    SettingsViewModel();
+  }
+}

@@ -1,0 +1,124 @@
+﻿<UserControl
+  x:Class="Lux.SourcesView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Lux"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d">
+
+  <ScrollViewer HorizontalAlignment="Center" MinHeight="280"
+                HorizontalScrollBarVisibility="Auto"  
+                VerticalScrollBarVisibility="Hidden">
+    <StackPanel Orientation="Horizontal">
+      <StackPanel.Resources>
+        <Style TargetType="RadioButton" BasedOn="{StaticResource TileRadioButtonStyle}">
+          <Setter Property="Width" Value="196"/>
+          <Setter Property="Height" Value="256"/>
+          <Setter Property="Margin" Value="12"/>
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+          <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="TextBlock">
+          <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="SettingStackPanel" TargetType="StackPanel">
+          <Setter Property="Margin" Value="0,12"/>
+          <Setter Property="Orientation" Value="Vertical"/>
+          <Setter Property="HorizontalAlignment" Value="Center"/>
+          <Setter Property="Width" Value="64"/>
+        </Style>
+
+        <Style TargetType="Slider">
+          <Setter Property="Height" Value="192"/>
+          <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+      </StackPanel.Resources>
+
+      <!-- Off -->
+      <RadioButton x:Name="SourceOffButton" IsChecked="{x:Bind IsSourceOff, Mode=TwoWay}">
+        <StackPanel VerticalAlignment="Center">
+          <Image Source="Images/SourceOff.png"/>
+          <TextBlock>Off</TextBlock>
+        </StackPanel>
+      </RadioButton>
+
+      <!-- Static -->
+      <RadioButton x:Name="SourceStaticButton" IsChecked="{x:Bind IsSourceStatic, Mode=TwoWay}">
+        <local:FlipControl>
+          <local:FlipControl.PrimaryContent>
+            <StackPanel>
+              <Image Source="Images/SourceSimple.png"/>
+              <TextBlock>Static</TextBlock>
+            </StackPanel>
+          </local:FlipControl.PrimaryContent>
+          <local:FlipControl.SecondaryContent>
+            <StackPanel>
+              <ColorSpectrum Width="128" Height="128" Margin="0,32" Shape="Ring"
+                             Color="{x:Bind ViewModel.StaticSourceColor, Mode=TwoWay}" />
+
+              <TextBlock>Color</TextBlock>
+
+            </StackPanel>
+          </local:FlipControl.SecondaryContent>
+        </local:FlipControl>
+      </RadioButton>
+
+      <!-- Rainbow -->
+      <RadioButton x:Name="SourceRainbowButton" IsChecked="{x:Bind IsSourceRainbow, Mode=TwoWay}">
+        <local:FlipControl>
+          <local:FlipControl.PrimaryContent>
+            <StackPanel>
+              <Image Source="Images/SourceRainbow.png"/>
+              <TextBlock>Rainbow</TextBlock>
+            </StackPanel>
+          </local:FlipControl.PrimaryContent>
+          <local:FlipControl.SecondaryContent>
+            <StackPanel Orientation="Horizontal">
+              <StackPanel Style="{StaticResource SettingStackPanel}">
+                <Slider Orientation="Vertical" Maximum="5" StepFrequency="1" TickFrequency="1" TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.RainbowSourceSpatialFrequency, Mode=TwoWay}"/>
+                <TextBlock Text="Frequency"/>
+              </StackPanel>
+
+              <StackPanel Style="{StaticResource SettingStackPanel}">
+                <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.01"
+                        Value="{x:Bind ViewModel.RainbowSourceAngularVelocity, Mode=TwoWay}"/>
+                <TextBlock Text="Speed"/>
+              </StackPanel>
+            </StackPanel>
+          </local:FlipControl.SecondaryContent>
+        </local:FlipControl>
+      </RadioButton>
+
+      <!-- Context Aware -->
+      <RadioButton x:Name="SourceDesktopButton" IsChecked="{x:Bind IsSourceDesktop, Mode=TwoWay}">
+        <local:FlipControl>
+          <local:FlipControl.PrimaryContent>
+            <StackPanel>
+              <Image Source="Images/SourceContext.png"/>
+              <TextBlock>Context Aware</TextBlock>
+            </StackPanel>
+          </local:FlipControl.PrimaryContent>
+          <local:FlipControl.SecondaryContent>
+            <StackPanel Orientation="Horizontal">
+              <StackPanel Style="{StaticResource SettingStackPanel}">
+                <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.05" TickFrequency="0.1" TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.DesktopSourceSampleSize, Mode=TwoWay}"/>
+                <TextBlock Text="Sample&#13;&#10;Size"/>
+              </StackPanel>
+
+              <StackPanel Style="{StaticResource SettingStackPanel}">
+                <Slider Orientation="Vertical" Maximum="1" StepFrequency="0.05" TickFrequency="0.1" TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.DesktopSourceTemporalAveraging, Mode=TwoWay}"/>
+                <TextBlock Text="Temporal&#13;&#10;Averaging"/>
+              </StackPanel>
+            </StackPanel>
+          </local:FlipControl.SecondaryContent>
+        </local:FlipControl>
+      </RadioButton>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

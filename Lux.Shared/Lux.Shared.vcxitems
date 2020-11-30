@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{a0cd0794-be27-4422-9dce-1e46860c9e45}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BitwiseOperators.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CallAggregator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FileStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IO.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumNameMapping.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MathExtensions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Openable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Rect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SteadyTimer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Text.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ThreadName.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FileStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IO.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SteadyTimer.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ResetEvent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Text.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ThreadName.cpp" />
+  </ItemGroup>
+</Project>

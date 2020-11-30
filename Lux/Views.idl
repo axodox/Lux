@@ -1,0 +1,23 @@
+import "ViewModels.idl";
+
+namespace Lux
+{
+  [default_interface]
+  runtimeclass SourcesView : Windows.UI.Xaml.Controls.UserControl, Windows.UI.Xaml.Data.INotifyPropertyChanged
+  {
+    SourcesView();
+    SourcesViewModel ViewModel{ get; };
+
+    Boolean IsSourceOff;
+    Boolean IsSourceStatic;
+    Boolean IsSourceRainbow;
+    Boolean IsSourceDesktop;
+  }
+
+  [default_interface]
+  runtimeclass SettingsView : Windows.UI.Xaml.Controls.UserControl
+  {
+    SettingsView();
+    SettingsViewModel ViewModel{ get; };
+  }
+}

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Observable">
+      <UniqueIdentifier>{432a86ed-5856-4aaf-9e06-271444509eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure">
+      <UniqueIdentifier>{c1c72ff6-d5c4-439b-9575-b1a89b4a9df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{3df66df8-87d8-4a2a-ad90-659a09556463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{bd7b8c89-4d54-4a8a-8a07-23156cffa7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threading">
+      <UniqueIdentifier>{f5695850-5147-457f-abbc-525d1c7020c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking\Tcp">
+      <UniqueIdentifier>{a5edec5b-d382-472f-a948-e1b54404a483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{811c027e-34c4-46c4-afa3-25f6390cb48f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{4a98fa50-9580-4d0a-897f-7d015eaf6f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{5e19c939-223e-42b4-9d44-c6f6516b00ad}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observable.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableValue.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableObject.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeRegistry.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Serializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Traits.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResetEvent.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AwaitOperation.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DataStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingChannel.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlockingCollection.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ThreadName.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BackgroundThread.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.h">
+      <Filter>Networking\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingClient.h">
+      <Filter>Networking\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TcpMessagingServer.h">
+      <Filter>Networking\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessagingClient.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableServer.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Openable.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Dispatcher.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Text.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumNameMapping.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LifetimeExecutor.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DependencyContainer.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObservableClient.h">
+      <Filter>Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Colors.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightConfiguration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetworkSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplaySettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LockedPtr.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MathExtensions.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FileStream.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IO.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BitwiseOperators.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Rect.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CallAggregator.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SteadyTimer.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)shared_pch.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observable.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableValue.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObservableObject.cpp">
+      <Filter>Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DataStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingChannel.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ThreadName.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BackgroundThread.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ResetEvent.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingServer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingChannel.cpp">
+      <Filter>Networking\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingClient.cpp">
+      <Filter>Networking\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TcpMessagingServer.cpp">
+      <Filter>Networking\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessagingClient.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Dispatcher.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Openable.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Text.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumNameMapping.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightConfiguration.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Colors.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplaySettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FileStream.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IO.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticSourceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RainbowSourceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DesktopSourceSettings.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SteadyTimer.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

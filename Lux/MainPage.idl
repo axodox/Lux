@@ -1,0 +1,17 @@
+namespace Lux
+{
+  [default_interface]
+  runtimeclass MainPage : Windows.UI.Xaml.Controls.Page, Windows.UI.Xaml.Data.INotifyPropertyChanged
+  {
+    MainPage();
+
+    Boolean IsConnected{ get; };
+    String ConnectionState{ get; };
+
+    UInt8 Brightness;
+
+    Boolean IsShowingSettings;
+
+    void ConfigureDevice();
+  }
+}

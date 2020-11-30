@@ -1,0 +1,65 @@
+﻿<UserControl
+  x:Class="Lux.SettingsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Lux"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d">
+  <UserControl.Resources>
+    <local:BooleanToStringSwitchConverter x:Key="BooleanToStringSwitchConverter"/>
+  </UserControl.Resources>
+
+  <StackPanel Orientation="Horizontal" Height="256">
+    <Grid Margin="12,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>        
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.Resources>
+        <Style TargetType="Slider">
+          <Setter Property="Orientation" Value="Vertical"/>
+          <Setter Property="HorizontalAlignment" Value="Center"/>
+          <Setter Property="Maximum" Value="4"/>
+          <Setter Property="StepFrequency" Value="0.05"/>
+        </Style>
+      </Grid.Resources>
+      <ToggleButton Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,9,0,12"
+                    FontFamily="Segoe MDL2 Assets" CornerRadius="6"
+                    IsChecked="{x:Bind ViewModel.IsGammaLocked, Mode=TwoWay}"                    
+                    Content="{x:Bind ViewModel.IsGammaLocked, Mode=OneWay, Converter={StaticResource BooleanToStringSwitchConverter}, ConverterParameter='&#xE72E;|&#xE785;'}"/>
+      <Slider Grid.Row="1" Grid.Column="0" Value="{x:Bind ViewModel.GammaR, Mode=TwoWay}"/>
+      <Slider Grid.Row="1" Grid.Column="1" Value="{x:Bind ViewModel.GammaG, Mode=TwoWay}"/>
+      <Slider Grid.Row="1" Grid.Column="2" Value="{x:Bind ViewModel.GammaB, Mode=TwoWay}"/>
+      <TextBlock Text="R" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+      <TextBlock Text="G" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+      <TextBlock Text="B" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+      <TextBlock Text="Gamma" Grid.Row="3" Grid.ColumnSpan="3" TextAlignment="Center"/>
+    </Grid>
+
+    <Grid Margin="12,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Slider Grid.Row="0" Value="{x:Bind ViewModel.BrightnessLimit, Mode=TwoWay}" Maximum="255" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,48,0,9"/>
+      <TextBlock Grid.Row="1" Text="Brightness&#13;&#10;Limit" TextAlignment="Center"/>
+    </Grid>
+
+    <Grid Margin="12,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Slider Grid.Row="0" Value="{x:Bind ViewModel.Saturation, Mode=TwoWay}" Maximum="1" StepFrequency="0.05" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,48,0,9"/>
+      <TextBlock Grid.Row="1" Text="Saturation" TextAlignment="Center"/>
+    </Grid>
+  </StackPanel>
+</UserControl>

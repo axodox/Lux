@@ -1,0 +1,69 @@
+﻿<Application
+    x:Class="Lux.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Lux">
+  <Application.Resources>
+    <Style x:Key="TileRadioButtonStyle" TargetType="RadioButton">
+      <Setter Property="Padding" Value="{ThemeResource ButtonPadding}"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="BorderBrush" Value="{StaticResource SystemControlTransparentRevealBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="{StaticResource ToggleButtonBorderThemeThickness}"/>
+      <Setter Property="Background" Value="{ThemeResource ToggleButtonBackground}"/>
+      <Setter Property="BackgroundSizing" Value="OuterBorderEdge"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="RadioButton">
+            <ContentPresenter x:Name="ContentPresenter"
+                              BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                              Background="{TemplateBinding Background}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="{TemplateBinding CornerRadius}"
+                              Padding="{TemplateBinding Padding}">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal">
+                    <Storyboard>
+                      <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="PointerOver">
+                    <Storyboard>
+                      <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <Storyboard>
+                      <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="CheckStates">
+                  <VisualState x:Name="Checked">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemAccentColor}"/>
+                      </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Unchecked"/>
+                  <VisualState x:Name="Indeterminate"/>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+            </ContentPresenter>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Application.Resources>
+</Application>

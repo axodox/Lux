@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
+    <ClCompile Include="AdaLightController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="LightController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RainbowSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LightService.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Renderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="DesktopSource.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGIOutput.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Texture2D.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Resource.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11DesktopDuplication.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11SamplerState.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11StructuredBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Buffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11ComputeShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11ConstantBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorCorrector.cpp">
+      <Filter>Colors</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="PropertySheet.props">
+      <Filter>Include</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{9753bd95-e506-4931-beb1-f54174c45a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Colors">
+      <UniqueIdentifier>{d61a2c9b-83ff-4447-9a3f-b51e7922cbba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{e14b2a5b-031d-4af8-ac6f-2f8487d3c41a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{9372c4f5-98c1-403b-887d-c83fbad6e51e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{cdb6df17-60aa-4be0-a1a4-a268609b078c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{20b9df6d-7057-4c26-9f97-2f1f9506ca76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{fb3fa3e1-4a63-43ff-a9e8-dd004e42a701}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="LightController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="AdaLightController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorProcessor.h">
+      <Filter>Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="RainbowSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="LightService.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Renderer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DesktopSource.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGIOutput.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Texture2D.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Resource.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11ShaderStage.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11DesktopDuplication.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11SamplerState.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11StructuredBuffer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Buffer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11ComputeShader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11ConstantBuffer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorCorrector.h">
+      <Filter>Colors</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DesktopSamplingComputeShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
