@@ -14,6 +14,7 @@ namespace Lux::Controllers
     void Options(const Configuration::AdaLightSettings& options);
 
     virtual void Push(const std::vector<Graphics::rgb>& colors) override;
+    virtual Configuration::LightControllerKind Type() const override;
 
   private:
     Configuration::AdaLightSettings _options{};

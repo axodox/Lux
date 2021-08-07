@@ -22,6 +22,8 @@ namespace Lux::Serialization
 
     template<typename T>
     T read();
+
+    virtual void flush() {};
   };
 
   template<typename T, typename TEnable = void>

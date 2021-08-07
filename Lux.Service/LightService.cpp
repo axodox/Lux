@@ -6,6 +6,8 @@
 #include "RainbowSource.h"
 #include "DesktopSource.h"
 #include "DisplaySettings.h"
+#include "AdaLightController.h"
+#include "UdpLightController.h"
 
 using namespace Lux;
 using namespace Lux::Configuration;
@@ -27,14 +29,9 @@ namespace Lux::Service
   LightService::LightService() :
     _settingsPath{ IO::app_folder() / L"settings.bin" },
     _server{ make_unique<Networking::tcp_messaging_server>(Configuration::LuxPort), make_unique<Threading::simple_dispatcher>() },
-    _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) },
-    _controller(make_unique<AdaLightController>())
+    _timer{ ThreadPoolTimer::CreatePeriodicTimer({ this, &LightService::SaveSettings }, 1000ms) }
   {
     _colorProcessors.push_back(&_colorCorrector);
-
-    _controller->IsConnectedChanged(no_revoke, [&](LightController*) { 
-      _server.root()->IsConnected = _controller->IsConnected();
-      });
 
     LoadSettings();
 
@@ -100,7 +97,38 @@ namespace Lux::Service
 
   void LightService::ApplyContollerSettings()
   {
-    _controller->Options(_server.root()->Device.value().AdaLight);
+    LightControllerKind controllerKind = _server.root()->Device.value().ControllerKind;
+
+    //Switch controller as needed
+    if (!_controller || _controller->Type() != controllerKind)
+    {
+      switch (controllerKind)
+      {
+      case LightControllerKind::Ada:
+        _controller = make_unique<AdaLightController>();
+        break;
+      case LightControllerKind::Udp:
+        _controller = make_unique<UdpLightController>();
+        break;
+      }
+    }
+
+    //Apply controller settings
+    switch (controllerKind)
+    {
+    case LightControllerKind::Ada:
+      static_cast<AdaLightController*>(_controller.get())->Options(_server.root()->Device.value().AdaLight);
+      break;
+    case LightControllerKind::Udp:
+      static_cast<UdpLightController*>(_controller.get())->Options(_server.root()->Device.value().UdpLight);
+      break;
+    }
+
+    //Detect connection
+    _server.root()->IsConnected = _controller->IsConnected();
+    _controller->IsConnectedChanged(no_revoke, [&](LightController*) {
+      _server.root()->IsConnected = _controller->IsConnected();
+      });
   }
 
   void LightService::ApplySourceSettings()
@@ -169,7 +197,10 @@ namespace Lux::Service
           processor->ProcessColors(output);
         }
 
-        _controller->Push(output);
+        if (_controller)
+        {
+          _controller->Push(output);
+        }
       }
       catch (...)
       {

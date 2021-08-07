@@ -142,6 +142,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RainbowSource.h" />
     <ClInclude Include="StaticSource.h" />
+    <ClInclude Include="UdpLightController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdaLightController.cpp" />
@@ -166,6 +167,7 @@
     </ClCompile>
     <ClCompile Include="RainbowSource.cpp" />
     <ClCompile Include="StaticSource.cpp" />
+    <ClCompile Include="UdpLightController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

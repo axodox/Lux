@@ -99,6 +99,11 @@ namespace Lux::Controllers
     }
   }
 
+  Configuration::LightControllerKind AdaLightController::Type() const
+  {
+    return LightControllerKind::Ada;
+  }
+
   void AdaLightController::OnDeviceAdded(const DeviceWatcher&, const DeviceInformation& deviceInformation)
   {
     lock_guard<mutex> lock(_mutex);

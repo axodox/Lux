@@ -63,6 +63,25 @@ namespace Lux::Configuration
     LedSyncDuration = milliseconds{ object.read_or(L"ledSyncDuration", 10) };
   }
 
+  UdpLightSettings::UdpLightSettings(const Json::json_value& value)
+  {
+    json_object object{ value };
+    object.read(L"host", Host, winrt::hstring(L"255.255.255.255"));
+    object.read(L"port", Port, 8989ui16);
+  }
+
+  void UdpLightSettings::serialize(Serialization::stream& stream) const
+  {
+    stream.write(Host);
+    stream.write(Port);
+  }
+
+  void UdpLightSettings::deserialize(Serialization::stream& stream)
+  {
+    stream.read(Host);
+    stream.read(Port);
+  }
+
   DisplayLightLayout::DisplayLightLayout(const Json::json_value& value)
   {
     json_object object{ value };
@@ -99,18 +118,24 @@ namespace Lux::Configuration
   {
     json_object object{ value };
     object.read(L"adaLight", AdaLight);
+    object.read(L"udpLight", UdpLight);
+    object.read(L"controller", ControllerKind);
     object.read(L"layout", Layout);
   }
 
   void DeviceSettings::serialize(Serialization::stream& stream) const
   {
     stream.write(AdaLight);
+    stream.write(UdpLight);
+    stream.write(ControllerKind);
     stream.write(Layout);
   }
 
   void DeviceSettings::deserialize(Serialization::stream& stream)
   {
     stream.read(AdaLight);
+    stream.read(UdpLight);
+    stream.read(ControllerKind);
     stream.read(Layout);
   }
 }

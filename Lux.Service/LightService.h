@@ -4,7 +4,7 @@
 #include "Dispatcher.h"
 #include "ObservableServer.h"
 #include "NetworkSettings.h"
-#include "AdaLightController.h"
+#include "LightController.h"
 #include "LightSource.h"
 #include "ColorProcessor.h"
 #include "ColorCorrector.h"
@@ -19,7 +19,7 @@ namespace Lux::Service
     winrt::Windows::System::Threading::ThreadPoolTimer _timer;
     bool _isDirty = false;
     
-    std::unique_ptr<Controllers::AdaLightController> _controller;
+    std::unique_ptr<Controllers::LightController> _controller;
     std::unique_ptr<Sources::LightSource> _source;
     Colors::ColorCorrector _colorCorrector;
     std::vector<Colors::ColorProcessor*> _colorProcessors;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Colors.h"
 #include "Events.h"
+#include "DeviceSettings.h"
 
 namespace Lux::Controllers
 {
@@ -21,5 +22,7 @@ namespace Lux::Controllers
 
     bool IsConnected();
     virtual void Push(const std::vector<Graphics::rgb>& colors) = 0;
+
+    virtual Configuration::LightControllerKind Type() const = 0;
   };
 }

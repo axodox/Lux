@@ -40,6 +40,11 @@ namespace Lux::Configuration
     DisplayLightStrip(const Json::json_value& value);
   };
 
+  named_enum_underlying(LightControllerKind, uint8_t,
+    Ada,
+    Udp
+  );
+
   struct AdaLightSettings
   {
     uint16_t UsbVendorId;
@@ -49,6 +54,17 @@ namespace Lux::Configuration
 
     AdaLightSettings() = default;
     AdaLightSettings(const Json::json_value& value);
+  };
+
+  struct UdpLightSettings : public Serialization::serializable
+  {
+    winrt::hstring Host;
+    uint16_t Port;
+    UdpLightSettings() = default;
+    UdpLightSettings(const Json::json_value & value);
+
+    virtual void serialize(Serialization::stream& stream) const;
+    virtual void deserialize(Serialization::stream& stream);
   };
 
   struct DisplayLightLayout : public Serialization::serializable
@@ -69,6 +85,8 @@ namespace Lux::Configuration
   struct DeviceSettings : public Serialization::serializable
   {
     AdaLightSettings AdaLight;
+    UdpLightSettings UdpLight;
+    LightControllerKind ControllerKind;
     DisplayLightLayout Layout;
 
     DeviceSettings() = default;

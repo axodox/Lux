@@ -26,7 +26,7 @@ namespace Lux::Serialization
     virtual void seek(size_t position) override;
     virtual size_t length() const override;
 
-    void flush();
+    virtual void flush() override;
   };
 
   class buffered_data_stream : public data_stream

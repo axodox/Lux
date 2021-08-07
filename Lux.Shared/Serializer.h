@@ -40,6 +40,28 @@ namespace Lux::Serialization
   };
 
   template<typename T>
+  struct serializer<typename T, typename std::enable_if_t<std::is_same<T, winrt::hstring>::value>>
+  {
+    static void serialize(stream& stream, const winrt::hstring& value)
+    {
+      stream.write((uint32_t)value.size());
+      stream.write(
+        value.size() * sizeof(winrt::hstring::value_type),
+        reinterpret_cast<const uint8_t*>(value.data()));
+    }
+
+    static void deserialize(stream& stream, winrt::hstring& value)
+    {
+      std::wstring temp;
+      temp.resize(stream.read<uint32_t>());
+      stream.read(
+        temp.size() * sizeof(std::wstring::value_type),
+        reinterpret_cast<uint8_t*>(temp.data()));
+      value = temp;
+    }
+  };
+
+  template<typename T>
   struct serializer<typename T, typename std::enable_if_t<Traits::is_instantiation_of<std::vector, T>::value>>
   {
     static void serialize(stream& stream, const T& value)
