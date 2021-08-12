@@ -37,7 +37,7 @@ namespace Lux::Graphics
 
     if (_outputDuplication != nullptr)
     {
-      DXGI_OUTDUPL_FRAME_INFO frameInfo;
+      DXGI_OUTDUPL_FRAME_INFO frameInfo{};
       com_ptr<IDXGIResource> resource;
       auto result = _outputDuplication->AcquireNextFrame(timeout.count(), &frameInfo, resource.put());
 
@@ -46,12 +46,21 @@ namespace Lux::Graphics
       case ERROR_SUCCESS:
       {
         auto texture = resource.as<ID3D11Texture2D>();
-        if (!_texture || _texture->texture() != texture)
+        if (_textureA != nullptr && _textureA->texture() == texture)
         {
-          _texture = make_unique<d3d11_texture_2d>(texture);
+          frame = _textureA.get();
+        }
+        else if (_textureB != nullptr && _textureB->texture() == texture)
+        {
+          frame = _textureB.get();
+        }
+        else
+        {
+          _textureB = move(_textureA);
+          _textureA = make_unique<d3d11_texture_2d>(texture);
+          frame = _textureA.get();
         }
 
-        frame = _texture.get();
         return d3d11_desktop_duplication_state::ready;
       }
       case DXGI_ERROR_WAIT_TIMEOUT:

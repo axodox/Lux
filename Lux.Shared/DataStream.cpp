@@ -53,10 +53,10 @@ namespace Lux::Serialization
 
         switch (task.wait_for({ timeout }))
         {
-        case AsyncStatus::Completed:
+        case winrt::Windows::Foundation::AsyncStatus::Completed:
           loadedLength += task.GetResults();
           break;
-        case AsyncStatus::Started:
+        case winrt::Windows::Foundation::AsyncStatus::Started:
           throw exception("Data stream read timed out!");
           break;
         default:

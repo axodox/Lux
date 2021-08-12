@@ -11,6 +11,10 @@
 #include "D3D11ComputeShader.h"
 #include "D3D11ConstantBuffer.h"
 
+#include "D3D11DesktopCapture.h"
+#define d3d11_desktop_duplication d3d11_desktop_capture
+#define d3d11_desktop_duplication_state d3d11_desktop_capture_state
+
 using namespace Lux::IO;
 using namespace Lux::Math;
 using namespace Lux::Configuration;

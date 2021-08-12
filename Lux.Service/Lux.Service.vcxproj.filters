@@ -64,6 +64,9 @@
     <ClCompile Include="UdpLightController.cpp">
       <Filter>Controllers</Filter>
     </ClCompile>
+    <ClCompile Include="D3D11DesktopCapture.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="UdpLightController.h">
       <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11DesktopCapture.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

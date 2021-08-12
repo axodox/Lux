@@ -15,7 +15,7 @@ namespace Lux::Graphics
   private:
     std::function<winrt::com_ptr<IDXGIOutput5>()> _outputProvider;
     winrt::com_ptr<IDXGIOutputDuplication> _outputDuplication;
-    std::unique_ptr<d3d11_texture_2d> _texture;
+    std::unique_ptr<d3d11_texture_2d> _textureA, _textureB;
     winrt::com_ptr<ID3D11Device> _device;
     winrt::com_ptr<IDXGIOutput5> _output;
 

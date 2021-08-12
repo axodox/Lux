@@ -10,7 +10,7 @@
     <ProjectGuid>{269307f1-54be-4a4e-abcf-1dfde4352ea2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Lux.Service</RootNamespace>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -126,6 +126,7 @@
     <ClInclude Include="D3D11ConstantBuffer.h" />
     <ClInclude Include="D3D11Buffer.h" />
     <ClInclude Include="D3D11ComputeShader.h" />
+    <ClInclude Include="D3D11DesktopCapture.h" />
     <ClInclude Include="D3D11DesktopDuplication.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="D3D11Resource.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="D3D11ComputeShader.cpp" />
     <ClCompile Include="D3D11ConstantBuffer.cpp" />
     <ClCompile Include="D3D11DesktopDuplication.cpp" />
+    <ClCompile Include="D3D11DesktopCapture.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="D3D11Resource.cpp" />
     <ClCompile Include="D3D11SamplerState.cpp" />
