@@ -5,6 +5,7 @@
 using namespace Lux::BitwiseOperations;
 using namespace std;
 using namespace winrt;
+using namespace winrt::Windows::Foundation::Metadata;
 using namespace winrt::Windows::Graphics;
 using namespace winrt::Windows::Graphics::Capture;
 using namespace winrt::Windows::Graphics::DirectX;
@@ -68,6 +69,10 @@ namespace Lux::Graphics
       _resources->frame_arrived_revoker = _resources->frame_pool.FrameArrived(auto_revoke, { this, &d3d11_desktop_capture::on_frame_arrived });
       _resources->capture_session = _resources->frame_pool.CreateCaptureSession(_resources->capture_item);
       _resources->capture_session.IsCursorCaptureEnabled(false);
+      if (ApiInformation::IsPropertyPresent(L"Windows.Graphics.Capture.GraphicsCaptureSession", L"IsBorderRequired"))
+      {
+        _resources->capture_session.IsBorderRequired(false);
+      }
       _resources->capture_session.StartCapture();
 
       _output_info = outputInfo;
