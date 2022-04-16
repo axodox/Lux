@@ -50,7 +50,7 @@ namespace Lux::Json
       }      
       else
       {
-        static_assert(false, "Cannot serialize this type to json automatically");
+        //static_assert(false, "Cannot serialize this type to json automatically");
       }
     }
 
@@ -91,7 +91,7 @@ namespace Lux::Json
       }
       else
       {
-        static_assert(false, "Cannot deserialize this type from json automatically");
+        //static_assert(false, "Cannot deserialize this type from json automatically");
       }
     }
 

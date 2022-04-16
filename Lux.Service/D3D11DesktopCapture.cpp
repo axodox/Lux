@@ -37,7 +37,7 @@ namespace Lux::Graphics
     switch (desc.ColorSpace)
     {
     case DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020:
-      info.format = DirectXPixelFormat::R16G16B16A16UIntNormalized;
+      info.format = DirectXPixelFormat::R16G16B16A16Float;
       break;
     default:
       info.format = DirectXPixelFormat::R8G8B8A8UIntNormalized;
