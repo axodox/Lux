@@ -20,7 +20,7 @@ namespace Lux::Serialization
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::is_same<T, std::wstring>::value>>
+  struct serializer<T, typename std::enable_if_t<std::is_same<T, std::wstring>::value>>
   {
     static void serialize(stream& stream, const std::wstring& value)
     {
@@ -40,7 +40,7 @@ namespace Lux::Serialization
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::is_same<T, winrt::hstring>::value>>
+  struct serializer<T, typename std::enable_if_t<std::is_same<T, winrt::hstring>::value>>
   {
     static void serialize(stream& stream, const winrt::hstring& value)
     {
@@ -62,7 +62,7 @@ namespace Lux::Serialization
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<Traits::is_instantiation_of<std::vector, T>::value>>
+  struct serializer<T, typename std::enable_if_t<Traits::is_instantiation_of<std::vector, T>::value>>
   {
     static void serialize(stream& stream, const T& value)
     {
@@ -94,7 +94,7 @@ namespace Lux::Serialization
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::is_convertible<T*, serializable*>::value>>
+  struct serializer<T, typename std::enable_if_t<std::is_convertible<T*, serializable*>::value>>
   {
     static void serialize(stream& stream, const T& value)
     {
@@ -108,7 +108,7 @@ namespace Lux::Serialization
   };
 
   template<typename T>
-  struct serializer<typename T, typename std::enable_if_t<std::conjunction<
+  struct serializer<T, typename std::enable_if_t<std::conjunction<
     Traits::is_instantiation_of<std::unique_ptr, T>, 
     Traits::has_actual_types<typename T::element_type>>::value>>
   {

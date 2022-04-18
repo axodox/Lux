@@ -67,12 +67,16 @@ namespace Lux::Controllers
     messsage.push_back(lowCount);
     messsage.push_back(checksumCount);
 
+    uint8_t checksum = 0;
     for (auto& color : colors)
     {
-      messsage.push_back(color.r);
       messsage.push_back(color.g);
+      messsage.push_back(color.r);
       messsage.push_back(color.b);
+      checksum += color.r * color.g ^ color.b;
     }
+
+    messsage.push_back(checksum);
 
     //Rate limit for LED refresh
     auto now = steady_clock::now();
@@ -114,6 +118,8 @@ namespace Lux::Controllers
       _currentDeviceId = deviceInformation.Id();
       auto serialDevice = SerialDevice::FromIdAsync(deviceInformation.Id()).get();
       serialDevice.BaudRate(_options.BaudRate);
+      serialDevice.IsRequestToSendEnabled(false);
+      serialDevice.IsDataTerminalReadyEnabled(false);
       _serialWriter = DataWriter(serialDevice.OutputStream());
       IsConnected(true);
     }

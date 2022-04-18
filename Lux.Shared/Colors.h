@@ -31,5 +31,5 @@ namespace Lux::Graphics
     operator rgb() const;
   };
 
-  std::array<float, 256> make_gamma(float gamma, float max = 1.f, float min = 0.2f);
+  std::array<float, 256> make_gamma(float gamma, float max = 1.f, float min = 0.1f);
 }

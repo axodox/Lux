@@ -174,18 +174,19 @@ namespace Lux::Sources
     auto sampledColorSums = d3d11_structured_buffer::make_writeable<led_color_t>(renderer.device(), uint32_t(rects.size()));
     auto sampledColorStage = d3d11_structured_buffer::make_staging<led_color_t>(renderer.device(), uint32_t(rects.size()));
     auto samplerShader = d3d11_compute_shader(renderer.device(), app_folder() / L"DesktopSamplingComputeShader.cso");
-    auto constantsBuffer = d3d11_constant_buffer::make_dynamic<bool>(renderer.device());
+    auto constantsBuffer = d3d11_constant_buffer::make_dynamic<uint32_t>(renderer.device());
 
     vector<rgb> targetColors(factors.size());
     vector<XMFLOAT3> currentColors(factors.size());
 
+    uint32_t frameIndex = 0;
     while (!worker->is_shutting_down())
     {
       d3d11_texture_2d* texture;
       auto state = duplication.try_lock_frame(17ms, texture);
       if (state == d3d11_desktop_duplication_state::ready)
       {
-        constantsBuffer.write(renderer.context(), duplication.is_hdr());
+        constantsBuffer.write(renderer.context(), frameIndex++);
         constantsBuffer.set(renderer.context(), d3d11_shader_stage::cs);
 
         sampler.set(renderer.context(), d3d11_shader_stage::cs);

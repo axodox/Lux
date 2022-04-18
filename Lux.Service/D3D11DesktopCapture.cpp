@@ -156,6 +156,6 @@ namespace Lux::Graphics
 
   bool d3d11_desktop_capture::is_hdr() const
   {
-    return _output_info.format == DirectXPixelFormat::R16G16B16A16UIntNormalized;
+    return _output_info.format == DirectXPixelFormat::R16G16B16A16Float;
   }
 }
