@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "AdaLightController.h"
+#include "MemoryStream.h"
 
 using namespace Lux::Configuration;
 using namespace Lux::Graphics;
+using namespace Lux::Serialization;
 
 using namespace std;
 using namespace std::this_thread;
@@ -51,32 +53,34 @@ namespace Lux::Controllers
     //Define message
     auto length = 6 + colors.size() * 3;
 
-    vector<uint8_t> messsage;
+    memory_stream messsage;
     messsage.reserve(length);
 
-    messsage.push_back(0x41);
-    messsage.push_back(0x64);
-    messsage.push_back(0x61);
+    messsage.write(uint8_t(0x41));
+    messsage.write(uint8_t(0x64));
+    messsage.write(uint8_t(0x61));
 
     auto adjustedLedCount = colors.size() - 1;
     auto highCount = (uint8_t)(adjustedLedCount >> 8);
     auto lowCount = (uint8_t)(adjustedLedCount & 0xff);
     auto checksumCount = (uint8_t)(highCount ^ lowCount ^ 0x55);
 
-    messsage.push_back(highCount);
-    messsage.push_back(lowCount);
-    messsage.push_back(checksumCount);
+    messsage.write(highCount);
+    messsage.write(lowCount);
+    messsage.write(checksumCount);
 
-    uint8_t checksum = 0;
+    uint32_t checksum = 0;
     for (auto& color : colors)
     {
-      messsage.push_back(color.g);
-      messsage.push_back(color.r);
-      messsage.push_back(color.b);
-      checksum += color.r * color.g ^ color.b;
+      messsage.write(color.g);
+      messsage.write(color.r);
+      messsage.write(color.b);
+
+      uint32_t hash = (uint32_t(color.r) << 24) + (uint32_t(color.g) << 16) + uint32_t(color.b);
+      checksum = (checksum + 0x9e3779b9 + (hash << 6) + (hash >> 2)) ^ hash;
     }
 
-    messsage.push_back(checksum);
+    messsage.write(checksum);
 
     //Rate limit for LED refresh
     auto now = steady_clock::now();
