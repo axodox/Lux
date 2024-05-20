@@ -11,9 +11,10 @@
 #include "D3D11ComputeShader.h"
 #include "D3D11ConstantBuffer.h"
 
-#include "D3D11DesktopCapture.h"
-#define d3d11_desktop_duplication d3d11_desktop_capture
-#define d3d11_desktop_duplication_state d3d11_desktop_capture_state
+#include "D3D11DesktopDuplication.h"
+//#include "D3D11DesktopCapture.h"
+//#define d3d11_desktop_duplication d3d11_desktop_capture
+//#define d3d11_desktop_duplication_state d3d11_desktop_capture_state
 
 using namespace Lux::IO;
 using namespace Lux::Math;
@@ -183,7 +184,7 @@ namespace Lux::Sources
     while (!worker->is_shutting_down())
     {
       d3d11_texture_2d* texture;
-      auto state = duplication.try_lock_frame(17ms, texture);
+      auto state = duplication.try_lock_frame(8ms, texture);
       if (state == d3d11_desktop_duplication_state::ready)
       {
         constantsBuffer.write(renderer.context(), frameIndex++);
@@ -220,10 +221,10 @@ namespace Lux::Sources
 
         duplication.unlock_frame();
       }
-      else if(state != d3d11_desktop_duplication_state::timeout)
+      /*else if(state != d3d11_desktop_duplication_state::timeout)
       {
         this_thread::sleep_for(100ms);
-      }
+      }*/
 
       if (_temporalAveraging > 0)
       {

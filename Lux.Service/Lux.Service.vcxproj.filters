@@ -67,14 +67,15 @@
     <ClCompile Include="D3D11DesktopCapture.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicLightController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <Filter>Include</Filter>
-    </None>
     <None Include="PropertySheet.props">
       <Filter>Include</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Controllers">
@@ -168,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="D3D11DesktopCapture.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicLightController.h">
+      <Filter>Controllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

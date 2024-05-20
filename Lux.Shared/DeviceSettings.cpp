@@ -82,6 +82,13 @@ namespace Lux::Configuration
     stream.read(Port);
   }
 
+  DynamicLightSettings::DynamicLightSettings(const Json::json_value& value)
+  {
+    json_object object{ value };
+    object.read(L"usbVendorId", UsbVendorId, 0xa02fui16);
+    object.read(L"usbProductId", UsbProductId, 0x0007ui16);
+  }
+
   DisplayLightLayout::DisplayLightLayout(const Json::json_value& value)
   {
     json_object object{ value };
@@ -119,6 +126,7 @@ namespace Lux::Configuration
     json_object object{ value };
     object.read(L"adaLight", AdaLight);
     object.read(L"udpLight", UdpLight);
+    object.read(L"dynamicLight", DynamicLight);
     object.read(L"controller", ControllerKind);
     object.read(L"layout", Layout);
   }
@@ -127,6 +135,7 @@ namespace Lux::Configuration
   {
     stream.write(AdaLight);
     stream.write(UdpLight);
+    stream.write(DynamicLight);
     stream.write(ControllerKind);
     stream.write(Layout);
   }
@@ -135,6 +144,7 @@ namespace Lux::Configuration
   {
     stream.read(AdaLight);
     stream.read(UdpLight);
+    stream.read(DynamicLight);
     stream.read(ControllerKind);
     stream.read(Layout);
   }

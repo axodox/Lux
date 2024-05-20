@@ -84,10 +84,10 @@ namespace Lux::Controllers
 
     //Rate limit for LED refresh
     auto now = steady_clock::now();
-    auto timeSyncLastUpdate = now - _lastUpdate;
-    if (timeSyncLastUpdate < _options.LedSyncDuration)
+    auto timeSinceLastUpdate = now - _lastUpdate;
+    if (timeSinceLastUpdate < _options.LedSyncDuration)
     {
-      sleep_for(_options.LedSyncDuration - timeSyncLastUpdate);
+      sleep_for(_options.LedSyncDuration - timeSinceLastUpdate);
       _lastUpdate = steady_clock::now();
     }
     else

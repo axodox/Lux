@@ -15,7 +15,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="App.idl" />
     <Midl Include="MainPage.idl" />
     <Midl Include="Converters.idl">
       <Filter>Converters</Filter>

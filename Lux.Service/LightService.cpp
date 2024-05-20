@@ -8,6 +8,7 @@
 #include "DisplaySettings.h"
 #include "AdaLightController.h"
 #include "UdpLightController.h"
+#include "DynamicLightController.h"
 
 using namespace Lux;
 using namespace Lux::Configuration;
@@ -110,6 +111,9 @@ namespace Lux::Service
       case LightControllerKind::Udp:
         _controller = make_unique<UdpLightController>();
         break;
+      case LightControllerKind::Dynamic:
+        _controller = make_unique<DynamicLightController>();
+        break;
       }
     }
 
@@ -121,6 +125,9 @@ namespace Lux::Service
       break;
     case LightControllerKind::Udp:
       static_cast<UdpLightController*>(_controller.get())->Options(_server.root()->Device.value().UdpLight);
+      break;
+    case LightControllerKind::Dynamic:
+      static_cast<DynamicLightController*>(_controller.get())->Options(_server.root()->Device.value().DynamicLight);
       break;
     }
 

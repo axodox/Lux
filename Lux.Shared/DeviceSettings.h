@@ -42,7 +42,8 @@ namespace Lux::Configuration
 
   named_enum_underlying(LightControllerKind, uint8_t,
     Ada,
-    Udp
+    Udp,
+    Dynamic
   );
 
   struct AdaLightSettings
@@ -67,6 +68,15 @@ namespace Lux::Configuration
     virtual void deserialize(Serialization::stream& stream);
   };
 
+  struct DynamicLightSettings
+  {
+    uint16_t UsbVendorId;
+    uint16_t UsbProductId;
+
+    DynamicLightSettings() = default;
+    DynamicLightSettings(const Json::json_value& value);
+  };
+
   struct DisplayLightLayout : public Serialization::serializable
   {
     DisplaySize DisplaySize;
@@ -86,6 +96,7 @@ namespace Lux::Configuration
   {
     AdaLightSettings AdaLight;
     UdpLightSettings UdpLight;
+    DynamicLightSettings DynamicLight;
     LightControllerKind ControllerKind;
     DisplayLightLayout Layout;
 

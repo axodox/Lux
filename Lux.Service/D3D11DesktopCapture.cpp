@@ -94,7 +94,7 @@ namespace Lux::Graphics
     }    
   }
 
-  void d3d11_desktop_capture::on_frame_arrived(const winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool& sender, const winrt::Windows::Foundation::IInspectable& /*eventArgs*/)
+  void d3d11_desktop_capture::on_frame_arrived(const winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool& /*sender*/, const winrt::Windows::Foundation::IInspectable& /*eventArgs*/)
   {
     _frame_arrived_event.set();
   }
