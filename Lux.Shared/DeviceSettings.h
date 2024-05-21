@@ -41,6 +41,7 @@ namespace Lux::Configuration
   };
 
   named_enum_underlying(LightControllerKind, uint8_t,
+    Disabled,
     Ada,
     Udp,
     Dynamic

@@ -105,6 +105,9 @@ namespace Lux::Service
     {
       switch (controllerKind)
       {
+      case LightControllerKind::Disabled:
+        _controller.reset();
+        break;
       case LightControllerKind::Ada:
         _controller = make_unique<AdaLightController>();
         break;
@@ -132,10 +135,17 @@ namespace Lux::Service
     }
 
     //Detect connection
-    _server.root()->IsConnected = _controller->IsConnected();
-    _controller->IsConnectedChanged(no_revoke, [&](LightController*) {
+    if (_controller)
+    {
       _server.root()->IsConnected = _controller->IsConnected();
-      });
+      _controller->IsConnectedChanged(no_revoke, [&](LightController*) {
+        _server.root()->IsConnected = _controller->IsConnected();
+        });
+    }
+    else
+    {
+      _server.root()->IsConnected = false;
+    }
   }
 
   void LightService::ApplySourceSettings()
@@ -146,25 +156,32 @@ namespace Lux::Service
     if (sourceKind == LightSourceKind::Off)
     {
       _source.reset();
+      _controller.reset();
+      _server.root()->IsConnected = false;
     }
-    else if(!_source || _source->Kind() != sourceKind)
+    else
     {
-      _source.reset();
+      if (!_controller) ApplyContollerSettings();
 
-      switch (sourceKind)
+      if (!_source || _source->Kind() != sourceKind)
       {
-      case LightSourceKind::Static:
-        _source = make_unique<StaticSource>();
-        isNew = true;
-        break;
-      case LightSourceKind::Rainbow:
-        _source = make_unique<RainbowSource>();
-        isNew = true;
-        break;
-      case LightSourceKind::Desktop:
-        _source = make_unique<DesktopSource>();
-        isNew = true;
-        break;
+        _source.reset();
+
+        switch (sourceKind)
+        {
+        case LightSourceKind::Static:
+          _source = make_unique<StaticSource>();
+          isNew = true;
+          break;
+        case LightSourceKind::Rainbow:
+          _source = make_unique<RainbowSource>();
+          isNew = true;
+          break;
+        case LightSourceKind::Desktop:
+          _source = make_unique<DesktopSource>();
+          isNew = true;
+          break;
+        }
       }
     }
 
@@ -247,7 +264,7 @@ namespace Lux::Service
       break;
     case LightConfigurationProperty::Saturation:
       _colorCorrector.Saturation(_server.root()->Saturation);
-      break; 
+      break;
     case LightConfigurationProperty::Brightness:
       _colorCorrector.Brightness(_server.root()->Brightness / 255.f);
       break;
